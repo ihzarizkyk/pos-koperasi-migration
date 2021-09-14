@@ -7,10 +7,14 @@ use Session;
 use App\Acces;
 use App\Supply;
 use App\Product;
+use App\Category;
 use App\Transaction;
 use App\Supply_system;
+use App\detail_supplies;
 use App\Imports\ProductImport;
+use App\Exports\ProductExport;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class ProductManageController extends Controller
@@ -19,14 +23,18 @@ class ProductManageController extends Controller
     public function viewProduct()
     {
         $id_account = Auth::id();
+        $category = Category::all();
         $check_access = Acces::where('user', $id_account)
         ->first();
         if($check_access->kelola_barang == 1){
         	$products = Product::all()
             ->sortBy('kode_barang');
             $supply_system = Supply_system::first();
+            $cari = '';
+            $sort = '';
+            $data = $products->count();
 
-        	return view('manage_product.product', compact('products', 'supply_system'));
+        	return view('manage_product.product', compact('sort', 'data', 'cari', 'products', 'supply_system', 'category'));
         }else{
             return back();
         }
@@ -36,12 +44,13 @@ class ProductManageController extends Controller
     public function viewNewProduct()
     {
         $id_account = Auth::id();
+        $category = Category::all();
         $check_access = Acces::where('user', $id_account)
         ->first();
         if($check_access->kelola_barang == 1){
             $supply_system = Supply_system::first();
 
-        	return view('manage_product.new_product', compact('supply_system'));
+        	return view('manage_product.new_product', compact('supply_system', 'category'));
         }else{
             return back();
         }
@@ -53,12 +62,29 @@ class ProductManageController extends Controller
         $id_account = Auth::id();
         $check_access = Acces::where('user', $id_account)
         ->first();
+        $category = Category::all();
         if($check_access->kelola_barang == 1){
             $supply_system = Supply_system::first();
-            $products = Product::orderBy($id, 'asc')
-            ->get();
+            $cari = '';
+            $sort = $id;
+            if ($id == 'harga_jual') {
+                $products = [];
+                $items = Product::all();
+                foreach ($items as $item) {
+                    $count = (int)$item->hpp + (int)$item->laba_rupiah;
+                    if ($item->harga != $count) {
+                        $products[] = $item;
+                    }
+                }
+                $data = count($products);
+            }
+            else{
+                $products = Product::orderBy($id, 'asc')->get();
+                $data = $products->count();
+            }
 
-            return view('manage_product.filter_table.table_view', compact('products', 'supply_system'));
+            return view('manage_product.product', compact('sort', 'data', 'cari', 'products', 'supply_system', 'category'));
+            
         }else{
             return back();
         }
@@ -79,7 +105,7 @@ class ProductManageController extends Controller
         	{
         		$product = new Product;
     	    	$product->kode_barang = $req->kode_barang;
-    	    	$product->jenis_barang = $req->jenis_barang;
+    	    	$product->category_id = $req->kategori;
     	    	$product->nama_barang = $req->nama_barang;
     	    	if($req->berat_barang != '')
     	    	{
@@ -94,7 +120,17 @@ class ProductManageController extends Controller
                 }else{
                     $product->stok = 1;
                 }
-    	    	$product->harga = $req->harga;
+                $harga = preg_replace("/[^a-zA-Z0-9]/", "", $req->harga);
+    	    	$product->harga = $harga;
+                $hpp = preg_replace("/[^a-zA-Z0-9]/", "", $req->hpp);
+                /*
+                 HPP:
+                 STOK AWAL  * HPP + Pasok Barang / total barang
+
+                */
+                $product->hpp = $hpp;
+                $product->laba_rupiah = trim($req->laba_rupiah) != "" ? preg_replace("/[^a-zA-Z0-9]/", "", $req->laba_rupiah) : 0;
+                $product->laba_persen = $product->laba_rupiah / $hpp * 100;
     	    	$product->save();
 
     	    	Session::flash('create_success', 'Barang baru berhasil ditambahkan');
@@ -136,6 +172,82 @@ class ProductManageController extends Controller
         }
     }
 
+    // Export Product
+    public function exportProduct(Request $req){
+        $cari = $req->cari;
+        $sort = $req->sort;
+        
+
+        if ($sort == 'harga_jual') {
+            $title = 'fillter ('.$sort.')';
+            $products = [];
+            $items = Product::select('kode_barang','category_id','nama_barang','berat_barang','merek','laba_rupiah','laba_persen','stok','harga','hpp','keterangan','created_at','updated_at')->orderBy('kode_barang')->get();
+            foreach ($items as $item) {
+                $count = (int)$item->hpp + (int)$item->laba_rupiah;
+                if ($item->harga != $count) {
+                    $products[] = $item;
+                }
+            }
+        }
+        else{
+            $products = [];
+            if ($cari) {
+                $title = 'fillter ('.$cari.')';
+                $items = Product::query()->where('kode_barang', $cari)
+                                        ->orWhere('nama_barang', $cari)
+                                        ->orWhere('merek', $cari)
+                                        ->orWhere('stok', $cari)
+                                        ->select('kode_barang','category_id','nama_barang','berat_barang','merek','laba_rupiah','laba_persen','stok','harga','hpp','keterangan','created_at','updated_at')
+                                        ->orderBy('kode_barang')->get();
+                foreach ($items as $item) {
+                    $products[] = $item;
+                }
+            }
+            elseif ($sort) {
+                $title = 'fillter ('.$sort.')';
+                $items = Product::select('kode_barang','category_id','nama_barang','berat_barang','merek','laba_rupiah','laba_persen','stok','harga','hpp','keterangan','created_at','updated_at')->orderBy($sort, 'asc')->get();
+                foreach ($items as $item) {
+                    $products[] = $item;
+                }
+            }
+            else {
+                $title = 'all';
+                $items = Product::select('kode_barang','category_id','nama_barang','berat_barang','merek','laba_rupiah','laba_persen','stok','harga','hpp','keterangan','created_at','updated_at')->orderBy('kode_barang')->get();
+                foreach ($items as $item) {
+                    $products[] = $item;
+                }
+            }
+        }
+        
+        return Excel::download(new ProductExport($products), 'product '.$title.'.xlsx');
+    }
+
+    //Cari Barang
+    public function search(Request $req)
+    {
+        $id_account = Auth::id();
+        $category = Category::all();
+        $check_access = Acces::where('user', $id_account)
+        ->first();
+        if($check_access->kelola_barang == 1){
+            $cari = $req->cari;
+            $products = Product::query()
+                        ->where('kode_barang', 'like',"%".$cari."%")
+                        ->orWhere('nama_barang', 'like',"%".$cari."%")
+                        ->orWhere('merek', 'like', "%".$cari."%")
+                        ->orWhere('stok', 'like', "%".$cari."%")
+                        ->get();
+            $data = $products->count();
+            $supply_system = Supply_system::first();
+            $sort = '';
+
+        	return view('manage_product.product', compact('sort', 'data' ,'cari', 'products', 'supply_system', 'category'));
+        }
+        else{
+            return back();
+        }
+    }
+
     // Edit Product
     public function editProduct($id)
     {
@@ -166,12 +278,17 @@ class ProductManageController extends Controller
                 $product = Product::find($req->id);
                 $kode_barang = $product->kode_barang;
                 $product->kode_barang = $req->kode_barang;
-                $product->jenis_barang = $req->jenis_barang;
+                $product->category_id = $req->kategori;
                 $product->nama_barang = $req->nama_barang;
                 $product->berat_barang = $req->berat_barang . ' ' . $req->satuan_berat;
                 $product->merek = $req->merek;
                 $product->stok = $req->stok;
-                $product->harga = $req->harga;
+                $harga = preg_replace("/[^a-zA-Z0-9]/", "", $req->harga);
+    	    	$product->harga = $harga;
+                $hpp = preg_replace("/[^a-zA-Z0-9]/", "", $req->hpp);
+                $product->hpp = $hpp;
+                $product->laba_rupiah = trim($req->laba_rupiah) != "" ? preg_replace("/[^a-zA-Z0-9]/", "", $req->laba_rupiah) : 0;
+                $product->laba_persen = $product->laba_rupiah / $hpp * 100;
                 if($req->stok <= 0)
                 {
                     $product->keterangan = "Habis";
@@ -180,7 +297,7 @@ class ProductManageController extends Controller
                 }
                 $product->save();
 
-                Supply::where('kode_barang', $kode_barang)
+                detail_supplies::where('kode_barang', $kode_barang)
                 ->update(['kode_barang' => $req->kode_barang]);
                 Transaction::where('kode_barang', $kode_barang)
                 ->update(['kode_barang' => $req->kode_barang]);
@@ -197,6 +314,7 @@ class ProductManageController extends Controller
             return back();
         }
     }
+
 
     // Delete Product
     public function deleteProduct($id)

@@ -15,12 +15,11 @@ class CreateSupplyTable extends Migration
     {
         Schema::create('supplies', function (Blueprint $table) {
             $table->id();
-            $table->string('kode_barang');
-            $table->string('nama_barang');
-            $table->integer('jumlah');
-            $table->bigInteger('harga_beli');
+            $table->string('nota')->nullable();
+            $table->string('suppliers_id');
+            $table->string('status');
             $table->integer('id_pemasok');
-            $table->string('pemasok');
+            $table->date('date')->nullable();
             $table->timestamps();
         });
     }

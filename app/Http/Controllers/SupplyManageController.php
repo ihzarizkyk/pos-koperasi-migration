@@ -8,9 +8,11 @@ use Session;
 use Carbon\Carbon;
 use App\Acces;
 use App\Supply;
+use App\Supplier;
 use App\Market;
 use App\Product;
 use App\Activity;
+use App\detail_supplies;
 use App\Supply_system;
 use App\Imports\SupplyImport;
 use Maatwebsite\Excel\Facades\Excel;
@@ -50,8 +52,11 @@ class SupplyManageController extends Controller
     public function viewSupply()
     {
         $id_account = Auth::id();
+        $product = Product::all();
+        $supplier = Supplier::all();
         $check_access = Acces::where('user', $id_account)
         ->first();
+        $pasok = Supply::all();
         $supply_system = Supply_system::first();
         if($check_access->kelola_barang == 1 && $supply_system->status == true){
             $supplies = Supply::all();
@@ -62,7 +67,7 @@ class SupplyManageController extends Controller
             $dates = array_unique($array);
             rsort($dates);
 
-            return view('manage_product.supply_product.supply', compact('dates'));
+            return view('manage_product.supply_product.supply', compact('dates', 'product', 'pasok', 'supplier'));
         }else{
             return back();
         }
@@ -89,6 +94,7 @@ class SupplyManageController extends Controller
     public function viewNewSupply()
     {
         $id_account = Auth::id();
+        $supply = Supplier::all();
         $check_access = Acces::where('user', $id_account)
         ->first();
         $supply_system = Supply_system::first();
@@ -96,7 +102,7 @@ class SupplyManageController extends Controller
             $products = Product::all()
             ->sortBy('kode_barang');
 
-            return view('manage_product.supply_product.new_supply', compact('products'));
+            return view('manage_product.supply_product.new_supply', compact('products', 'supply'));
         }else{
             return back();
         }
@@ -217,38 +223,119 @@ class SupplyManageController extends Controller
         ->first();
         $supply_system = Supply_system::first();
         if($check_access->kelola_barang == 1 && $supply_system->status == true){
-            $jumlah_data = 0;
-            foreach ($req->kode_barang_supply as $no => $kode_barang) {
-                $product_status = Product::where('kode_barang', $kode_barang)
-                ->first();
-                if($product_status->stok == 0){
-                    $product_status->keterangan = 'Tersedia';
-                    $product_status->save();
+            if ($req->has('fullfill')) {
+                $jumlah_data = 0;
+                
+                $supply = new Supply;
+                $supply->nota = $req->nota;
+                $supply->suppliers_id = $req->supplier;
+                $supply->status = 1;
+                $supply->id_pemasok = Auth::id();
+                $supply->date = $req->date;
+                $supply->save();
+
+                foreach ($req->kode_barang_supply as $no => $kode_barang) {
+                    $product_status = Product::where('kode_barang', $kode_barang)
+                    ->first();
+
+                    if($product_status->stok == 0){
+                        $product_status->keterangan = 'Tersedia';
+                        $product_status->save();
+                    }
+
+                    $product = Product::where('kode_barang', $kode_barang)
+                    ->first();
+
+                    if ($product->hpp != 0) {
+                        //hpp
+                        $hpp = (($product->stok * $product->hpp) + ($req->jumlah_supply[$no] * $req->harga_beli_supply[$no])) / ($product->stok + $req->jumlah_supply[$no]);
+                        $product->hpp = $hpp;
+                        // $laba_rupiah = $hpp - $product->harga;
+                        // $laba_persen = $laba_rupiah / $hpp * 100;
+
+                        // $product->laba_rupiah = $laba_rupiah;
+                        // $product->laba_persen = $laba_persen;
+                        
+                        $product->save();
+                    }
+
+                    $detail = new detail_supplies;
+                    $detail->supplies_id = $supply->id;
+                    $detail->kode_barang = $kode_barang;
+                    $detail->nama_barang = $product->nama_barang;
+                    $detail->jumlah = $req->jumlah_supply[$no];
+                    $detail->tempat_beli = $req->tempat_beli[$no];
+                    $detail->harga_beli = $req->harga_beli_supply[$no];
+                    $detail->subtotal = $req->subtotal[$no];
+                    $detail->status = 1;
+                    $detail->save();
+                    $jumlah_data += 1;
                 }
 
-                $supply = new Supply;
-                $supply->kode_barang = $kode_barang;
-                $product = Product::where('kode_barang', $kode_barang)
-                ->first();
-                $supply->nama_barang = $product->nama_barang;
-                $supply->jumlah = $req->jumlah_supply[$no];
-                $supply->harga_beli = $req->harga_beli_supply[$no];
-                $supply->id_pemasok = Auth::id();
-                $supply->pemasok = Auth::user()->nama;
-                $supply->save();
-                $jumlah_data += 1;
+                $activity = new Activity;
+                $activity->id_user = Auth::id();
+                $activity->user = Auth::user()->nama;
+                $activity->nama_kegiatan = 'pasok';
+                $activity->jumlah = $jumlah_data;
+                $activity->save();
+                Session::flash('create_success', 'Barang berhasil dipasok');
+
+                return redirect('/supply');
             }
+            elseif ($req->has('create')) {
+                $jumlah_data = 0;
 
-            $activity = new Activity;
-            $activity->id_user = Auth::id();
-            $activity->user = Auth::user()->nama;
-            $activity->nama_kegiatan = 'pasok';
-            $activity->jumlah = $jumlah_data;
-            $activity->save();
+                $supply = new Supply;
+                $supply->nota = $req->nota;
+                $supply->suppliers_id = $req->supplier;
+                $supply->status = 0;
+                $supply->id_pemasok = Auth::id();
+                $supply->date = $req->date;
+                $supply->save();
 
-            Session::flash('create_success', 'Barang berhasil dipasok');
+                foreach ($req->kode_barang_supply as $no => $kode_barang) {
+                    $product_status = Product::where('kode_barang', $kode_barang)
+                    ->first();
 
-            return redirect('/supply');
+                    if($product_status->stok == 0){
+                        $product_status->keterangan = 'Tersedia';
+                        $product_status->save();
+                    }
+                    
+                    $product = Product::where('kode_barang', $kode_barang)
+                    ->first();
+
+                    if ($product->hpp != 0) {
+                        //hpp
+                        $hpp = (($product->stok * $product->hpp) + ($req->jumlah_supply[$no] * $req->harga_beli_supply[$no])) / ($product->stok + $req->jumlah_supply[$no]);
+                        $product->hpp = $hpp;
+                        $product->save();
+                    }
+
+                    $detail = new detail_supplies;
+                    $detail->supplies_id = $supply->id;
+                    $detail->kode_barang = $kode_barang;
+                    $detail->nama_barang = $product->nama_barang;
+                    $detail->jumlah = $req->jumlah_supply[$no];
+                    $detail->tempat_beli = $req->tempat_beli[$no];
+                    $detail->harga_beli = $req->harga_beli_supply[$no];
+                    $detail->subtotal = $req->subtotal[$no];
+                    $detail->status = 1;
+                    $detail->save();
+                    $jumlah_data += 1;
+                }
+
+                $activity = new Activity;
+                $activity->id_user = Auth::id();
+                $activity->user = Auth::user()->nama;
+                $activity->nama_kegiatan = 'pasok';
+                $activity->jumlah = $jumlah_data;
+                $activity->save();
+
+                Session::flash('create_success', 'Stok pending barang berhasil ditambah');
+
+                return redirect('/supply');
+                }
         }else{
             return back();
         }
@@ -367,5 +454,154 @@ class SupplyManageController extends Controller
         }else{
             return back();
         }
+    }
+
+    //po barang baru
+    public function newProduct(Request $req)
+    {
+        $id_account = Auth::id();
+        $check_access = Acces::where('user', $id_account)
+        ->first();
+        if($check_access->kelola_barang == 1){
+        	$check_product = Product::where('kode_barang', $req->kode)
+        	->count();
+            if ($check_product == 0) {
+                $new = new Product;
+                $new->kode_barang = $req->kode;
+                $new->nama_barang = $req->nama_barang;
+                $new->keterangan = "Pre-Order";
+
+                $new->save();
+                Session::flash('create_success', 'Barang Pre-Order berhasil ditambahkan');
+                return redirect('/supply/new');
+            }
+            else{
+                Session::flash('create_failed', 'Kode barang telah digunakan');
+
+    		    return back();
+            }
+        }
+    }
+
+    //view detail pasok
+    public function detail($id)
+    {
+        $data = Supply::find($id);
+        $suppliers = Supplier::all();
+        $items = detail_supplies::where('supplies_id', $id)->get();
+        $total = detail_supplies::where('supplies_id', $id)->count();
+        $products = Product::all();
+        return view('manage_product.supply_product.detail_pasok', compact('data', 'suppliers', 'items', 'products', 'total'));
+    }
+
+    //edit pasokan 
+    public function edited(Request $req, $id)
+    {
+        $id_account = Auth::id();
+        $check_access = Acces::where('user', $id_account)
+        ->first();
+        $supply_system = Supply_system::first();
+        if($check_access->kelola_barang == 1 && $supply_system->status == true){
+            if ($req->has('fullfill')) {
+                $update_supply = Supply::where('id', $id)->first();
+
+                $update_supply->nota = $req->nota;
+                $update_supply->suppliers_id = $req->supplier;
+                $update_supply->status = 1;
+                $update_supply->id_pemasok = Auth::id();
+                $update_supply->date = $req->date;
+
+                $update_supply->save();
+
+                $index = 0;
+                foreach ($req->barang as $key => $kode_barang) {
+                    $pasok = Product::where('kode_barang', $kode_barang)->firstOrFail();
+                    $detail_item = detail_supplies::where('kode_barang', $kode_barang)->where('supplies_id', $id)->firstOrFail();
+                    $pasok->stok = $pasok->stok + $req->jumlah[$key];
+
+                    if ($pasok->hpp != 0 && $detail_item->jumlah != $req->jumlah[$key]) {
+                        $hpp = (($pasok->stok * $pasok->hpp) + ($req->jumlah[$key] * $req->beli[$key])) / ($pasok->stok + $req->jumlah[$key]);
+                        $pasok->hpp = $hpp;
+                    }
+
+                    if ($pasok->hpp != 0) {
+                        $laba_rupiah = $pasok->hpp - $pasok->harga;
+                        $laba_persen = $laba_rupiah / $pasok->hpp * 100;
+    
+                        $pasok->laba_rupiah = $laba_rupiah;
+                        $pasok->laba_persen = $laba_persen;
+                    }
+                    $pasok->save();
+
+                    $detail_item->kode_barang = $kode_barang;
+                    $detail_item->nama_barang = $pasok->nama_barang;
+                    $detail_item->jumlah = $req->jumlah[$key];
+                    $detail_item->tempat_beli = $req->tempat_beli[$key];
+                    $detail_item->harga_beli = $req->beli[$key];
+                    $detail_item->subtotal = $req->beli[$key] * $req->jumlah[$key];
+                    $detail_item->status = 1;
+
+                    $detail_item->save();
+                    $index += 1;
+                }
+
+                Session::flash('create_success', 'Pasokan barang berhasil diupdate');
+                return redirect('/supply');
+
+            }
+            elseif ($req->has('create')) {
+
+                $update_supply = Supply::where('id', $id)->firstOrFail();
+
+                $update_supply->nota = $req->nota;
+                $update_supply->suppliers_id = $req->supplier;
+                $update_supply->status = 0;
+                $update_supply->id_pemasok = Auth::id();
+                $update_supply->date = $req->date;
+
+                $update_supply->save();
+
+                $index = 0;
+                foreach ($req->barang as $key => $kode_barang) {
+                    $pasok = Product::where('kode_barang', $kode_barang)->firstOrFail();
+                    $detail_item = detail_supplies::where('kode_barang', $kode_barang)->where('supplies_id', $id)->firstOrFail();
+
+                    if ($pasok->hpp != 0 && $detail_item->jumlah != $req->jumlah[$key]) {
+                        $hpp = (($pasok->stok * $pasok->hpp) + ($req->jumlah[$key] * $req->beli[$key])) / ($pasok->stok + $req->jumlah[$key]);
+                        $pasok->hpp = $hpp;
+                    }
+
+                    $pasok->save();
+
+                    $detail_item->kode_barang = $kode_barang;
+                    $detail_item->nama_barang = $pasok->nama_barang;
+                    $detail_item->jumlah = $req->jumlah[$key];
+                    $detail_item->tempat_beli = $req->tempat_beli[$key];
+                    $detail_item->harga_beli = $req->beli[$key];
+                    $detail_item->subtotal = $req->beli[$key] * $req->jumlah[$key];
+                    $detail_item->status = 0;
+
+                    $detail_item->save();
+                    $index += 1;
+                }
+                Session::flash('create_success', 'Berhasil edit pasok barang');
+
+                return redirect('/supply');
+            }
+        }
+        else{
+            return back();
+        }
+    }
+
+    //view history pasok
+    public function pasok_complate($id)
+    {
+        $data = Supply::find($id);
+        $suppliers = Supplier::all();
+        $items = detail_supplies::where('supplies_id', $id)->get();
+        $total = detail_supplies::where('supplies_id', $id)->count();
+        $products = Product::all();
+        return view('manage_product.supply_product.detail_pasok', compact('data', 'suppliers', 'items', 'products', 'total'));
     }
 }

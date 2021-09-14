@@ -162,6 +162,9 @@ $(document).on('click', '.btn-delete', function(){
 	if(check != 0){
 		$('.btn-simpan').prop('hidden', false);
 	}else{
+    if (window.getComputedStyle(detail).visibility === "visible") {
+      detail.style.visibility = "hidden";
+    }
 		$('.btn-simpan').prop('hidden', true);
 	}
 });

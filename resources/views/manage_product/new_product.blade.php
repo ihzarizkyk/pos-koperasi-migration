@@ -72,13 +72,13 @@
 	<div class="col-lg-8 col-md-12 col-sm-12 mb-4">
 		<div class="card card-noborder b-radius">
 			<div class="card-body">
-				<form action="{{ url('/product/create') }}" method="post" name="create_form">
+				<form action="{{ url('product/create') }}" method="post" name="create_form">
 					@csrf
 					<div class="form-group row">
 			  			<label class="col-12 font-weight-bold col-form-label">Kode Barang <span class="text-danger">*</span></label>
 					  	<div class="col-12">
 					  		<div class="input-group">
-					  			<input type="text" class="form-control number-input" name="kode_barang" placeholder="Masukkan Kode Barang">
+					  			<input type="text" class="form-control number-input" name="kode_barang" placeholder="Masukkan Kode Barang" required>
 					  			<div class="inpu-group-prepend">
 					  				<button class="btn btn-inverse-primary btn-sm btn-scan shadow-sm ml-2" type="button" data-toggle="modal" data-target="#scanModal"><i class="mdi mdi-crop-free"></i></button>
 					  			</div>
@@ -91,7 +91,7 @@
 					  		<div class="row">
 					  			<label class="col-12 font-weight-bold col-form-label">Nama Barang <span class="text-danger">*</span></label>
 							  	<div class="col-12">
-							  		<input type="text" class="form-control" name="nama_barang" placeholder="Masukkan Nama Barang">
+							  		<input type="text" class="form-control" name="nama_barang" placeholder="Masukkan Nama Barang" required>
 							  	</div>
 								<div class="col-12 error-notice" id="nama_barang_error"></div>
 					  		</div>
@@ -100,10 +100,11 @@
 					  		<div class="row">
 					  			<label class="col-12 font-weight-bold col-form-label">Jenis Barang <span class="text-danger">*</span></label>
 							  	<div class="col-12">
-							  		<select class="form-control" name="jenis_barang">
+							  		<select class="form-control" name="kategori" required>
 							  			<option value="">-- Pilih Jenis Barang --</option>
-							  			<option value="Produksi">Produksi</option>
-							  			<option value="Konsumsi">Konsumsi</option>
+										@foreach ($category as $item)
+											<option value="{{$item->id}}">{{$item->name}}</option>
+										@endforeach
 							  		</select>
 							  	</div>
 								<div class="col-12 error-notice" id="jenis_barang_error"></div>
@@ -116,7 +117,7 @@
 					  			<label class="col-12 font-weight-bold col-form-label">Berat Barang</label>
 							  	<div class="col-12">
 							  		<div class="input-group">
-							  			<input type="text" class="form-control number-input" name="berat_barang" placeholder="Masukkan Berat Barang">
+							  			<input type="text" class="form-control number-input" name="berat_barang" placeholder="Masukkan Berat Barang" required>
 							  			<div class="input-group-append">
 							  				<select class="form-control" name="satuan_berat">
 							  					<option value="kg">Kilogram</option>
@@ -135,7 +136,7 @@
 					  		<div class="row">
 					  			<label class="col-12 font-weight-bold col-form-label">Merek Barang</label>
 							  	<div class="col-12">
-							  		<input type="text" class="form-control" name="merek" placeholder="Masukkan Merek Barang">
+							  		<input type="text" class="form-control" name="merek" placeholder="Masukkan Merek Barang" required>
 							  	</div>
 					  		</div>
 					  	</div>
@@ -146,26 +147,98 @@
 					  		<div class="row">
 					  			<label class="col-12 font-weight-bold col-form-label">Stok Barang <span class="text-danger">*</span></label>
 							  	<div class="col-12">
-							  		<input type="text" class="form-control number-input" name="stok" placeholder="Masukkan Stok Barang">
+							  		<input type="text" class="form-control number-input" name="stok" placeholder="Masukkan Stok Barang" required>
 							  	</div>
 								<div class="col-12 error-notice" id="stok_error"></div>
 					  		</div>
 					  	</div>
-					  	@endif
+						<div class="col-lg-6 col-md-6 col-sm-12">
+							<div class="row">
+								<label class="col-12 font-weight-bold col-form-label">Harga Barang <span class="text-danger">*</span></label>
+								<div class="col-12">
+									<div class="input-group">
+										<div class="input-group-prepend">
+											<span class="input-group-text">Rp. </span>
+										</div>
+										<input type="text" id="harga" class="form-control number-input" name="harga" placeholder="Masukkan Harga Barang" required>
+									</div>
+								</div>
+							  	<div class="col-12 error-notice" id="harga_error"></div>
+							</div>
+						</div>
+						<div class="col-lg-6 col-md-6 col-sm-12">
+							<div class="row">
+								<label class="col-12 font-weight-bold col-form-label">Laba Rupiah</label>
+								<div class="col-12">
+									<div class="input-group">
+										<div class="input-group-prepend">
+											<span class="input-group-text">Rp. </span>
+										</div>
+										<input type="text" id="laba_rupiah" class="form-control number-input" name="laba_rupiah" placeholder="Masukkan Laba Rupiah">
+									</div>
+								</div>
+								<div class="col-12 error-notice" id="laba_rupiah_error"></div>
+							</div>
+						</div>
 					  	<div class="col-lg-6 col-md-6 col-sm-12">
-					  		<div class="row">
-					  			<label class="col-12 font-weight-bold col-form-label">Harga Barang <span class="text-danger">*</span></label>
-							  	<div class="col-12">
-							  		<div class="input-group">
-							  			<div class="input-group-prepend">
-							  				<span class="input-group-text">Rp. </span>
-							  			</div>
-							  			<input type="text" class="form-control number-input" name="harga" placeholder="Masukkan Harga Barang">
-							  		</div>
-							  	</div>
-								<div class="col-12 error-notice" id="harga_error"></div>
-					  		</div>
-					  	</div>
+							<div class="row">
+								<label class="col-12 font-weight-bold col-form-label">Hpp Barang <span class="text-danger">*</span></label>
+								<div class="col-12">
+									<div class="input-group">
+										<div class="input-group-prepend">
+											<span class="input-group-text">Rp. </span>
+										</div>
+										<input type="text" class="form-control number-input" id="hpp" name="hpp" placeholder="Masukkan Hpp Barang" required>
+									</div>
+								</div>
+							  	<div class="col-12 error-notice" id="hpp_error"></div>
+							</div>
+						</div>
+						@else
+							<div class="col-lg-6 col-md-6 col-sm-12">
+								<div class="row">
+									<label class="col-12 font-weight-bold col-form-label">Harga Barang <span class="text-danger">*</span></label>
+									<div class="col-12">
+										<div class="input-group">
+											<div class="input-group-prepend">
+												<span class="input-group-text">Rp. </span>
+											</div>
+											<input type="text" id="harga" class="form-control number-input" name="harga" placeholder="Masukkan Harga Barang" required>
+										</div>
+									</div>
+									<div class="col-12 error-notice" id="harga_error"></div>
+								</div>
+							</div>
+							<div class="col-lg-6 col-md-6 col-sm-12">
+								<div class="row">
+									<label class="col-12 font-weight-bold col-form-label">Laba Rupiah</label>
+									<div class="col-12">
+										<div class="input-group">
+											<div class="input-group-prepend">
+												<span class="input-group-text">Rp. </span>
+											</div>
+											<input type="text" id="laba_rupiah" class="form-control number-input" name="laba_rupiah" placeholder="Masukkan Laba Rupiah">
+										</div>
+									</div>
+									<div class="col-12 error-notice" id="laba_rupiah_error"></div>
+								</div>
+							</div>
+							<div class="col-lg-12 col-md-12 col-sm-12">
+								<div class="row">
+									<label class="col-12 font-weight-bold col-form-label">Hpp Barang <span class="text-danger">*</span></label>
+									<div class="col-12">
+										<div class="input-group">
+											<div class="input-group-prepend">
+												<span class="input-group-text">Rp. </span>
+											</div>
+											<input type="text" class="form-control number-input" id="hpp" name="hpp" placeholder="Masukkan Hpp Barang" required>
+										</div>
+									</div>
+									<div class="col-12 error-notice" id="hpp_error"></div>
+								</div>
+							</div>
+					  	@endif
+					  	
 					</div>
 					<div class="row">
 						<div class="col-12 mt-2 d-flex justify-content-end">
@@ -233,6 +306,56 @@
 @section('script')
 <script src="{{ asset('plugins/js/quagga.min.js') }}"></script>
 <script src="{{ asset('js/manage_product/new_product/script.js') }}"></script>
+<script>
+	var rupiah = document.getElementById('harga');
+	rupiah.addEventListener('keyup', function(e){
+		rupiah.value = formatRupiah(this.value, '');
+	});
+
+	var laba_rupiah = document.getElementById('laba_rupiah');
+	laba_rupiah.addEventListener('keyup', function(e){
+		laba_rupiah.value = formatRupiah(this.value, '');
+	});
+
+
+	function formatRupiah(angka, prefix){
+		var number_string = angka.replace(/[^,\d]/g, '').toString(),
+		split   		= number_string.split(','),
+		sisa     		= split[0].length % 3,
+		rupiah     		= split[0].substr(0, sisa),
+		ribuan     		= split[0].substr(sisa).match(/\d{3}/gi);
+
+		if(ribuan){
+			separator = sisa ? '.' : '';
+			rupiah += separator + ribuan.join('.');
+		}
+
+		rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+		return prefix == undefined ? rupiah : (rupiah ? '' + rupiah : '');
+	}
+
+	var hpp = document.getElementById('hpp');
+	hpp.addEventListener('keyup', function(e){
+		hpp.value = formatHpp(this.value, '');
+	});
+
+
+	function formatHpp(input, hasil){
+		var number_string = input.replace(/[^,\d]/g, '').toString(),
+		split   		= number_string.split(','),
+		sisa     		= split[0].length % 3,
+		hpp     		= split[0].substr(0, sisa),
+		ribuan     		= split[0].substr(sisa).match(/\d{3}/gi);
+
+		if(ribuan){
+			separator = sisa ? '.' : '';
+			hpp += separator + ribuan.join('.');
+		}
+
+		hpp = split[1] != undefined ? hpp + ',' + split[1] : hpp;
+		return hasil == undefined ? hpp : (hpp ? '' + hpp : '');
+	}
+</script>
 <script type="text/javascript">
   @if ($message = Session::get('create_failed'))
     swal(

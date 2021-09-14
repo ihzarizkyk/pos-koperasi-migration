@@ -53,10 +53,12 @@ Route::group(['middleware' => ['auth', 'checkRole:admin,kasir']], function(){
 	Route::get('/product/new', 'ProductManageController@viewNewProduct');
 	Route::post('/product/create', 'ProductManageController@createProduct');
 	Route::post('/product/import', 'ProductManageController@importProduct');
+	Route::get('/product/export', 'ProductManageController@exportProduct')->name('export_barang');
 	Route::get('/product/edit/{id}', 'ProductManageController@editProduct');
 	Route::post('/product/update', 'ProductManageController@updateProduct');
 	Route::get('/product/delete/{id}', 'ProductManageController@deleteProduct');
-	Route::get('/product/filter/{id}', 'ProductManageController@filterTable');
+	Route::get('/product/filter/{id}', 'ProductManageController@filterTable')->name('sort_barang');
+	Route::get('/product/cari', 'ProductManageController@search')->name('search_barang');
 	// > Pasok
 	Route::get('/supply/system/{id}', 'SupplyManageController@supplySystem');
 	Route::get('/supply', 'SupplyManageController@viewSupply');
@@ -70,6 +72,10 @@ Route::group(['middleware' => ['auth', 'checkRole:admin,kasir']], function(){
 	Route::get('/supply/statistics/users/{id}', 'SupplyManageController@statisticsUsers');
 	Route::get('/supply/statistics/table/{id}', 'SupplyManageController@statisticsTable');
 	Route::post('/supply/statistics/export', 'SupplyManageController@exportSupply');
+	Route::post('/supply/new_product', 'SupplyManageController@newProduct')->name('newProduct');
+	Route::get('/supply/detail_pasok/{id}', 'SupplyManageController@detail')->name('detail_pasok');
+	Route::post('/supply/detail_pasok/edited/{id}', 'SupplyManageController@edited')->name('edited_supply');
+	Route::get('/suppply/pasok_complete/{id}', 'SupplyManageController@pasok_complate')->name('pasok_complate');
 	// ------------------------- Transaksi -------------------------
 	Route::get('/transaction', 'TransactionManageController@viewTransaction');
 	Route::get('/transaction/product/{id}', 'TransactionManageController@transactionProduct');
@@ -85,6 +91,22 @@ Route::group(['middleware' => ['auth', 'checkRole:admin,kasir']], function(){
 	Route::get('/report/workers/filter/{id}', 'ReportManageController@filterWorker');
 	Route::get('/report/workers/detail/{id}', 'ReportManageController@detailWorker');
 	Route::post('/report/workers/export/{id}', 'ReportManageController@exportWorker');
+
+	// > Supplier
+	Route::get("/supplier","SuplierController@index")->name("supplier");
+	Route::get("/supplier/new","SuplierController@create")->name("supplier.new");
+	Route::get("/supplier/{id}/edit","SuplierController@edit");
+	Route::get("/supplier/{id}/delete","SupplierController@destroy");
+	Route::post("/supplier/store","SuplierController@store")->name("supplier.create");
+	Route::post("/supplier/update","SuplierController@update")->name("supplier.update");
+
+	// > Category
+	Route::get("/category","CategoryController@index")->name("category");
+	Route::get("/category/new","CategoryController@create")->name("category.new");
+	Route::get("/category/{id}/edit","CategoryController@edit");
+	Route::get("/category/{id}/delete","CategoryController@destroy")->name('deleteCategory');
+	Route::post("/category/store","CategoryController@store")->name("category.create");
+	Route::post("/category/update","CategoryController@update")->name("category.update");
 });
 
 // Auth::routes();

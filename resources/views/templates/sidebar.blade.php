@@ -62,6 +62,9 @@
         <li class="nav-item">
           <a class="nav-link" href="{{ url('/supply') }}">Pasok Barang</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url('/adjustment') }}">Adjustment</a>
+        </li>
       </ul>
     </div>
   </li>

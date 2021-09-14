@@ -1,6 +1,12 @@
 @extends('templates/main')
 @section('css')
 <link rel="stylesheet" href="{{ asset('css/manage_product/product/style.css') }}">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+<style>
+  #search:hover{
+    color: #ffff;
+  }
+</style>
 @endsection
 @section('content')
 <div class="row page-title-header">
@@ -15,15 +21,16 @@
 	        <div class="dropdown-menu" aria-labelledby="dropdownMenuIconButton1">
 	          <h6 class="dropdown-header">Urut Berdasarkan :</h6>
 	          <div class="dropdown-divider"></div>
-	          <a href="#" class="dropdown-item filter-btn" data-filter="kode_barang">Kode Barang</a>
-            <a href="#" class="dropdown-item filter-btn" data-filter="jenis_barang">Jenis Barang</a>
-            <a href="#" class="dropdown-item filter-btn" data-filter="nama_barang">Nama Barang</a>
-            <a href="#" class="dropdown-item filter-btn" data-filter="berat_barang">Berat Barang</a>
-            <a href="#" class="dropdown-item filter-btn" data-filter="merek">Merek Barang</a>
+	          <a href="{{ route('sort_barang', ['id' => 'kode_barang']) }}" class="dropdown-item filter-btn" data-filter="kode_barang">Kode Barang</a>
+            <a href="{{ route('sort_barang', ['id' => 'category_id']) }}" class="dropdown-item filter-btn" data-filter="jenis_barang">Jenis Barang</a>
+            <a href="{{ route('sort_barang', ['id' => 'nama_barang']) }}" class="dropdown-item filter-btn" data-filter="nama_barang">Nama Barang</a>
+            <a href="{{ route('sort_barang', ['id' => 'berat_barang']) }}" class="dropdown-item filter-btn" data-filter="berat_barang">Berat Barang</a>
+            <a href="{{ route('sort_barang', ['id' => 'merek']) }}" class="dropdown-item filter-btn" data-filter="merek">Merek Barang</a>
             @if($supply_system->status == true)
-            <a href="#" class="dropdown-item filter-btn" data-filter="stok">Stok Barang</a>
+            <a href="{{ route('sort_barang', ['id' => 'stok']) }}" class="dropdown-item filter-btn" data-filter="stok">Stok Barang</a>
             @endif
-            <a href="#" class="dropdown-item filter-btn" data-filter="harga">Harga Barang</a>
+            <a href="{{ route('sort_barang', ['id' => 'harga']) }}" class="dropdown-item filter-btn" data-filter="harga">Harga Barang</a>
+            <a href="{{ route('sort_barang', ['id' => 'harga_jual']) }}" class="dropdown-item filter-btn" data-filter="harga">Harga Jual</a>
 	        </div>
 	      </div>
         <div class="dropdown dropdown-search">
@@ -33,14 +40,23 @@
           <div class="dropdown-menu search-dropdown" aria-labelledby="dropdownMenuIconButton1">
             <div class="row">
               <div class="col-11">
-                <input type="text" class="form-control" name="search" placeholder="Cari barang">
+                <form action="{{ route('search_barang') }}" method="GET">
+                <div class="input-group">
+                  <input type="text" name="cari" class="form-control" placeholder="Cari Barang">
+                  <button type="submit" title="Cari" id="search" class="btn btn-outline-success"><i class="bi bi-search"></i></button>
+                </div>
               </div>
             </div>
           </div>
         </div>
+        <a href="{{ route('export_barang', ['cari' => $cari, 'sort' => $sort]) }}" class="btn btn-icons btn-inverse-primary btn-filter shadow-sm ml-2" title="Export"><i class="bi bi-file-spreadsheet"></i></a>
+        </form>
 	      <a href="{{ url('/product/new') }}" class="btn btn-icons btn-inverse-primary btn-new ml-2">
 	      	<i class="mdi mdi-plus"></i>
 	      </a>
+        <a href="{{route('category')}}" class="btn btn-inverse-primary btn-new ml-2">
+          Kategori
+        </a>
       </div>
     </div>
   </div>
@@ -76,9 +92,11 @@
               <div class="form-group row">
                 <label class="col-lg-3 col-md-3 col-sm-12 col-form-label font-weight-bold">Jenis Barang</label>
                 <div class="col-lg-9 col-md-9 col-sm-12">
-                  <select class="form-control" name="jenis_barang">
-                    <option value="Produksi">Produksi</option>
-                    <option value="Konsumsi">Konsumsi</option>
+                  <select class="form-control" name="kategori" id="kategori" required>
+                    <option value=""></option>
+                    @foreach ($category as $item)
+                      <option value="{{$item->id}}">{{$item->name}}</option>
+                    @endforeach
                   </select>
                 </div>
               </div>
@@ -127,7 +145,31 @@
                       <div class="input-group-prepend">
                         <span class="input-group-text">Rp. </span>
                       </div>
-                      <input type="text" class="form-control number-input input-notzero" name="harga">
+                      <input type="text" id="harga" class="form-control number-input input-notzero" name="harga">
+                  </div>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-12 offset-lg-3 offset-md-3 error-notice" id="harga_error"></div>
+              </div>
+              <div class="form-group row">
+                <label class="col-lg-3 col-md-3 col-sm-12 col-form-label font-weight-bold">Laba Rupiah</label>
+                <div class="col-lg-9 col-md-9 col-sm-12">
+                  <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">Rp. </span>
+                      </div>
+                      <input type="text" id="laba_rupiah" class="form-control number-input input-notzero" name="laba_rupiah">
+                  </div>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-12 offset-lg-3 offset-md-3 error-notice" id="laba_rupiah_error"></div>
+              </div>
+              <div class="form-group row">
+                <label class="col-lg-3 col-md-3 col-sm-12 col-form-label font-weight-bold">Hpp Barang</label>
+                <div class="col-lg-9 col-md-9 col-sm-12">
+                  <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">Rp. </span>
+                      </div>
+                      <input type="text" id="hpp" class="form-control number-input input-notzero" name="hpp">
                   </div>
                 </div>
                 <div class="col-lg-9 col-md-9 col-sm-12 offset-lg-3 offset-md-3 error-notice" id="harga_error"></div>
@@ -189,43 +231,59 @@
                   <th>Stok</th>
                   @endif
                   <th>Harga</th>
+                  <th>HPP</th>
+                  <th>Laba Rupiah</th>
+                  <th>Laba Persen</th>
                   <th>Keterangan</th>
                   <th></th>
                 </tr>
               </thead>
               <tbody>
-                @foreach($products as $product)
-              	<tr>
-                  <td>
-                    <span class="kd-barang-field">{{ $product->kode_barang }}</span><br><br>
-                    <span class="nama-barang-field">{{ $product->nama_barang }}</span>
-                  </td>
-                  <td>{{ $product->jenis_barang }}</td>
-                  <td>{{ $product->berat_barang }}</td>
-                  <td>{{ $product->merek }}</td>
-                  @if($supply_system->status == true)
-                  <td><span class="ammount-box bg-secondary"><i class="mdi mdi-cube-outline"></i></span>{{ $product->stok }}</td>
-                  @endif
-                  <td><span class="ammount-box bg-green"><i class="mdi mdi-coin"></i></span>Rp. {{ number_format($product->harga,2,',','.') }}</td>
-                  @if($supply_system->status == true)
-                  <td>
-                    @if($product->keterangan == 'Tersedia')
-                    <span class="btn tersedia-span">{{ $product->keterangan }}</span>
-                    @else
-                    <span class="btn habis-span">{{ $product->keterangan }}</span>
-                    @endif
-                  </td>
-                  @endif
-                  <td>
-                    <button type="button" class="btn btn-edit btn-icons btn-rounded btn-secondary" data-toggle="modal" data-target="#editModal" data-edit="{{ $product->id }}">
-                        <i class="mdi mdi-pencil"></i>
-                    </button>
-                    <button type="button" class="btn btn-icons btn-rounded btn-secondary ml-1 btn-delete" data-delete="{{ $product->id }}">
-                        <i class="mdi mdi-close"></i>
-                    </button>
-                  </td>
-                </tr>
-                @endforeach
+                @if ($data == 0)
+                  <tr>
+                    <td colspan="11" style="text-align: center">
+                      <div class="alert alert-secondary" role="alert">
+                        Data Tidak Ditemukan
+                      </div>
+                    </td>
+                  </tr>
+                @else
+                  @foreach($products as $product)
+                    <tr>
+                      <td>
+                        <span class="kd-barang-field">{{ $product->kode_barang }}</span><br><br>
+                        <span class="nama-barang-field">{{ $product->nama_barang }}</span>
+                      </td>
+                      <td>{{ $product->Category->name ?? 'null' }}</td>
+                      <td>{{ $product->berat_barang ?? 'null'}}</td>
+                      <td>{{ $product->merek ?? 'null'}}</td>
+                      @if($supply_system->status == true)
+                      <td><span class="ammount-box bg-secondary"><i class="mdi mdi-cube-outline"></i></span>{{ $product->stok }}</td>
+                      @endif
+                      <td><span class="ammount-box bg-green"><i class="mdi mdi-coin"></i></span>Rp. {{number_format($product->harga,2,',','.')}}</td>
+                      <td><span class="ammount-box bg-green"><i class="mdi mdi-coin"></i></span>Rp. {{number_format($product->hpp,2,',','.')}}</td>
+                      <td>Rp. {{number_format($product->laba_rupiah, 2, ',', '.')}}</td>
+                      <td>{{ $product->laba_persen }}%</td>
+                      @if($supply_system->status == true)
+                      <td>
+                        @if($product->keterangan == 'Tersedia')
+                        <span class="btn tersedia-span"> {{ $product->keterangan }}</span>
+                        @else
+                        <span class="btn habis-span">{{ $product->keterangan }} </span>
+                        @endif
+                      </td>
+                      @endif
+                      <td>
+                        <button type="button" class="btn btn-edit btn-icons btn-rounded btn-secondary" data-toggle="modal" data-target="#editModal" data-edit="{{ $product->id }}">
+                            <i class="mdi mdi-pencil"></i>
+                        </button>
+                        <button type="button" class="btn btn-icons btn-rounded btn-secondary ml-1 btn-delete" data-delete="{{ $product->id }}">
+                            <i class="mdi mdi-close"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  @endforeach
+                @endif
               </tbody>
             </table>
         	</div>
@@ -238,6 +296,51 @@
 @section('script')
 <script src="{{ asset('plugins/js/quagga.min.js') }}"></script>
 <script src="{{ asset('js/manage_product/product/script.js') }}"></script>
+<script>
+
+  var rupiah = document.getElementById('harga');
+  rupiah.addEventListener('keyup', function(e){
+    rupiah.value = formatRupiah(this.value, '');
+  });
+            
+  function formatRupiah(angka, prefix){
+    var number_string = angka.replace(/[^,\d]/g, '').toString(),
+    split   		= number_string.split(','),
+    sisa     		= split[0].length % 3,
+    rupiah     		= split[0].substr(0, sisa),
+    ribuan     		= split[0].substr(sisa).match(/\d{3}/gi);
+    
+    if(ribuan){
+        separator = sisa ? '.' : '';
+        rupiah += separator + ribuan.join('.');
+    }
+    
+      rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+      return prefix == undefined ? rupiah : (rupiah ? '' + rupiah : '');
+  }
+
+	var hpp = document.getElementById('hpp');
+  hpp.addEventListener('keyup', function(e){
+      hpp.value = formatHpp(this.value, '');
+  });
+            
+  function formatHpp(input, hasil){
+    var number_string = input.replace(/[^,\d]/g, '').toString(),
+    split   		= number_string.split(','),
+    sisa     		= split[0].length % 3,
+    hpp     		= split[0].substr(0, sisa),
+    ribuan     		= split[0].substr(sisa).match(/\d{3}/gi);
+    
+    if(ribuan){
+        separator = sisa ? '.' : '';
+        hpp += separator + ribuan.join('.');
+    }
+    
+    hpp = split[1] != undefined ? hpp + ',' + split[1] : hpp;
+    return hasil == undefined ? hpp : (hpp ? '' + hpp : '');
+  }
+
+</script>
 <script type="text/javascript">
   @if ($message = Session::get('create_success'))
     swal(
@@ -287,18 +390,19 @@
     );
   @endif
 
-  $(document).on('click', '.filter-btn', function(e){
-    e.preventDefault();
-    var data_filter = $(this).attr('data-filter');
-    $.ajax({
-      method: "GET",
-      url: "{{ url('/product/filter') }}/" + data_filter,
-      success:function(data)
-      {
-        $('tbody').html(data);
-      }
-    });
-  });
+  // $(document).on('click', '.filter-btn', function(e){
+  //   e.preventDefault();
+  //   var data_filter = $(this).attr('data-filter');
+    
+  //   $.ajax({
+  //     method: "GET",
+  //     url: "{{ url('/product/filter') }}/" + data_filter,
+  //     success:function(data)
+  //     {
+  //       $('tbody').html(data);
+  //     }
+  //   });
+  // });
 
   $(document).on('click', '.btn-edit', function(){
     var data_edit = $(this).attr('data-edit');
@@ -313,9 +417,11 @@
         $('input[name=merek]').val(response.product.merek);
         $('input[name=stok]').val(response.product.stok);
         $('input[name=harga]').val(response.product.harga);
+        $('input[name=laba_rupiah]').val(response.product.laba_rupiah);
+        $('input[name=hpp]').val(response.product.hpp);
         var berat_barang = response.product.berat_barang.split(" ");
         $('input[name=berat_barang]').val(berat_barang[0]);
-        $('select[name=jenis_barang] option[value="'+ response.product.jenis_barang +'"]').prop('selected', true);
+        $('select[name=kategori] option[value="'+ response.product.category_id +'"]').prop('selected', true);
         $('select[name=satuan_berat] option[value="'+ berat_barang[1] +'"]').prop('selected', true);
         validator.resetForm();
       }

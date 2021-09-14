@@ -1,3 +1,5 @@
+var barang = [];
+
 (function($) {
   $.fn.inputFilter = function(inputFilter) {
     return this.on("input keydown keyup mousedown mouseup select contextmenu drop", function() {
@@ -60,6 +62,23 @@ function diskonBarang() {
   $('.nilai-total2-td').val(total);
 }
 
+function diskonPerBarang(kode) {
+  var index = barang.findIndex(p => {
+    return p.kode == kode;
+  });
+  if(index!=-1){
+    var harga = barang[index].harga;
+    var total_barang = (harga * barang[index].jumlah_barang) - (barang[index].diskon / 100) * harga * barang[index].jumlah_barang;
+    $("#total-barang-input-"+ kode).val(total_barang);
+    $("#total-barang-text-"+ kode).html('Rp. ' + parseInt(total_barang).toLocaleString());
+  }
+  // var subtotal = parseInt($('input[name=subtotal]').val());
+  // var diskon = parseInt($('input[name=diskon]').val());
+  // var total = subtotal - (subtotal * diskon / 100);
+  // $('.nilai-total1-td').html('Rp. ' + parseInt(total).toLocaleString());
+  // $('.nilai-total2-td').val(total);
+}
+
 function jumlahBarang(){
   var jumlah_barang = 0;
   $('.jumlah_barang_text').each(function(){
@@ -69,57 +88,130 @@ function jumlahBarang(){
 }
 
 function tambahData(kode, nama, harga, stok, status) {
-  var tambah_data = '<tr><td><input type="text" name="kode_barang[]" hidden="" value="'+ kode +'"><span class="nama-barang-td">'+ nama +'</span><span class="kode-barang-td">'+ kode +'</span></td><td><input type="text" name="harga_barang[]" hidden="" value="'+ harga +'"><span>Rp. '+ parseInt(harga).toLocaleString() +'</span></td><td><div class="d-flex justify-content-start align-items-center"><input type="text" name="jumlah_barang[]" hidden="" value="1"><a href="#" class="btn-operate mr-2 btn-tambah"><i class="mdi mdi-plus"></i></a><span class="ammount-product mr-2" unselectable="on" onselectstart="return false;" onmousedown="return false;"><p class="jumlah_barang_text">1</p></span><a href="#" class="btn-operate btn-kurang"><i class="mdi mdi-minus"></i></a></div></td><td><input type="text" class="total_barang" name="total_barang[]" hidden="" value="'+ harga +'"><span>Rp. '+ parseInt(harga).toLocaleString() +'</span></td><td><a href="#" class="btn btn-icons btn-rounded btn-secondary ml-1 btn-hapus"><i class="mdi mdi-close"></i></a></td><td hidden=""><span>'+ stok +'</span><span>'+ status +'</span></td></tr>';
+  barang.push({
+    kode: kode,
+    nama: nama,
+    harga: harga,
+    jumlah_barang:1,
+    stok: stok,
+    status: status,
+    diskon: 0
+  })
+  var tambah_data = '<tr id="barang-'+kode+'">' +
+    '<td>' +
+      '<input type="text" name="kode_barang[]" hidden="" value="'+ kode +'">' +
+      '<span class="nama-barang-td">'+ nama +'</span>' +
+      '<span class="kode-barang-td">'+ kode +'</span>' +
+    '</td>' +
+    '<td>' +
+      '<input type="text" name="harga_barang[]" hidden="" value="'+ harga +'">'+
+      '<span>Rp. '+ parseInt(harga).toLocaleString() +'</span>' +
+    '</td>' +
+    '<td>' +
+      '<div class="d-flex justify-content-start align-items-center">' +
+        '<input type="text" class="jumlah-barang-input" id="jumlah-barang-input-'+ kode +'" name="jumlah_barang[]" hidden="" value="1">' +
+        '<a href="#" onclick="btnTambah(&#39;'+kode+'&#39;)" class="btn-operate mr-2 btn-tambah">' +
+          '<i class="mdi mdi-plus"></i>' +
+        '</a>' +
+        '<span class="ammount-product mr-2" unselectable="on" onselectstart="return false;" onmousedown="return false;">' +
+          '<p class="jumlah_barang_text" id="jumlah-barang-text-'+ kode +'">1</p>' +
+        '</span>' +
+        '<a href="#" onclick="btnKurang(&#39;'+kode+'&#39;)" class="btn-operate btn-kurang">' +
+          '<i class="mdi mdi-minus"></i>' +
+        '</a>' +
+      '</div>' +
+    '</td>' +
+    '<td>' +
+      '<input style="width:80px;" oninput="diskonInputBarang(this, &#39;'+kode+'&#39;)" type="number" class="form-control diskon-input-barang-' +kode+ ' mr-2" min="0" max="100" name="diskon_per_barang[]" value="0" hidden="">' +
+      '<span class="nilai-diskon-barang-' +kode+ ' mr-1">0</span>' +
+      '<span>%</span>' +
+      '<div>' +
+        '<a href="#" class="ubah-diskon-barang-' +kode+ '" onclick="ubahDiskonBarang(this, &#39;'+kode+'&#39;)">Ubah diskon</a>' +
+        '<a href="#" class="simpan-diskon-barang-' +kode+ '" onclick="simpanDiskonBarang(this, &#39;'+kode+'&#39;)" hidden="">Simpan</a>' +
+      '</div>' +
+    '</td>' +
+    '<td>' +
+      '<input type="text" id="total-barang-input-'+ kode +'" class="total_barang" name="total_barang[]" hidden="" value="'+ harga +'">' +
+      '<span id="total-barang-text-'+ kode +'">Rp. '+ parseInt(harga).toLocaleString() +'</span>' +
+    '</td>' +
+    '<td>' +
+      '<a href="#" onclick="hapusBarang(&#39;'+kode+'&#39;)" class="btn btn-icons btn-rounded btn-secondary ml-1 btn-hapus">' +
+        '<i class="mdi mdi-close"></i>' +
+      '</a>' +
+    '</td>' +
+    '<td hidden="">' +
+      '<span>'+ stok +'</span>' +
+      '<span>'+ status +'</span>' +
+    '</td>' +
+  '</tr>';
   $('.table-checkout').append(tambah_data);
-  subtotalBarang();
-  diskonBarang();
-  jumlahBarang();
+    diskonPerBarang(kode);
+    subtotalBarang();
+    diskonBarang();
+    jumlahBarang();
   $('.close-btn').click();
 }
 
-$(document).on('click', '.btn-tambah', function(e){
-  e.preventDefault();
-  var stok = parseInt($(this).parent().parent().next().next().next().children().first().text());
-  var status = parseInt($(this).parent().parent().next().next().next().children().eq(1).text());
-  var jumlah_barang = parseInt($(this).prev().val());
-  if((stok > jumlah_barang && status == 1) || status == 0){
-    var tambah_barang = jumlah_barang + 1;
-    $(this).prev().val(tambah_barang);
-    $(this).next().children().first().html(tambah_barang);
-    var harga = parseInt($(this).parent().parent().prev().children().first().val());
-    var total_barang = harga * tambah_barang;
-    $(this).parent().parent().next().children().first().val(total_barang);
-    $(this).parent().parent().next().children().eq(1).html('Rp. ' + parseInt(total_barang).toLocaleString());
+function btnTambah(kode){
+  var index = barang.findIndex(p => {
+    return p.kode==kode;
+  })
+  if(index!=-1){
+    var stok = parseInt(barang[index].stok);
+    var status = parseInt(barang[index].status);
+    var jumlah_barang = parseInt(barang[index].jumlah_barang);
+    if((stok > jumlah_barang && status == 1) || status == 0){
+      var tambah_barang = jumlah_barang + 1;
+      $('#jumlah-barang-input-'+ kode).val(tambah_barang);
+      $('#jumlah-barang-text-'+ kode).html(tambah_barang);
+      barang[index].jumlah_barang = tambah_barang
+      var harga = barang[index].harga;
+      var total_barang = harga * tambah_barang;
+      $("#total-barang-input-"+ kode).val(total_barang);
+      $("#total-barang-text-"+ kode).html('Rp. ' + parseInt(total_barang).toLocaleString());
+      diskonPerBarang(kode);
+      subtotalBarang();
+      diskonBarang();
+      // jumlahBarang();
+    }
+  }
+}
+
+function btnKurang(kode){
+  var index = barang.findIndex(p => {
+    return p.kode==kode;
+  })
+  if(index!=-1){
+    var jumlah_barang = parseInt(barang[index].jumlah_barang);
+    if(jumlah_barang > 1){
+      var tambah_barang = jumlah_barang - 1;
+      $('#jumlah-barang-input-'+ kode).val(tambah_barang);
+      $('#jumlah-barang-text-'+ kode).html(tambah_barang);
+      barang[index].jumlah_barang = tambah_barang
+      var harga = barang[index].harga;
+      var total_barang = harga * tambah_barang;
+      $("#total-barang-input-"+ kode).val(total_barang);
+      $("#total-barang-text-"+ kode).html('Rp. ' + parseInt(total_barang).toLocaleString());
+      diskonPerBarang(kode);
+      subtotalBarang();
+      diskonBarang();
+      // jumlahBarang();
+    }
+  }
+}
+
+function hapusBarang(kode){
+  var index = barang.findIndex(p => {
+    return p.kode == kode
+  })
+  if(index!=-1){
+    barang.splice(index, 1);
+    $('#barang-' + kode).remove();
     subtotalBarang();
     diskonBarang();
-    jumlahBarang();
   }
-});
+}
 
-$(document).on('click', '.btn-kurang', function(e){
-  e.preventDefault();
-  var jumlah_barang = parseInt($(this).prev().prev().prev().val());
-  if(jumlah_barang > 1){
-    var kurang_barang = jumlah_barang - 1;
-    $(this).prev().prev().prev().val(kurang_barang);
-    $(this).prev().children().first().html(kurang_barang);
-    var harga = parseInt($(this).parent().parent().prev().children().first().val());
-    var total_barang = harga * kurang_barang;
-    $(this).parent().parent().next().children().first().val(total_barang);
-    $(this).parent().parent().next().children().eq(1).html('Rp. ' + parseInt(total_barang).toLocaleString());
-    subtotalBarang();
-    diskonBarang();
-    jumlahBarang();
-  }
-});
-
-$(document).on('click', '.btn-hapus', function(e){
-  e.preventDefault();
-  $(this).parent().parent().remove();
-  subtotalBarang();
-  diskonBarang();
-  jumlahBarang();
-});
 
 $(document).on('click', '.ubah-diskon-td', function(e){
   e.preventDefault();
@@ -138,6 +230,40 @@ $(document).on('click', '.simpan-diskon-td', function(e){
   diskonBarang();
 });
 
+function ubahDiskonBarang(self, kode_barang){
+  // e.preventDefault();
+  $('.diskon-input-barang-' + kode_barang).prop('hidden', false);
+  $('.nilai-diskon-barang-' + kode_barang).prop('hidden', true);
+  $('.simpan-diskon-barang-' + kode_barang).prop('hidden', false);
+  $(self).prop('hidden', true);
+}
+
+function simpanDiskonBarang(self, kode_barang){
+  $('.diskon-input-barang-' + kode_barang).prop('hidden', true);
+  $('.nilai-diskon-barang-' + kode_barang).prop('hidden', false);
+  $('.ubah-diskon-barang-' + kode_barang).prop('hidden', false);
+  $(self).prop('hidden', true);
+  var index = barang.findIndex(p => {
+    return p.kode == kode_barang;
+  })
+  if(index!=-1){
+    barang[index].diskon = $('.diskon-input-barang-' + kode_barang).val().trim() == "" ? 0 : $('.diskon-input-barang-' + kode_barang).val()
+  }
+  diskonPerBarang(kode_barang);
+  subtotalBarang();
+  diskonBarang();
+}
+
+// $(document).on('click', '.simpan-diskon-barang', function(e){
+//   e.preventDefault();
+//   $('.diskon-input-barang').prop('hidden', true);
+//   $('.nilai-diskon-barang').prop('hidden', false);
+//   $('.ubah-diskon-barang').prop('hidden', false);
+//   $(this).prop('hidden', true);
+
+//   diskonPerBarang();
+// });
+
 $(document).on('input', '.diskon-input', function(){
   $('.nilai-diskon-td').html($(this).val());
   if($(this).val().length > 0){
@@ -145,6 +271,18 @@ $(document).on('input', '.diskon-input', function(){
   }else{
     $(this).addClass('is-invalid');
   }
+});
+
+function diskonInputBarang(self, kode_barang){
+  $('.nilai-diskon-barang-' + kode_barang).html($(self).val());
+  if($(self).val().length > 0){
+    $(self).removeClass('is-invalid');
+  }else{
+    $(self).addClass('is-invalid');
+  }
+}
+$(document).on('input', '.diskon-input-barang', function(){
+  
 });
 
 $(document).on('input', '.bayar-input', function(){

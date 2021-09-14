@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use PDF;
 use Auth;
 use Session;
+use DB;
 use App\Acces;
 use App\Market;
 use App\Product;
 use App\Activity;
 use App\Transaction;
+use App\TransactionDetail;
 use App\Supply_system;
 use Illuminate\Http\Request;
 
@@ -93,17 +95,11 @@ class TransactionManageController extends Controller
         ->first();
         if($check_access->transaksi == 1){
     		$jml_barang = count($req->kode_barang);
-        	for($i = 0; $i < $jml_barang; $i++){
-        		$transaction = new Transaction;
-        		$transaction->kode_transaksi = $req->kode_transaksi;
-        		$transaction->kode_barang = $req->kode_barang[$i];
-                $product_data = Product::where('kode_barang', $req->kode_barang[$i])
-                ->first();
-                $transaction->nama_barang = $product_data->nama_barang;
-                $transaction->harga = $product_data->harga;
-        		$transaction->jumlah = $req->jumlah_barang[$i];
-        		$transaction->total_barang = $req->total_barang[$i];
-        		$transaction->subtotal = $req->subtotal;
+            DB::beginTransaction();
+            try {
+                $transaction = new Transaction;
+                $transaction->kode_transaksi = $req->kode_transaksi;
+                $transaction->subtotal = $req->subtotal;
         		$transaction->diskon = $req->diskon;
         		$transaction->total = $req->total;
         		$transaction->bayar = $req->bayar;
@@ -111,34 +107,53 @@ class TransactionManageController extends Controller
         		$transaction->id_kasir = Auth::id();
                 $transaction->kasir = Auth::user()->nama;
         		$transaction->save();
-        	}
-
-        	$check_supply_system = Supply_system::first();
-        	if($check_supply_system->status == true){
-        		for($j = 0; $j < $jml_barang; $j++){
-        			$product = Product::where('kode_barang', '=', $req->kode_barang[$j])
-        			->first();
-        			$product->stok = $product->stok - $req->jumlah_barang[$j];
-        			$product->save();
-                    $product_status = Product::where('kode_barang', '=', $req->kode_barang[$j])
+                for($i = 0; $i < $jml_barang; $i++){
+                    $transaction_detail = new TransactionDetail;
+                    $transaction_detail->transaction_id = $transaction->id;
+                    $transaction_detail->kode_barang = $req->kode_barang[$i];
+                    $product_data = Product::where('kode_barang', $req->kode_barang[$i])
                     ->first();
-                    if($product_status->stok == 0){
-                        $product_status->keterangan = 'Habis';
-                        $product_status->save();
+                    $transaction_detail->nama_barang = $product_data->nama_barang;
+                    $transaction_detail->harga = $product_data->harga;
+                    $transaction_detail->jumlah = $req->jumlah_barang[$i];
+                    $transaction_detail->total_barang = $req->total_barang[$i];
+                    $transaction_detail->diskon_per_barang = $req->diskon_per_barang[$i];
+                    $transaction_detail->save();
+                }    
+                $check_supply_system = Supply_system::first();
+                if($check_supply_system->status == true){
+                    for($j = 0; $j < $jml_barang; $j++){
+                        $product = Product::where('kode_barang', '=', $req->kode_barang[$j])
+                        ->first();
+                        $product->stok = $product->stok - $req->jumlah_barang[$j];
+                        $product->save();
+                        $product_status = Product::where('kode_barang', '=', $req->kode_barang[$j])
+                        ->first();
+                        if($product_status->stok == 0){
+                            $product_status->keterangan = 'Habis';
+                            $product_status->save();
+                        }
                     }
-        		}
-        	}
+                }
 
-            $activity = new Activity;
-            $activity->id_user = Auth::id();
-            $activity->user = Auth::user()->nama;
-            $activity->nama_kegiatan = 'transaksi';
-            $activity->jumlah = $jml_barang;
-            $activity->save();
+                $activity = new Activity;
+                $activity->id_user = Auth::id();
+                $activity->user = Auth::user()->nama;
+                $activity->nama_kegiatan = 'transaksi';
+                $activity->jumlah = $jml_barang;
+                $activity->save();
 
-        	Session::flash('transaction_success', $req->kode_transaksi);
+                Session::flash('transaction_success', $req->kode_transaksi);
 
-        	return back();
+                DB::commit();
+                return back();
+                
+                // all good
+            } catch (\Exception $e) {
+                DB::rollback();
+                return back();
+                // something went wrong
+            }
         }else{
             return back();
         }
@@ -152,12 +167,13 @@ class TransactionManageController extends Controller
         $check_access = Acces::where('user', $id_account)
         ->first();
         if($check_access->transaksi == 1){
-            $transaction = Transaction::where('transactions.kode_transaksi', '=', $id)
+            $transaction = Transaction::where('kode_transaksi', '=', $id)
             ->select('transactions.*')
             ->first();
-            $transactions = Transaction::where('transactions.kode_transaksi', '=', $id)
-            ->select('transactions.*')
+            $transactions = TransactionDetail::where('transaction_id', '=', $transaction->id)
+            ->select('*')
             ->get();
+            // return response()->json($transactions);
             $diskon = $transaction->subtotal * $transaction->diskon / 100;
 
             $customPaper = array(0,0,400.00,283.80);

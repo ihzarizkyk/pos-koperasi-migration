@@ -4,13 +4,16 @@
     <span class="kd-barang-field">{{ $product->kode_barang }}</span><br><br>
     <span class="nama-barang-field">{{ $product->nama_barang }}</span>
   </td>
-  <td>{{ $product->jenis_barang }}</td>
+  <td>{{ $product->Category->name }}</td>
   <td>{{ $product->berat_barang }}</td>
   <td>{{ $product->merek }}</td>
   @if($supply_system->status == true)
   <td><span class="ammount-box bg-secondary"><i class="mdi mdi-cube-outline"></i></span>{{ $product->stok }}</td>
   @endif
   <td><span class="ammount-box bg-green"><i class="mdi mdi-coin"></i></span>Rp. {{ number_format($product->harga,2,',','.') }}</td>
+  <td><span class="ammount-box bg-green"><i class="mdi mdi-coin"></i></span>Rp. {{number_format($product->hpp,2,',','.')}}</td>
+  <td>Rp. {{ $product->laba_rupiah }}</td>
+  <td>{{ $product->laba_persen }}%</td>
   @if($supply_system->status == true)
   <td>
     @if($product->keterangan == 'Tersedia')

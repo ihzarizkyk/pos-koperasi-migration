@@ -16,12 +16,15 @@ class CreateProductTable extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string('kode_barang');
-            $table->string('jenis_barang');
+            $table->string('category_id')->nullable();
             $table->string('nama_barang');
             $table->string('berat_barang')->nullable();
             $table->string('merek')->nullable();
-            $table->integer('stok')->default(15);
-            $table->bigInteger('harga');
+            $table->integer('laba_rupiah')->default(0);
+            $table->integer('laba_persen')->default(0);
+            $table->integer('stok')->default(0);
+            $table->bigInteger('harga')->default(0);
+            $table->bigInteger('hpp')->default(0);
             $table->string('keterangan')->default('Tersedia');
             $table->timestamps();
         });

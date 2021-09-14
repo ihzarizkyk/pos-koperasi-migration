@@ -1,6 +1,17 @@
 @extends('templates/main')
 @section('css')
 <link rel="stylesheet" href="{{ asset('css/manage_product/supply_product/new_supply/style.css') }}">
+<style>
+	.margin{
+		margin-right: 5px;
+	}
+	.mg-top{
+		margin-top: 10px;
+	}
+	.form-hidden{
+		visibility: hidden;
+	}
+</style>
 @endsection
 @section('content')
 <div class="row page-title-header">
@@ -73,30 +84,69 @@
 	        </button>
 	      </div>
 	      <div class="modal-body">
-	      	<div class="row">
-	      		<div class="col-12">
-	      			<div class="form-group">
-	      				<input type="text" class="form-control" name="search" placeholder="Cari barang">
-	      			</div>	
-	      		</div>
-	      		<div class="col-12">
-	      			<ul class="list-group product-list">
-	      			  @foreach($products as $product)
-					  <li class="list-group-item d-flex justify-content-between align-items-center active-list">
-					    <div class="text-group">
-					    	<p class="m-0">{{ $product->kode_barang }}</p>
-					    	<p class="m-0 txt-light">{{ $product->nama_barang }}</p>
-					    </div>
-					    <div class="d-flex align-items-center">
-					    	<span class="ammount-box bg-secondary mr-1"><i class="mdi mdi-cube-outline"></i></span>
-					    	<p class="m-0">{{ $product->stok }}</p>
-					    </div>
-					    <a href="#" class="btn btn-icons btn-rounded btn-inverse-outline-primary font-weight-bold btn-pilih" role="button"><i class="mdi mdi-chevron-right"></i></a>
-					  </li>
-					  @endforeach
-					</ul>
-	      		</div>
-	      	</div>
+			<div class="row">
+				<div class="col-12">
+					<div class="card card-noborder b-radius">
+						<div class="card-body">
+							<nav>
+								<div class="nav nav-tabs" id="nav-tab" role="tablist">
+								  <a class="nav-link active" id="master-form-tab" data-toggle="tab" href="#master-form" role="tab" aria-controls="master-form" aria-selected="true">Master</a>
+								  <a class="nav-link" id="new-form-tab" data-toggle="tab" href="#new-form" role="tab" aria-controls="new-form" aria-selected="false">New</a>
+								</div>
+							  </nav>
+							  <div class="tab-content" id="nav-tabContent">
+								<div class="tab-pane fade show active" id="master-form" role="tabpanel" aria-labelledby="master-form-tab">
+									<div class="row">
+										<div class="col-12">
+											<div class="form-group mg-top">
+												<input type="text" class="form-control" name="search" placeholder="Cari barang">
+											</div>	
+										</div>
+									  
+										<div class="col-12">
+											<ul class="list-group product-list">
+											  @foreach($products as $product)
+											<li class="list-group-item d-flex justify-content-between align-items-center active-list">
+											  <div class="text-group">
+												  <p class="m-0">{{ $product->kode_barang }}</p>
+												  <p class="m-0 txt-light">{{ $product->nama_barang }}</p>
+											  </div>
+											  <div class="d-flex align-items-center">
+												  <span class="ammount-box bg-secondary mr-1"><i class="mdi mdi-cube-outline"></i></span>
+												  <p class="m-0">{{ $product->stok }}</p>
+											  </div>
+											  <a href="#" class="btn btn-icons btn-rounded btn-inverse-outline-primary font-weight-bold btn-pilih" role="button"><i class="mdi mdi-chevron-right"></i></a>
+											</li>
+											@endforeach
+										  </ul>
+										</div>
+									</div>
+								</div>
+								<div class="tab-pane fade" id="new-form" role="tabpanel" aria-labelledby="new-form-tab">
+									<form action="{{ route('newProduct') }}" method="POST">
+										@csrf	
+										<div class="form-group row top-min mg-top">
+											<label class="col-12 font-weight-bold col-form-label">Kode Barang</label>
+											<div class="col-12">
+												<input type="text" class="form-control number-input input-notzero" name="kode" placeholder="Masukkan Kode Barang">
+											</div>
+										</div>
+										<div class="form-group row top-min mg-top">
+											<label class="col-12 font-weight-bold col-form-label">Nama Barang</label>
+											<div class="col-12">
+												<input type="text" class="form-control" name="nama_barang" placeholder="Masukkan Nama Barang">
+											</div>
+										</div>
+										<div>
+											<button class="btn btn-simpan" type="submit"><i class="mdi mdi-content-save"></i> Create</button>
+										</div>
+									</form>
+								</div>
+							  </div>
+						</div>
+					</div>
+				</div>
+			</div>
 	      </div>
 	  </div>
 	</div>
@@ -137,6 +187,13 @@
 										<label class="col-12 font-weight-bold col-form-label">Jumlah Barang</label>
 										<div class="col-12">
 											<input type="text" class="form-control number-input input-notzero" name="jumlah" placeholder="Masukkan Jumlah">
+										</div>
+										<div class="col-12 error-notice" id="jumlah_error"></div>
+									</div>
+									<div class="form-group row top-min">
+										<label class="col-12 font-weight-bold col-form-label">Tempat Beli</label>
+										<div class="col-12">
+											<input type="text" class="form-control input-notzero" name="tempat_beli" placeholder="Masukkan Tempat Beli">
 										</div>
 										<div class="col-12 error-notice" id="jumlah_error"></div>
 									</div>
@@ -217,6 +274,7 @@
 									<tr>
 										<th>Barang</th>
 										<th>Jumlah</th>
+										<th>Tempat Beli</th>
 										<th>Harga Satuan</th>
 										<th>Total</th>
 										<th></th>
@@ -227,8 +285,51 @@
 								</tbody>
 							</table>
 						</div>
+						<div class="form-hidden" id="detail">
+							<div class="container">
+								<div class="row">
+									<div class="col">
+										<div class="form-group row top-min">
+											<label class="col-12 font-weight-bold col-form-label">Nota Pembelian</label>
+											<div class="col-12">
+												<input type="text" class="form-control input-notzero" name="nota" placeholder="Masukkan Nota Pembelian" required>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="container">
+								<div class="row">
+									<div class="col">
+										<div class="form-group row top-min">
+											<label class="col-12 font-weight-bold col-form-label">Supplier</label>
+											<div class="col-12">
+												<select name="supplier" class="form-control" id="supplier" required>
+													<option value="">Pilih Supplier</option>
+													@foreach ($supply as $item)
+														<option data-name="{{$item->perusahaan}}" value="{{$item->id}}">{{$item->perusahaan}}</option>
+													@endforeach
+												</select>
+											</div>
+										</div>
+									</div>
+									<div class="col">
+										<div class="form-group row top-min">
+											<label class="col-12 font-weight-bold col-form-label"><b>Tanggal</b></label>
+											<div class="col-12">
+												<div class="input-group">
+													<input type="date" class="form-control" name="date" required>
+												</div>
+											</div>
+											<div class="col-12 error-notice" id="backdate_error"></div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
 						<div class="col-12 d-flex justify-content-end">
-							<button class="btn btn-simpan btn-sm" type="submit" hidden=""><i class="mdi mdi-content-save"></i> Simpan</button>
+							<button class="btn btn-simpan btn-sm margin" type="submit" hidden="" name="create" value="create"><i class="mdi mdi-content-save"></i> Create</button>
+							<button class="btn btn-simpan btn-sm" type="submit" hidden="" name="fullfill" value="fullfill"><i class="mdi mdi-content-save"></i> Fullfill</button>
 						</div>
 					</div>
 				</form>
@@ -241,6 +342,22 @@
 <script src="{{ asset('plugins/js/quagga.min.js') }}"></script>
 <script src="{{ asset('js/manage_product/supply_product/new_supply/script.js') }}"></script>
 <script type="text/javascript">
+	@if ($message = Session::get('create_success'))
+		swal(
+			"Berhasil!",
+			"{{ $message }}",
+			"success"
+		);
+	@endif
+
+	@if ($message = Session::get('create_failed'))
+		swal(
+			"",
+			"{{ $message }}",
+			"error"
+		);
+	@endif
+
 	@if ($message = Session::get('import_failed'))
 		swal(
 		    "",
@@ -274,11 +391,14 @@
 	  });
 	});
 
+
 	$(document).on('click', '.btn-tambah', function(e){
 		e.preventDefault();
 		$('form[name=manual_form]').valid();
+		var detail = document.getElementById("detail");
 		var kode_barang = $('input[name=kode_barang]').val();
 		var jumlah = $('input[name=jumlah]').val();
+		var tempat_beli = $('input[name=tempat_beli]').val();
 		var harga_beli = $('input[name=harga_beli]').val();
 		var total = parseInt(jumlah) * parseInt(harga_beli);
 		if(validator.valid() == true){
@@ -291,8 +411,12 @@
 						$('input[name=kode_barang]').val('');
 						$('input[name=jumlah]').val('');
 						$('input[name=harga_beli]').val('');
-						$('tbody').append('<tr><td><span class="kd-barang-field">'+ response.product.kode_barang +'</span><span class="nama-barang-field">'+ response.product.nama_barang +'</span></td><td>'+ jumlah +'</td><td>Rp. '+ parseInt(harga_beli).toLocaleString() +'</td><td class="text-success">Rp. '+ parseInt(total).toLocaleString() +'</td><td><button type="button" class="btn btn-icons btn-rounded btn-secondary ml-1 btn-delete"><i class="mdi mdi-close"></i></button><div class="form-group" hidden=""><input type="text" class="form-control" name="kode_barang_supply[]" value="'+ response.product.kode_barang +'"><input type="text" class="form-control" name="jumlah_supply[]" value="'+ jumlah +'"><input type="text" class="form-control" name="harga_beli_supply[]" value="'+ harga_beli +'"></div></td></tr>');
+						$('input[name=tempat_beli]').val('');
+						$('tbody').append('<tr><td><span class="kd-barang-field">'+ response.product.kode_barang +'</span><span class="nama-barang-field">'+ response.product.nama_barang +'</span></td><td>'+ jumlah +'</td><td>'+ tempat_beli +'</td><td>Rp. '+ parseInt(harga_beli).toLocaleString() +'</td><td class="text-success">Rp. '+ parseInt(total).toLocaleString() +'</td><td><button type="button" class="btn btn-icons btn-rounded btn-secondary ml-1 btn-delete"><i class="mdi mdi-close"></i></button><div class="form-group" hidden=""><input type="text" class="form-control" name="kode_barang_supply[]" value="'+ response.product.kode_barang +'"><input type="text" class="form-control" name="jumlah_supply[]" value="'+ jumlah +'"><input type="text" class="form-control" name="tempat_beli[]" value="'+ tempat_beli +'"><input type="text" class="form-control" name="harga_beli_supply[]" value="'+ harga_beli +'"><input type="text" class="form-control" name="subtotal[]" value="'+ total +'"></div></td></tr>');
 						$('.btn-simpan').prop('hidden', false);
+						if (window.getComputedStyle(detail).visibility === "hidden") {
+							detail.style.visibility = "visible";
+						}
 					}else{
 						swal(
 					        "",

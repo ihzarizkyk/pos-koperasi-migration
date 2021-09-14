@@ -1,6 +1,16 @@
 @extends('templates/main')
 @section('css')
 <link rel="stylesheet" href="{{ asset('css/manage_product/supply_product/supply/style.css') }}">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+<style>
+  .btn-update{
+    background-color: #2449f0;
+    color: #ffff;
+  }
+  #kode{
+    width: 285px;
+  }
+</style>
 @endsection
 @section('content')
 <div class="row page-title-header">
@@ -26,6 +36,9 @@
 	      <a href="{{ url('/supply/new') }}" class="btn btn-icons btn-inverse-primary btn-new ml-2">
 	      	<i class="mdi mdi-plus"></i>
 	      </a>
+        <a href="{{route('supplier')}}" class="btn btn-inverse-primary btn-new ml-2">
+          Supplier
+        </a>
       </div>
     </div>
   </div>
@@ -48,24 +61,38 @@
               <div class="table-responsive">
                 <table class="table table-custom">
                   <tr>
-                    <th>Nama Barang</th>
-                    <th>Kode Barang</th>
-                    <th>Jumlah</th>
-                    <th>Harga Beli</th>
-                    <th>Total</th>
-                    <th>Pemasok</th>
+                    <th>Nomor Nota</th>
+                    <th>Suppliers</th>
+                    <th>Tempat Beli</th>
+                    <th>Tanggal Pasok</th>
+                    <th>Status</th>
+                    <th></th>
                   </tr>
                   @foreach($supplies as $supply)
                   <tr>
-                    <td class="td-1">
-                      <span class="d-block font-weight-bold big-font">{{ $supply->nama_barang }}</span>
-                      <span class="d-block mt-2 txt-light">{{ date('d M, Y', strtotime($supply->created_at)) . ' pada ' . date('H:i', strtotime($supply->created_at)) }}</span>
+                    <td class="td-1 font-weight-bold">
+                      {{$supply->nota}}
+                      <span class="d-block mt-2 txt-light"></span>
                     </td>
-                    <td class="td-2 font-weight-bold">{{ $supply->kode_barang }}</td>
-                    <td class="td-3 font-weight-bold"><span class="ammount-box bg-secondary"><i class="mdi mdi-cube-outline"></i></span>{{ $supply->jumlah }}</td>
-                    <td class="font-weight-bold td-4"><input type="text" name="harga" value="{{ $supply->harga_beli }}" hidden=""><span class="ammount-box bg-green"><i class="mdi mdi-coin"></i></span>Rp. {{ number_format($supply->harga_beli,2,',','.') }}</td>
-                    <td class="total-field font-weight-bold text-success"></td>
-                    <td class="font-weight-bold">{{ $supply->pemasok }}</td>
+                    <td class="td-2 font-weight-bold">{{ $supply->supplier->perusahaan }}</td>
+                    <td class="td-3 font-weight-bold">{{ $supply->tempat_beli }}</td>
+                    <td class="font-weight-bold td-4">{{ date('d M, Y', strtotime($supply->date)) }}</td>
+                    <td class="font-weight-bold">
+                      @if ($supply->status == 1)
+                          Complete
+                      @else
+                          Pending
+                      @endif
+                    </td>
+                    <td>
+                      <!-- Button trigger modal -->
+                      @if ($supply->status == 0)
+                        <a href="{{ route('detail_pasok', $supply->id) }}" type="button" title="EDIT" class="btn btn-edit btn-icons btn-rounded btn-secondary"><i class="mdi mdi-pencil"></i></a>
+                      @else 
+                        <a href="{{ route('pasok_complate', $supply->id) }}" type="button" title="DETAIL" class="btn btn-detail btn-icons btn-rounded btn-secondary"><i class="bi bi-info-lg"></i></a>
+                      @endif
+
+                    </td>
                   </tr>
                   @endforeach
                 </table>
@@ -81,6 +108,29 @@
 @endsection
 @section('script')
 <script src="{{ asset('js/manage_product/supply_product/supply/script.js') }}"></script>
+<script>
+  var rupiah = document.getElementById('harga');
+    rupiah.addEventListener('keyup', function(e){
+        rupiah.value = formatRupiah(this.value, '');
+    });
+
+    
+    function formatRupiah(angka, prefix){
+        var number_string = angka.replace(/[^,\d]/g, '').toString(),
+        split   		= number_string.split(','),
+        sisa     		= split[0].length % 3,
+        rupiah     		= split[0].substr(0, sisa),
+        ribuan     		= split[0].substr(sisa).match(/\d{3}/gi);
+
+        if(ribuan){
+            separator = sisa ? '.' : '';
+            rupiah += separator + ribuan.join('.');
+        }
+
+        rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+        return prefix == undefined ? rupiah : (rupiah ? '' + rupiah : '');
+    }
+</script>
 <script type="text/javascript">
   @if ($message = Session::get('create_success'))
     swal(
