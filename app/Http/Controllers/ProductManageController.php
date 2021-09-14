@@ -9,6 +9,7 @@ use App\Supply;
 use App\Product;
 use App\Category;
 use App\Transaction;
+use App\TransactionDetail;
 use App\Supply_system;
 use App\detail_supplies;
 use App\Imports\ProductImport;
@@ -299,7 +300,7 @@ class ProductManageController extends Controller
 
                 detail_supplies::where('kode_barang', $kode_barang)
                 ->update(['kode_barang' => $req->kode_barang]);
-                Transaction::where('kode_barang', $kode_barang)
+                TransactionDetail::where('kode_barang', $kode_barang)
                 ->update(['kode_barang' => $req->kode_barang]);
 
                 Session::flash('update_success', 'Data barang berhasil diubah');
