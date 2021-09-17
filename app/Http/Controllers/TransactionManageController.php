@@ -100,6 +100,7 @@ class TransactionManageController extends Controller
                 $transaction = new Transaction;
                 $transaction->kode_transaksi = $req->kode_transaksi;
                 $transaction->subtotal = $req->subtotal;
+        		$transaction->jenis_diskon = 'persen';
         		$transaction->diskon = $req->diskon;
         		$transaction->total = $req->total;
         		$transaction->bayar = $req->bayar;
@@ -117,6 +118,7 @@ class TransactionManageController extends Controller
                     $transaction_detail->harga = $product_data->harga;
                     $transaction_detail->jumlah = $req->jumlah_barang[$i];
                     $transaction_detail->total_barang = $req->total_barang[$i];
+                    $transaction_detail->jenis_diskon_per_barang = $req->jenis_diskon_per_barang[$i];
                     $transaction_detail->diskon_per_barang = $req->diskon_per_barang[$i];
                     $transaction_detail->save();
                 }    

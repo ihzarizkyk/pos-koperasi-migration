@@ -110,11 +110,12 @@
 					<td>Nama Barang</td>
 					<td>Qty</td>
 					<td>Harga</td>
+					<td>Total</td>
 					<td>Diskon</td>
 					<td>Jumlah</td>
 				</tr>
 				<tr>
-					<td colspan="5" class="line"></td>
+					<td colspan="6" class="line"></td>
 				</tr>
 			</thead>
 			<tbody>
@@ -123,7 +124,14 @@
 					<td>{{ $transaksi->nama_barang }}</td>
 					<td>{{ $transaksi->jumlah }}</td>
 					<td>{{ number_format($transaksi->harga,2,',','.') }}</td>
-					<td>{{ $transaksi->diskon_per_barang }}%</td>
+					<td>{{ number_format((int)$transaksi->harga * (int)$transaksi->jumlah,2,',','.') }}</td>
+					<td>
+						@if ($transaksi->jenis_diskon_per_barang === 'persen')
+							{{ $transaksi->diskon_per_barang }} {{'%'}}
+						@else
+							{{ number_format($transaksi->diskon_per_barang,2,',','.')}}
+						@endif	
+					</td>
 					<td>{{ number_format($transaksi->total_barang,2,',','.') }}</td>
 				</tr>
 				@endforeach

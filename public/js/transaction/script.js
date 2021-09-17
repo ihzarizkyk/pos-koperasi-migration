@@ -68,7 +68,12 @@ function diskonPerBarang(kode) {
   });
   if(index!=-1){
     var harga = barang[index].harga;
-    var total_barang = (harga * barang[index].jumlah_barang) - (barang[index].diskon / 100) * harga * barang[index].jumlah_barang;
+    var total_barang;
+    if(barang[index].jenis_diskon == 'persen'){
+      total_barang = (harga * barang[index].jumlah_barang) - (barang[index].diskon / 100) * harga * barang[index].jumlah_barang;
+    }else{
+      total_barang = (harga * barang[index].jumlah_barang) - barang[index].diskon;
+    }
     $("#total-barang-input-"+ kode).val(total_barang);
     $("#total-barang-text-"+ kode).html('Rp. ' + parseInt(total_barang).toLocaleString());
   }
@@ -95,6 +100,7 @@ function tambahData(kode, nama, harga, stok, status) {
     jumlah_barang:1,
     stok: stok,
     status: status,
+    jenis_diskon: 'persen',
     diskon: 0
   })
   var tambah_data = '<tr id="barang-'+kode+'">' +
@@ -121,13 +127,20 @@ function tambahData(kode, nama, harga, stok, status) {
         '</a>' +
       '</div>' +
     '</td>' +
-    '<td>' +
-      '<input style="width:80px;" oninput="diskonInputBarang(this, &#39;'+kode+'&#39;)" type="number" class="form-control diskon-input-barang-' +kode+ ' mr-2" min="0" max="100" name="diskon_per_barang[]" value="0" hidden="">' +
-      '<span class="nilai-diskon-barang-' +kode+ ' mr-1">0</span>' +
-      '<span>%</span>' +
-      '<div>' +
-        '<a href="#" class="ubah-diskon-barang-' +kode+ '" onclick="ubahDiskonBarang(this, &#39;'+kode+'&#39;)">Ubah diskon</a>' +
-        '<a href="#" class="simpan-diskon-barang-' +kode+ '" onclick="simpanDiskonBarang(this, &#39;'+kode+'&#39;)" hidden="">Simpan</a>' +
+    '<td style="width:200px;">' +
+      '<div class="d-flex flex-column">' +
+        '<div class="mb-1 simpan-diskon-barang-' +kode+ '" hidden="">' +
+          '<button type="button" onclick="setPersen(&#39;'+kode+'&#39;)" class="persen-'+ kode +' mr-2 btn btn-primary">%</button>' +
+          '<button type="button" onclick="setRp(&#39;'+kode+'&#39;)" class="rp-'+ kode +' btn btn-outline-primary">Rp</button>' +
+          '<input type="hidden" name="jenis_diskon_per_barang[]" class="jenis-diskon-per-barang-'+ kode +'" />' +
+        '</div>' +
+        '<input oninput="diskonInputBarang(this, &#39;'+kode+'&#39;)" type="text" class="form-control number-input input-notzero diskon-input-barang-' +kode+ ' mr-2" name="diskon_per_barang[]" value="0" hidden="">' +
+        '<span class="nilai-diskon-barang-' +kode+ ' mr-1">0 %</span>' +
+        '<div class="mt-1">' +
+          '<a href="#" class="ubah-diskon-barang-' +kode+ '" onclick="ubahDiskonBarang(this, &#39;'+kode+'&#39;)">Ubah diskon</a>' +
+          '<a href="#" class="simpan-diskon-barang-' +kode+ '" onclick="simpanDiskonBarang(this, &#39;'+kode+'&#39;)" hidden="">Simpan</a>' +
+          '<span class="text-danger error-diskon-barang-' +kode+ '" hidden=""></span>' +
+        '</div>' +
       '</div>' +
     '</td>' +
     '<td>' +
@@ -149,6 +162,9 @@ function tambahData(kode, nama, harga, stok, status) {
     subtotalBarang();
     diskonBarang();
     jumlahBarang();
+  $(".number-input").inputFilter(function(value) {
+    return /^-?\d*$/.test(value); 
+  });
   $('.close-btn').click();
 }
 
@@ -239,19 +255,27 @@ function ubahDiskonBarang(self, kode_barang){
 }
 
 function simpanDiskonBarang(self, kode_barang){
-  $('.diskon-input-barang-' + kode_barang).prop('hidden', true);
-  $('.nilai-diskon-barang-' + kode_barang).prop('hidden', false);
-  $('.ubah-diskon-barang-' + kode_barang).prop('hidden', false);
-  $(self).prop('hidden', true);
-  var index = barang.findIndex(p => {
-    return p.kode == kode_barang;
-  })
-  if(index!=-1){
-    barang[index].diskon = $('.diskon-input-barang-' + kode_barang).val().trim() == "" ? 0 : $('.diskon-input-barang-' + kode_barang).val()
+  if( !($('.diskon-input-barang-' + kode_barang).hasClass('is-invalid')) ){
+    $('.diskon-input-barang-' + kode_barang).prop('hidden', true);
+    $('.nilai-diskon-barang-' + kode_barang).prop('hidden', false);
+    $('.ubah-diskon-barang-' + kode_barang).prop('hidden', false);
+    $('.simpan-diskon-barang-' + kode_barang).prop('hidden', true);
+    var index = barang.findIndex(p => {
+      return p.kode == kode_barang;
+    })
+    if(index!=-1){
+      $('.jenis-diskon-per-barang-' + kode_barang).val(barang[index].jenis_diskon);
+      barang[index].diskon = $('.diskon-input-barang-' + kode_barang).val().trim() == "" ? 0 : $('.diskon-input-barang-' + kode_barang).val()
+      if(barang[index].jenis_diskon == 'persen'){
+        $('.nilai-diskon-barang-' + kode_barang).html(barang[index].diskon +' %');
+      }else{
+        $('.nilai-diskon-barang-' + kode_barang).html('Rp. ' + parseInt(barang[index].diskon).toLocaleString());
+      }
+    }
+    diskonPerBarang(kode_barang);
+    subtotalBarang();
+    diskonBarang();
   }
-  diskonPerBarang(kode_barang);
-  subtotalBarang();
-  diskonBarang();
 }
 
 // $(document).on('click', '.simpan-diskon-barang', function(e){
@@ -273,17 +297,51 @@ $(document).on('input', '.diskon-input', function(){
   }
 });
 
-function diskonInputBarang(self, kode_barang){
-  $('.nilai-diskon-barang-' + kode_barang).html($(self).val());
-  if($(self).val().length > 0){
-    $(self).removeClass('is-invalid');
+function checkDiskonInputBarang(self, index){
+  var self = self
+  if(self.val().length > 0 && ((barang[index].jenis_diskon == 'persen' && self.val()<=100) || (barang[index].jenis_diskon == 'rp' && self.val()<=barang[index].jumlah_barang * barang[index].harga))){
+    self.removeClass('is-invalid');
   }else{
-    $(self).addClass('is-invalid');
+    self.addClass('is-invalid');
+  }
+}
+
+function diskonInputBarang(self, kode_barang){
+  var index = barang.findIndex(p => {
+    return p.kode == kode_barang;
+  })
+  if(index!=-1){
+    $('.nilai-diskon-barang-' + kode_barang).html($(self).val());
+    checkDiskonInputBarang($(self), index)
+    
   }
 }
 $(document).on('input', '.diskon-input-barang', function(){
   
 });
+
+function setPersen(kode){
+  var index = barang.findIndex(p => {
+    return p.kode==kode;
+  })
+  if(index!=-1){
+    barang[index].jenis_diskon = 'persen'
+    $('.persen-' + kode).removeClass('btn-outline-primary').addClass('btn-primary');
+    $('.rp-' + kode).removeClass('btn-primary').addClass('btn-outline-primary');
+    checkDiskonInputBarang($('.diskon-input-barang-' + kode), index)
+  }
+}
+function setRp(kode){
+  var index = barang.findIndex(p => {
+    return p.kode==kode;
+  })
+  if(index!=-1){
+    barang[index].jenis_diskon = 'rp'
+    $('.rp-' + kode).removeClass('btn-outline-primary').addClass('btn-primary');
+    $('.persen-' + kode).removeClass('btn-primary').addClass('btn-outline-primary');
+    checkDiskonInputBarang($('.diskon-input-barang-' + kode), index)
+  }
+}
 
 $(document).on('input', '.bayar-input', function(){
   if($(this).val().length > 0){

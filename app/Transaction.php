@@ -8,6 +8,6 @@ class Transaction extends Model
 {
     // Initialize
     protected $fillable = [
-        'kode_transaksi', 'total_barang', 'subtotal', 'diskon', 'total', 'bayar', 'kembali', 'id_kasir', 'kasir',
+        'kode_transaksi', 'total_barang', 'subtotal', 'jenis_diskon', 'diskon', 'total', 'bayar', 'kembali', 'id_kasir', 'kasir',
     ];
 }
