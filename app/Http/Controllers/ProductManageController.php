@@ -100,17 +100,13 @@ class ProductManageController extends Controller
         if($check_access->kelola_barang == 1){
         	$check_product = Product::where('kode_barang', $req->kode_barang)
         	->count();
-<<<<<<< HEAD
             $kode = Category::where('id', $req->kategori)->first();
             $lastId = Product::latest('id')->count();
-=======
->>>>>>> 8b89de85d390654f3b223af49246284a8672e46b
             $supply_system = Supply_system::first();
 
         	if($check_product == 0)
         	{
         		$product = new Product;
-<<<<<<< HEAD
                 if ($lastId) {
                     $newId = (int)$lastId + 1;
                     $product->kode_barang = $kode->kode. $newId;
@@ -118,9 +114,6 @@ class ProductManageController extends Controller
                     $product->kode_barang = $kode->kode.'1';
                 }
                 
-=======
-    	    	$product->kode_barang = $req->kode_barang;
->>>>>>> 8b89de85d390654f3b223af49246284a8672e46b
     	    	$product->category_id = $req->kategori;
     	    	$product->nama_barang = $req->nama_barang;
     	    	if($req->berat_barang != '')
@@ -286,7 +279,6 @@ class ProductManageController extends Controller
         $check_access = Acces::where('user', $id_account)
         ->first();
         if($check_access->kelola_barang == 1){
-<<<<<<< HEAD
             $product_data = Product::find($req->id);
             $kode = Category::where('id', $req->kategori)->first();
             $lastId = Product::latest('id')->count();
@@ -321,48 +313,6 @@ class ProductManageController extends Controller
             Session::flash('update_success', 'Data barang berhasil diubah');
 
             return redirect('/product');
-=======
-            $check_product = Product::where('kode_barang', $req->kode_barang)
-            ->count();
-            $product_data = Product::find($req->id);
-            if($check_product == 0 || $product_data->kode_barang == $req->kode_barang)
-            {
-                $product = Product::find($req->id);
-                $kode_barang = $product->kode_barang;
-                $product->kode_barang = $req->kode_barang;
-                $product->category_id = $req->kategori;
-                $product->nama_barang = $req->nama_barang;
-                $product->berat_barang = $req->berat_barang . ' ' . $req->satuan_berat;
-                $product->merek = $req->merek;
-                $product->stok = $req->stok;
-                $harga = preg_replace("/[^a-zA-Z0-9]/", "", $req->harga);
-    	    	$product->harga = $harga;
-                $hpp = preg_replace("/[^a-zA-Z0-9]/", "", $req->hpp);
-                $product->hpp = $hpp;
-                $product->laba_rupiah = trim($req->laba_rupiah) != "" ? preg_replace("/[^a-zA-Z0-9]/", "", $req->laba_rupiah) : 0;
-                $product->laba_persen = $product->laba_rupiah / $hpp * 100;
-                if($req->stok <= 0)
-                {
-                    $product->keterangan = "Habis";
-                }else{
-                    $product->keterangan = "Tersedia";
-                }
-                $product->save();
-
-                detail_supplies::where('kode_barang', $kode_barang)
-                ->update(['kode_barang' => $req->kode_barang]);
-                TransactionDetail::where('kode_barang', $kode_barang)
-                ->update(['kode_barang' => $req->kode_barang]);
-
-                Session::flash('update_success', 'Data barang berhasil diubah');
-
-                return redirect('/product');
-            }else{
-                Session::flash('update_failed', 'Kode barang telah digunakan');
-
-                return back();
-            }
->>>>>>> 8b89de85d390654f3b223af49246284a8672e46b
         }else{
             return back();
         }

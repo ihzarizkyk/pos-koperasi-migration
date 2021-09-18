@@ -103,17 +103,10 @@ Route::group(['middleware' => ['auth', 'checkRole:admin,kasir']], function(){
 	// > Category
 	Route::get("/category","CategoryController@index")->name("category");
 	Route::get("/category/new","CategoryController@create")->name("category.new");
-<<<<<<< HEAD
 	Route::get("/category/edit/{id}","CategoryController@edit")->name('category.edit');
 	Route::get("/category/{id}/delete","CategoryController@destroy")->name('deleteCategory');
 	Route::post("/category/store","CategoryController@store")->name("category.create");
 	Route::post("/category/edit/post/{id}","CategoryController@update")->name("category.update");
-=======
-	Route::get("/category/{id}/edit","CategoryController@edit");
-	Route::get("/category/{id}/delete","CategoryController@destroy")->name('deleteCategory');
-	Route::post("/category/store","CategoryController@store")->name("category.create");
-	Route::post("/category/update","CategoryController@update")->name("category.update");
->>>>>>> 8b89de85d390654f3b223af49246284a8672e46b
 });
 
 // Auth::routes();

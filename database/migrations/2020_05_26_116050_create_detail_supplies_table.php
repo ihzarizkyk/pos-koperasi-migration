@@ -24,11 +24,8 @@ class CreateDetailSuppliesTable extends Migration
             $table->string('subtotal');
             $table->string('status');
             $table->timestamps();
-<<<<<<< HEAD
 
             $table->foreign('supplies_id')->references('id')->on('suppliers');
-=======
->>>>>>> 8b89de85d390654f3b223af49246284a8672e46b
         });
     }
 

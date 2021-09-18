@@ -74,11 +74,7 @@
 			<div class="card-body">
 				<form action="{{ url('product/create') }}" method="post" name="create_form">
 					@csrf
-<<<<<<< HEAD
 					{{-- <div class="form-group row">
-=======
-					<div class="form-group row">
->>>>>>> 8b89de85d390654f3b223af49246284a8672e46b
 			  			<label class="col-12 font-weight-bold col-form-label">Kode Barang <span class="text-danger">*</span></label>
 					  	<div class="col-12">
 					  		<div class="input-group">
@@ -89,11 +85,7 @@
 					  		</div>
 					  	</div>
 						<div class="col-12 error-notice" id="kode_barang_error"></div>
-<<<<<<< HEAD
 					</div> --}}
-=======
-					</div>
->>>>>>> 8b89de85d390654f3b223af49246284a8672e46b
 					<div class="form-group row">
 					  	<div class="col-lg-6 col-md-6 col-sm-12 space-bottom">
 					  		<div class="row">

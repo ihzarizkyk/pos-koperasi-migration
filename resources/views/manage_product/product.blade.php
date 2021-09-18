@@ -81,16 +81,8 @@
               </div>
               <div class="form-group row">
                 <label class="col-lg-3 col-md-3 col-sm-12 col-form-label font-weight-bold">Kode Barang</label>
-<<<<<<< HEAD
                 <div class="col-lg-9 col-md-9 col-sm-12">
                   <input type="text" class="form-control" name="kode_barang" readonly>
-=======
-                <div class="col-lg-7 col-md-7 col-sm-10 col-10">
-                  <input type="text" class="form-control" name="kode_barang">
-                </div>
-                <div class="col-lg-2 col-md-2 col-sm-2 col-2">
-                  <button class="btn btn-inverse-primary btn-sm btn-scan shadow-sm" type="button"><i class="mdi mdi-crop-free"></i></button>
->>>>>>> 8b89de85d390654f3b223af49246284a8672e46b
                 </div>
                 <div class="col-lg-9 col-md-9 col-sm-12 offset-lg-3 offset-md-3 error-notice" id="kode_barang_error"></div>
               </div>
@@ -98,11 +90,7 @@
                 <label class="col-lg-3 col-md-3 col-sm-12 col-form-label font-weight-bold">Jenis Barang</label>
                 <div class="col-lg-9 col-md-9 col-sm-12">
                   <select class="form-control" name="kategori" id="kategori" required>
-<<<<<<< HEAD
                     <option value="">Pilih Kategori</option>
-=======
-                    <option value=""></option>
->>>>>>> 8b89de85d390654f3b223af49246284a8672e46b
                     @foreach ($category as $item)
                       <option value="{{$item->id}}">{{$item->name}}</option>
                     @endforeach
@@ -428,15 +416,9 @@
         $('input[name=harga]').val(response.product.harga);
         $('input[name=laba_rupiah]').val(response.product.laba_rupiah);
         $('input[name=hpp]').val(response.product.hpp);
-<<<<<<< HEAD
         $('select[name=kategori] option[value="'+ response.product.category_id +'"]').prop('selected', true);
         var berat_barang = response.product.berat_barang.split(" ");
         $('input[name=berat_barang]').val(berat_barang[0]);
-=======
-        var berat_barang = response.product.berat_barang.split(" ");
-        $('input[name=berat_barang]').val(berat_barang[0]);
-        $('select[name=kategori] option[value="'+ response.product.category_id +'"]').prop('selected', true);
->>>>>>> 8b89de85d390654f3b223af49246284a8672e46b
         $('select[name=satuan_berat] option[value="'+ berat_barang[1] +'"]').prop('selected', true);
         validator.resetForm();
       }

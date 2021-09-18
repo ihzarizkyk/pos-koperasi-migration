@@ -29,11 +29,7 @@
                     <td scope="row">{{$loop->iteration}}</td>
                     <td>{{$indeks->name}}</td>
                     <td>
-<<<<<<< HEAD
                         <a class="btn btn-sm btn-warning" href="{{ route('category.edit', $indeks->id) }}">
-=======
-                        <a class="btn btn-sm btn-warning" href="/category/{{$indeks->id}}/edit">
->>>>>>> 8b89de85d390654f3b223af49246284a8672e46b
                         Edit</a>
 
                         <a class="btn btn-sm btn-danger" href="{{ route('deleteCategory', $indeks->id) }}">

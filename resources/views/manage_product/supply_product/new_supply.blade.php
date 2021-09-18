@@ -93,13 +93,8 @@
 								  <a class="nav-link active" id="master-form-tab" data-toggle="tab" href="#master-form" role="tab" aria-controls="master-form" aria-selected="true">Master</a>
 								  <a class="nav-link" id="new-form-tab" data-toggle="tab" href="#new-form" role="tab" aria-controls="new-form" aria-selected="false">New</a>
 								</div>
-<<<<<<< HEAD
 							</nav>
 							<div class="tab-content" id="nav-tabContent">
-=======
-							  </nav>
-							  <div class="tab-content" id="nav-tabContent">
->>>>>>> 8b89de85d390654f3b223af49246284a8672e46b
 								<div class="tab-pane fade show active" id="master-form" role="tabpanel" aria-labelledby="master-form-tab">
 									<div class="row">
 										<div class="col-12">
@@ -107,10 +102,6 @@
 												<input type="text" class="form-control" name="search" placeholder="Cari barang">
 											</div>	
 										</div>
-<<<<<<< HEAD
-=======
-									  
->>>>>>> 8b89de85d390654f3b223af49246284a8672e46b
 										<div class="col-12">
 											<ul class="list-group product-list">
 											  @foreach($products as $product)
@@ -134,7 +125,6 @@
 									<form action="{{ route('newProduct') }}" method="POST">
 										@csrf	
 										<div class="form-group row top-min mg-top">
-<<<<<<< HEAD
 											<label class="col-12 font-weight-bold col-form-label">Nama Barang</label>
 											<div class="col-12">
 												<input type="text" class="form-control" name="nama_barang" placeholder="Masukkan Nama Barang">
@@ -149,17 +139,6 @@
 														<option value="{{$item->id}}">{{$item->name}}</option>
 													@endforeach
 												</select>
-=======
-											<label class="col-12 font-weight-bold col-form-label">Kode Barang</label>
-											<div class="col-12">
-												<input type="text" class="form-control number-input input-notzero" name="kode" placeholder="Masukkan Kode Barang">
-											</div>
-										</div>
-										<div class="form-group row top-min mg-top">
-											<label class="col-12 font-weight-bold col-form-label">Nama Barang</label>
-											<div class="col-12">
-												<input type="text" class="form-control" name="nama_barang" placeholder="Masukkan Nama Barang">
->>>>>>> 8b89de85d390654f3b223af49246284a8672e46b
 											</div>
 										</div>
 										<div>
@@ -167,11 +146,7 @@
 										</div>
 									</form>
 								</div>
-<<<<<<< HEAD
 							</div>
-=======
-							  </div>
->>>>>>> 8b89de85d390654f3b223af49246284a8672e46b
 						</div>
 					</div>
 				</div>
