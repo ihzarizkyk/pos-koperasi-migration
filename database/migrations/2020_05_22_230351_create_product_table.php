@@ -16,7 +16,11 @@ class CreateProductTable extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string('kode_barang');
+<<<<<<< HEAD
             $table->unsignedBigInteger('category_id')->nullable();
+=======
+            $table->string('category_id')->nullable();
+>>>>>>> 8b89de85d390654f3b223af49246284a8672e46b
             $table->string('nama_barang');
             $table->string('berat_barang')->nullable();
             $table->string('merek')->nullable();
@@ -27,8 +31,11 @@ class CreateProductTable extends Migration
             $table->bigInteger('hpp')->default(0);
             $table->string('keterangan')->default('Tersedia');
             $table->timestamps();
+<<<<<<< HEAD
 
             $table->foreign('category_id')->references('id')->on('categories');
+=======
+>>>>>>> 8b89de85d390654f3b223af49246284a8672e46b
         });
     }
 

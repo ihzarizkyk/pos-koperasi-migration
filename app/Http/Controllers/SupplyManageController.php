@@ -11,7 +11,10 @@ use App\Supply;
 use App\Supplier;
 use App\Market;
 use App\Product;
+<<<<<<< HEAD
 use App\Category;
+=======
+>>>>>>> 8b89de85d390654f3b223af49246284a8672e46b
 use App\Activity;
 use App\detail_supplies;
 use App\Supply_system;
@@ -99,12 +102,19 @@ class SupplyManageController extends Controller
         $check_access = Acces::where('user', $id_account)
         ->first();
         $supply_system = Supply_system::first();
+<<<<<<< HEAD
         $category = Category::all();
+=======
+>>>>>>> 8b89de85d390654f3b223af49246284a8672e46b
         if($check_access->kelola_barang == 1 && $supply_system->status == true){
             $products = Product::all()
             ->sortBy('kode_barang');
 
+<<<<<<< HEAD
             return view('manage_product.supply_product.new_supply', compact('products', 'supply', 'category'));
+=======
+            return view('manage_product.supply_product.new_supply', compact('products', 'supply'));
+>>>>>>> 8b89de85d390654f3b223af49246284a8672e46b
         }else{
             return back();
         }
@@ -465,6 +475,7 @@ class SupplyManageController extends Controller
         $check_access = Acces::where('user', $id_account)
         ->first();
         if($check_access->kelola_barang == 1){
+<<<<<<< HEAD
             $kode = Category::where('id', $req->kategori)->first();
             $lastId = Product::latest('id')->count();
             $new = new Product;
@@ -481,6 +492,25 @@ class SupplyManageController extends Controller
             $new->save();
             Session::flash('create_success', 'Barang Pre-Order berhasil ditambahkan');
             return redirect('/supply/new');
+=======
+        	$check_product = Product::where('kode_barang', $req->kode)
+        	->count();
+            if ($check_product == 0) {
+                $new = new Product;
+                $new->kode_barang = $req->kode;
+                $new->nama_barang = $req->nama_barang;
+                $new->keterangan = "Pre-Order";
+
+                $new->save();
+                Session::flash('create_success', 'Barang Pre-Order berhasil ditambahkan');
+                return redirect('/supply/new');
+            }
+            else{
+                Session::flash('create_failed', 'Kode barang telah digunakan');
+
+    		    return back();
+            }
+>>>>>>> 8b89de85d390654f3b223af49246284a8672e46b
         }
     }
 
