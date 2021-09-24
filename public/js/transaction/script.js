@@ -92,13 +92,14 @@ function jumlahBarang(){
   $('.jml-barang-td').html(jumlah_barang + ' Barang');
 }
 
-function tambahData(kode, nama, harga, stok, status) {
+function tambahData(kode, nama, harga, stok, limit, status) {
   barang.push({
     kode: kode,
     nama: nama,
     harga: harga,
     jumlah_barang:1,
     stok: stok,
+    limit: limit,
     status: status,
     jenis_diskon: 'persen',
     diskon: 0
@@ -132,7 +133,7 @@ function tambahData(kode, nama, harga, stok, status) {
         '<div class="mb-1 simpan-diskon-barang-' +kode+ '" hidden="">' +
           '<button type="button" onclick="setPersen(&#39;'+kode+'&#39;)" class="persen-'+ kode +' mr-2 btn btn-primary">%</button>' +
           '<button type="button" onclick="setRp(&#39;'+kode+'&#39;)" class="rp-'+ kode +' btn btn-outline-primary">Rp</button>' +
-          '<input type="hidden" name="jenis_diskon_per_barang[]" class="jenis-diskon-per-barang-'+ kode +'" />' +
+          '<input type="hidden" value="persen" name="jenis_diskon_per_barang[]" class="jenis-diskon-per-barang-'+ kode +'" />' +
         '</div>' +
         '<input oninput="diskonInputBarang(this, &#39;'+kode+'&#39;)" type="text" class="form-control number-input input-notzero diskon-input-barang-' +kode+ ' mr-2" name="diskon_per_barang[]" value="0" hidden="">' +
         '<span class="nilai-diskon-barang-' +kode+ ' mr-1">0 %</span>' +
@@ -174,9 +175,10 @@ function btnTambah(kode){
   })
   if(index!=-1){
     var stok = parseInt(barang[index].stok);
-    var status = parseInt(barang[index].status);
+    // var status = parseInt(barang[index].status);
+    var limit = barang[index].limit===null ? null : parseInt(barang[index].limit);
     var jumlah_barang = parseInt(barang[index].jumlah_barang);
-    if((stok > jumlah_barang && status == 1) || status == 0){
+    if((stok > jumlah_barang && limit !== null) || limit === null){
       var tambah_barang = jumlah_barang + 1;
       $('#jumlah-barang-input-'+ kode).val(tambah_barang);
       $('#jumlah-barang-text-'+ kode).html(tambah_barang);

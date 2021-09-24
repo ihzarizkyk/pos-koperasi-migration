@@ -64,7 +64,7 @@
               <ul class="list-group product-list">
                 @foreach($products as $product)
                 @if($supply_system->status == true)
-                @if($product->stok != 0)
+                @if(($product->stok > 0 && $product->limit!==null) || $product->limit===null)
                 <li class="list-group-item d-flex justify-content-between align-items-center active-list">
                   <div class="text-group">
                     <p class="m-0">{{ $product->kode_barang }}</p>
@@ -309,7 +309,7 @@ $(document).on('click', '.btn-pilih', function(e){
     success:function(response){
       var check = $('.kode-barang-td:contains('+ response.product.kode_barang +')').length;
       if(check == 0){
-        tambahData(response.product.kode_barang, response.product.nama_barang, response.product.harga, response.product.stok, response.status);
+        tambahData(response.product.kode_barang, response.product.nama_barang, response.product.harga, response.product.stok, response.product.limit, response.status);
       }else{
         swal(
             "",
@@ -380,7 +380,7 @@ $(document).on('click', '.btn-continue', function(e){
       var check = $('.kode-barang-td:contains('+ response.product.kode_barang +')').length;
       if(response.check == 'tersedia'){
         if(check == 0){
-          tambahData(response.product.kode_barang, response.product.nama_barang, response.product.harga, response.product.stok, response.status);
+          tambahData(response.product.kode_barang, response.product.nama_barang, response.product.harga, response.product.stok, response.product.limit, response.status);
           $('.close-btn').click();  
         }else{
           swal(
