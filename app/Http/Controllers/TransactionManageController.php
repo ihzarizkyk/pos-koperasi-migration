@@ -131,10 +131,15 @@ class TransactionManageController extends Controller
                         $product->save();
                         $product_status = Product::where('kode_barang', '=', $req->kode_barang[$j])
                         ->first();
-                        if($product_status->stok == 0){
-                            $product_status->keterangan = 'Habis';
-                            $product_status->save();
-                        }
+                        if($product_status->limit != null){
+                            if($product_status->stok == 0){
+                                $product_status->keterangan = "Habis";
+                                $product_status->save();
+                            }else if($product_status->stok < $product_status->limit){
+                                $product_status->keterangan = "Hampir Habis";
+                                $product_status->save();
+                            }
+                        } 
                     }
                 }
 

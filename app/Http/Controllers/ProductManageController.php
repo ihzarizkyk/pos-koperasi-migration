@@ -103,7 +103,9 @@ class ProductManageController extends Controller
             $kode = Category::where('id', $req->kategori)->first();
             $lastId = Product::latest('id')->count();
             $supply_system = Supply_system::first();
-
+            if(trim($req->limit) == ""){
+                $req->limit = null;
+            }
         	if($check_product == 0)
         	{
         		$product = new Product;
@@ -126,8 +128,10 @@ class ProductManageController extends Controller
     	    	}
                 if($supply_system->status == true){
                     $product->stok = $req->stok;
+                    $product->limit = $req->limit;
                 }else{
                     $product->stok = 1;
+                    $product->limit = null;
                 }
                 $harga = preg_replace("/[^a-zA-Z0-9]/", "", $req->harga);
     	    	$product->harga = $harga;
@@ -291,15 +295,22 @@ class ProductManageController extends Controller
             $product->berat_barang = $req->berat_barang . ' ' . $req->satuan_berat;
             $product->merek = $req->merek;
             $product->stok = $req->stok;
+            $product->limit = $req->limit;
             $harga = preg_replace("/[^a-zA-Z0-9]/", "", $req->harga);
             $product->harga = $harga;
             $hpp = preg_replace("/[^a-zA-Z0-9]/", "", $req->hpp);
             $product->hpp = $hpp;
             $product->laba_rupiah = trim($req->laba_rupiah) != "" ? preg_replace("/[^a-zA-Z0-9]/", "", $req->laba_rupiah) : 0;
             $product->laba_persen = $product->laba_rupiah / $hpp * 100;
-            if($req->stok <= 0)
-            {
-                $product->keterangan = "Habis";
+            $supply_system = Supply_system::first();
+            if($req->limit != null){
+                if($req->stok <= 0){
+                    $product->keterangan = "Habis";
+                }else if($req->stok < $req->limit){
+                    $product->keterangan = "Hampir Habis";
+                }else{
+                    $product->keterangan = "Tersedia";
+                }
             }else{
                 $product->keterangan = "Tersedia";
             }

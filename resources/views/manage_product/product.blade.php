@@ -135,6 +135,20 @@
                 </div>
                 <div class="col-lg-9 col-md-9 col-sm-12 offset-lg-3 offset-md-3 error-notice" id="stok_error"></div>
               </div>
+              <div class="form-group row" @if($supply_system->status == false) hidden="" @endif>
+                <label class="col-lg-3 col-md-3 col-sm-12 col-form-label font-weight-bold">Limit Stok</label>
+                <div class="col-lg-9 col-md-9 col-sm-12">
+                  <div class="input-group">
+										<div class="input-group-prepend">
+											<span class="input-group-text">
+												<input type="checkbox" checked id="atur_limit">
+											</span>
+										</div>
+										<input type="text" class="form-control number-input" id="limit" name="limit" placeholder="Masukkan Limit Stok" required>
+									</div>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-12 offset-lg-3 offset-md-3 error-notice" id="stok_error"></div>
+              </div>
               <div class="form-group row">
                 <label class="col-lg-3 col-md-3 col-sm-12 col-form-label font-weight-bold">Harga Barang</label>
                 <div class="col-lg-9 col-md-9 col-sm-12">
@@ -231,7 +245,9 @@
                   <th>HPP</th>
                   <th>Laba Rupiah</th>
                   <th>Laba Persen</th>
+                  @if($supply_system->status == true)
                   <th>Keterangan</th>
+                  @endif
                   <th></th>
                 </tr>
               </thead>
@@ -255,7 +271,15 @@
                       <td>{{ $product->berat_barang ?? 'null'}}</td>
                       <td>{{ $product->merek ?? 'null'}}</td>
                       @if($supply_system->status == true)
-                      <td><span class="ammount-box bg-secondary"><i class="mdi mdi-cube-outline"></i></span>{{ $product->stok }}</td>
+                        @if($product->limit == null)
+                          <td><span class="ammount-box bg-secondary"><i class="mdi mdi-cube-outline"></i></span>{{ $product->stok }}</td>
+                        @else
+                          @if($product->stok < $product->limit)
+                            <td class="text-danger"><span class="ammount-box bg-danger"><i class="mdi mdi-cube-outline text-white"></i></span>{{ $product->stok }}</td>
+                          @else  
+                            <td><span class="ammount-box bg-secondary"><i class="mdi mdi-cube-outline"></i></span>{{ $product->stok }}</td>
+                          @endif
+                        @endif
                       @endif
                       <td><span class="ammount-box bg-green"><i class="mdi mdi-coin"></i></span>Rp. {{number_format($product->harga,2,',','.')}}</td>
                       <td><span class="ammount-box bg-green"><i class="mdi mdi-coin"></i></span>Rp. {{number_format($product->hpp,2,',','.')}}</td>
@@ -263,10 +287,16 @@
                       <td>{{ $product->laba_persen }}%</td>
                       @if($supply_system->status == true)
                       <td>
-                        @if($product->keterangan == 'Tersedia')
-                        <span class="btn tersedia-span"> {{ $product->keterangan }}</span>
+                        @if($product->limit !== null)
+                          @if($product->keterangan == 'Tersedia')
+                            <span class="btn tersedia-span"> {{ $product->keterangan }}</span>
+                          @elseif($product->keterangan == 'Habis')
+                            <span class="btn habis-span">{{ $product->keterangan }} </span>
+                          @else 
+                            <span class="btn hampirhabis-span">{{ $product->keterangan }} </span>
+                          @endif
                         @else
-                        <span class="btn habis-span">{{ $product->keterangan }} </span>
+                          <span class="btn nolimit-span"> {{ $product->keterangan }}</span>
                         @endif
                       </td>
                       @endif
@@ -413,6 +443,19 @@
         $('input[name=nama_barang]').val(response.product.nama_barang);
         $('input[name=merek]').val(response.product.merek);
         $('input[name=stok]').val(response.product.stok);
+        if(response.product.limit == null){
+          $('#atur_limit').prop('checked', false)
+          $("#limit").prop('placeholder', 'Limit Tidak Diatur')
+          $("#limit").prop('disabled', true)
+          $("#limit").prop('required', false)
+          $('input[name=limit]').val('');
+        }else{
+          $('#atur_limit').prop('checked', true)
+          $("#limit").prop('placeholder', 'Masukkan Limit Stok')
+          $("#limit").prop('required', true)
+          $("#limit").prop('disabled', false)
+          $('input[name=limit]').val(response.product.limit);
+        }
         $('input[name=harga]').val(response.product.harga);
         $('input[name=laba_rupiah]').val(response.product.laba_rupiah);
         $('input[name=hpp]').val(response.product.hpp);
@@ -424,6 +467,20 @@
       }
     });
   });
+
+  $(document).on('input', '#atur_limit', function(e){
+		var val = $(this).prop('checked')
+		if(val){
+			$("#limit").prop('placeholder', 'Masukkan Limit Stok')
+			$("#limit").prop('required', true)
+			$("#limit").prop('disabled', false)
+		}else{
+			$("#limit").prop('placeholder', 'Limit Tidak Diatur')
+			$("#limit").prop('disabled', true)
+			$("#limit").prop('required', false)
+			$("#limit").prop('value', '')
+		}
+	});
 
   $(document).on('click', '.btn-delete', function(e){
     e.preventDefault();

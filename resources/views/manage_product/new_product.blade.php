@@ -152,6 +152,22 @@
 								<div class="col-12 error-notice" id="stok_error"></div>
 					  		</div>
 					  	</div>
+					  	<div class="col-lg-6 col-md-6 col-sm-12 space-bottom">
+					  		<div class="row">
+					  			<label class="col-12 font-weight-bold col-form-label">Limit Stok</label>
+							  	<div class="col-12">
+									<div class="input-group">
+										<div class="input-group-prepend">
+											<span class="input-group-text">
+												<input type="checkbox" checked id="atur_limit">
+											</span>
+										</div>
+										<input type="text" class="form-control number-input" id="limit" name="limit" placeholder="Masukkan Limit Stok" required>
+									</div>
+							  	</div>
+								<div class="col-12 error-notice" id="limit_error"></div>
+					  		</div>
+					  	</div>
 						<div class="col-lg-6 col-md-6 col-sm-12">
 							<div class="row">
 								<label class="col-12 font-weight-bold col-form-label">Harga Barang <span class="text-danger">*</span></label>
@@ -180,7 +196,7 @@
 								<div class="col-12 error-notice" id="laba_rupiah_error"></div>
 							</div>
 						</div>
-					  	<div class="col-lg-6 col-md-6 col-sm-12">
+					  	<div class="col-lg-12 col-md-12 col-sm-12">
 							<div class="row">
 								<label class="col-12 font-weight-bold col-form-label">Hpp Barang <span class="text-danger">*</span></label>
 								<div class="col-12">
@@ -317,6 +333,19 @@
 		laba_rupiah.value = formatRupiah(this.value, '');
 	});
 
+	$(document).on('input', '#atur_limit', function(e){
+		var val = $(this).prop('checked')
+		if(val){
+			$("#limit").prop('placeholder', 'Masukkan Limit Stok')
+			$("#limit").prop('required', true)
+			$("#limit").prop('disabled', false)
+		}else{
+			$("#limit").prop('placeholder', 'Limit Tidak Diatur')
+			$("#limit").prop('disabled', true)
+			$("#limit").prop('required', false)
+			$("#limit").prop('value', '')
+		}
+	});
 
 	function formatRupiah(angka, prefix){
 		var number_string = angka.replace(/[^,\d]/g, '').toString(),
@@ -355,6 +384,7 @@
 		hpp = split[1] != undefined ? hpp + ',' + split[1] : hpp;
 		return hasil == undefined ? hpp : (hpp ? '' + hpp : '');
 	}
+
 </script>
 <script type="text/javascript">
   @if ($message = Session::get('create_failed'))

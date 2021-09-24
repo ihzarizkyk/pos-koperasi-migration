@@ -108,6 +108,26 @@
 	color: #ff6258;
 }
 
+.hampirhabis-span{
+	color: #ffaf00;
+	font-weight: bold;
+	background-color: rgba(255, 175, 0, .2);
+}
+
+.hampirhabis-span:hover{
+	color: #ffaf00;
+}
+
+.nolimit-span{
+	color: #989ca0;
+	font-weight: bold;
+	background-color: rgba(152, 156, 160, .2);
+}
+
+.nolimit-span:hover{
+	color: #989ca0;
+}
+
 .btn-update{
 	background-color: #2d4fef;
 	color: #fff;
