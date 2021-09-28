@@ -63,7 +63,11 @@
                   <tr>
                     <th>Nomor Nota</th>
                     <th>Suppliers</th>
+<<<<<<< HEAD
                     <th>Barang</th>
+=======
+                    <th>Tempat Beli</th>
+>>>>>>> 3492c5a6a4bd167cbd390b86912beb400a8d398f
                     <th>Tanggal Pasok</th>
                     <th>Status</th>
                     <th></th>
@@ -75,10 +79,14 @@
                       <span class="d-block mt-2 txt-light"></span>
                     </td>
                     <td class="td-2 font-weight-bold">{{ $supply->supplier->perusahaan }}</td>
+<<<<<<< HEAD
                     @php
                       $barang = \App\detail_supplies::where('supplies_id', $supply->id)->count();
                     @endphp
                     <td class="td-3 font-weight-bold">{{$barang}} items</td>
+=======
+                    <td class="td-3 font-weight-bold">{{ $supply->tempat_beli }}</td>
+>>>>>>> 3492c5a6a4bd167cbd390b86912beb400a8d398f
                     <td class="font-weight-bold td-4">{{ date('d M, Y', strtotime($supply->date)) }}</td>
                     <td class="font-weight-bold">
                       @if ($supply->status == 1)
