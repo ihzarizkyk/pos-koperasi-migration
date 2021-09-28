@@ -32,11 +32,7 @@ class CategoryController extends Controller
         $data = new Category;
         $data->name = $request->name;
         $kode = substr($request->name, 0, 3);
-<<<<<<< HEAD
         $data->kode = strtoupper($kode)."-".rand(10,99);
-=======
-        $data->kode = strtoupper($kode)."-".rand(1000,9999);
->>>>>>> 3492c5a6a4bd167cbd390b86912beb400a8d398f
         $data->save();
 
         return redirect("/category");
@@ -55,11 +51,7 @@ class CategoryController extends Controller
         $oldCode = $update->kode;
         $update->name = $request->nama;
         $kode = substr($request->nama, 0, 3);
-<<<<<<< HEAD
         $update->kode = strtoupper($kode)."-".rand(10,99);
-=======
-        $update->kode = strtoupper($kode)."-".rand(1000,9999);
->>>>>>> 3492c5a6a4bd167cbd390b86912beb400a8d398f
 
         $update->save();
 

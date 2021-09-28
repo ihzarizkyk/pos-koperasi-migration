@@ -466,18 +466,11 @@ class SupplyManageController extends Controller
         ->first();
         if($check_access->kelola_barang == 1){
             $kode = Category::where('id', $req->kategori)->first();
-<<<<<<< HEAD
             $lastProduct = Product::latest('id')->first();
             $autoIncrements = substr($lastProduct->kode_barang, -1);
             $new = new Product;
             if ($lastProduct) {
                 $newId = (int)$autoIncrements + 1;
-=======
-            $lastId = Product::latest('id')->count();
-            $new = new Product;
-            if ($lastId) {
-                $newId = (int)$lastId + 1;
->>>>>>> 3492c5a6a4bd167cbd390b86912beb400a8d398f
                 $new->kode_barang = $kode->kode. $newId;
             } else {
                 $new->kode_barang = $kode->kode.'1';

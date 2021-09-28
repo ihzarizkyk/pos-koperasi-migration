@@ -270,7 +270,6 @@
                       <div class="input-group-prepend">
                         <div class="input-group-text">Rp.</div>
                       </div>
-<<<<<<< HEAD
                       <input type="text" id="bayar" min="1" class="form-control number-input input-notzero bayar-input" name="bayar" value="0" placeholder="Masukkan nominal bayar">
                     </div>
                   </td>
@@ -304,9 +303,6 @@
                       <div class="col-3">
                         <button class="btn btn-suggest" onclick="mySuggest(100000)" style="width: 59px; font-size:11px" type="button">100k</button>
                       </div>
-=======
-                      <input type="text" class="form-control number-input input-notzero bayar-input" name="bayar" placeholder="Masukkan nominal bayar">
->>>>>>> 3492c5a6a4bd167cbd390b86912beb400a8d398f
                     </div>
                   </td>
                 </tr>
@@ -332,7 +328,6 @@
 <script src="{{ asset('js/transaction/script.js') }}"></script>
 <script type="text/javascript">
 
-<<<<<<< HEAD
 
 function mySuggest(data) {
   var bayar = document.getElementById('bayar').value;
@@ -344,8 +339,6 @@ function mySuggest(data) {
     }
 }
 
-=======
->>>>>>> 3492c5a6a4bd167cbd390b86912beb400a8d398f
 @if ($message = Session::get('transaction_success'))
   $('#successModal').modal('show');
 @endif

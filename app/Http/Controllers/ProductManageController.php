@@ -101,12 +101,8 @@ class ProductManageController extends Controller
         	$check_product = Product::where('kode_barang', $req->kode_barang)
         	->count();
             $kode = Category::where('id', $req->kategori)->first();
-<<<<<<< HEAD
             $lastProduct = Product::latest('id')->first();
             $autoIncrements = substr($lastProduct->kode_barang, -1);
-=======
-            $lastId = Product::latest('id')->count();
->>>>>>> 3492c5a6a4bd167cbd390b86912beb400a8d398f
             $supply_system = Supply_system::first();
             if(trim($req->limit) == ""){
                 $req->limit = null;
@@ -114,13 +110,8 @@ class ProductManageController extends Controller
         	if($check_product == 0)
         	{
         		$product = new Product;
-<<<<<<< HEAD
                 if ($lastProduct) {
                     $newId = (int)$autoIncrements + 1;
-=======
-                if ($lastId) {
-                    $newId = (int)$lastId + 1;
->>>>>>> 3492c5a6a4bd167cbd390b86912beb400a8d398f
                     $product->kode_barang = $kode->kode. $newId;
                 } else {
                     $product->kode_barang = $kode->kode.'1';
@@ -295,7 +286,6 @@ class ProductManageController extends Controller
         if($check_access->kelola_barang == 1){
             $product_data = Product::find($req->id);
             $kode = Category::where('id', $req->kategori)->first();
-<<<<<<< HEAD
             
             
             $product = Product::find($req->id);
@@ -307,13 +297,6 @@ class ProductManageController extends Controller
                 $product->kode_barang = $kode->kode.((int)$autoIncrements + 1);
             }
 
-=======
-            $lastId = Product::latest('id')->count();
-            
-            $product = Product::find($req->id);
-            $kode_barang = $product->kode_barang;
-            $product->kode_barang = $kode->kode.$req->id;
->>>>>>> 3492c5a6a4bd167cbd390b86912beb400a8d398f
             $product->category_id = $req->kategori;
             $product->nama_barang = $req->nama_barang;
             $product->berat_barang = $req->berat_barang . ' ' . $req->satuan_berat;
@@ -340,7 +323,6 @@ class ProductManageController extends Controller
             }
             $product->save();
 
-<<<<<<< HEAD
             if ($product_data->category_id != $req->kategori) {
                 detail_supplies::where('kode_barang', $kode_barang)
                 ->update(['kode_barang' => $product->kode_barang]);
@@ -348,12 +330,6 @@ class ProductManageController extends Controller
                 ->update(['kode_barang' => $product->kode_barang]);
             }
             
-=======
-            detail_supplies::where('kode_barang', $kode_barang)
-            ->update(['kode_barang' => $product->kode_barang]);
-            TransactionDetail::where('kode_barang', $kode_barang)
-            ->update(['kode_barang' => $product->kode_barang]);
->>>>>>> 3492c5a6a4bd167cbd390b86912beb400a8d398f
 
             Session::flash('update_success', 'Data barang berhasil diubah');
 
