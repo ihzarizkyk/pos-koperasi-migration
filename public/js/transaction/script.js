@@ -117,15 +117,15 @@ function tambahData(kode, nama, harga, stok, limit, status) {
     '<td>' +
       '<div class="d-flex justify-content-start align-items-center">' +
         '<input type="text" class="jumlah-barang-input" id="jumlah-barang-input-'+ kode +'" name="jumlah_barang[]" hidden="" value="1">' +
-        '<a href="#" onclick="btnTambah(&#39;'+kode+'&#39;)" class="btn-operate mr-2 btn-tambah">' +
+        '<span onclick="btnTambah(&#39;'+kode+'&#39;)" class="btn-operate mr-2 btn-tambah">' +
           '<i class="mdi mdi-plus"></i>' +
-        '</a>' +
+        '</span>' +
         '<span class="ammount-product mr-2" unselectable="on" onselectstart="return false;" onmousedown="return false;">' +
           '<p class="jumlah_barang_text" id="jumlah-barang-text-'+ kode +'">1</p>' +
         '</span>' +
-        '<a href="#" onclick="btnKurang(&#39;'+kode+'&#39;)" class="btn-operate btn-kurang">' +
+        '<span onclick="btnKurang(&#39;'+kode+'&#39;)" class="btn-operate btn-kurang">' +
           '<i class="mdi mdi-minus"></i>' +
-        '</a>' +
+        '</span>' +
       '</div>' +
     '</td>' +
     '<td style="width:200px;">' +
@@ -365,21 +365,4 @@ $('#scanModal').on('hidden.bs.modal', function(e) {
   $('.barcode-result-text').html('');
   $('.kode_barang_error').prop('hidden', true);
   stopScan();
-});
-
-$(document).ready(function(){
-  $('input[name=search]').on('keyup', function(){
-    var searchTerm = $(this).val().toLowerCase();
-    $(".product-list li").each(function(){
-      var lineStr = $(this).text().toLowerCase();
-      console.log(lineStr);
-      if(lineStr.indexOf(searchTerm) == -1){
-        $(this).addClass('non-active-list');
-        $(this).removeClass('active-list');
-      }else{
-        $(this).addClass('active-list');
-        $(this).removeClass('non-active-list');
-      }
-    });
-  });
 });

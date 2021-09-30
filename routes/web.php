@@ -78,6 +78,7 @@ Route::group(['middleware' => ['auth', 'checkRole:admin,kasir']], function(){
 	Route::get('/suppply/pasok_complete/{id}', 'SupplyManageController@pasok_complate')->name('pasok_complate');
 	// ------------------------- Transaksi -------------------------
 	Route::get('/transaction', 'TransactionManageController@viewTransaction');
+	Route::get('/transaction/products/search', 'TransactionManageController@ProductSearch');
 	Route::get('/transaction/product/{id}', 'TransactionManageController@transactionProduct');
 	Route::get('/transaction/product/check/{id}', 'TransactionManageController@transactionProductCheck');
 	Route::post('/transaction/process', 'TransactionManageController@transactionProcess');

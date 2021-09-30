@@ -24,11 +24,11 @@ class TransactionManageController extends Controller
         $check_access = Acces::where('user', $id_account)
         ->first();
         if($check_access->transaksi == 1){
-        	$products = Product::all()
-        	->sortBy('kode_barang');
+        	// $products = Product::all()
+        	// ->sortBy('kode_barang');
             $supply_system = Supply_system::first();
 
-            return view('transaction.transaction', compact('products', 'supply_system'));
+            return view('transaction.transaction', compact('supply_system'));
         }else{
             return back();
         }
@@ -51,6 +51,40 @@ class TransactionManageController extends Controller
         		'status' => $status
         	]);
         }else{
+            return back();
+        }
+    }
+
+    public function ProductSearch(Request $req)
+    {
+        $id_account = Auth::id();
+        // $category = Category::all();
+        $check_access = Acces::where('user', $id_account)
+        ->first();
+        if($check_access->transaksi == 1){
+            $cari = $req->cari;
+            // $products = [];
+            $products = Product::query()
+                        ->where('keterangan', '!=', 'Habis')
+                        ->where(function ($query) use ($cari){
+                            $query->where('kode_barang', 'like',"%".$cari."%")
+                            ->orWhere('nama_barang', 'like',"%".$cari."%")
+                            ->orWhere('merek', 'like', "%".$cari."%")
+                            ->orWhere('stok', 'like', "%".$cari."%");
+                        })
+                        // ->take(4)
+                        ->get();
+            $data = $products->count();
+            $supply_system = Supply_system::first();
+            $status = $supply_system->status;
+            $sort = '';
+
+        	return response()->json([
+        		'product' => $products,
+        		'status' => $status
+        	]);
+        }
+        else{
             return back();
         }
     }

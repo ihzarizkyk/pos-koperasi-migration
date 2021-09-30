@@ -44,7 +44,7 @@
       </div>
     </div>
   </div>
-  <div class="modal fade" id="tableModal" tabindex="-1" role="dialog" aria-labelledby="tableModalLabel" aria-hidden="true">
+  {{-- <div class="modal fade" id="tableModal" tabindex="-1" role="dialog" aria-labelledby="tableModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -97,7 +97,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> --}}
   @if ($message = Session::get('transaction_success'))
   <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -182,13 +182,65 @@
                     </div>
                   </div>
                   <div class="btn-group mt-h">
-                    <button class="btn btn-search" data-toggle="modal" data-target="#tableModal" type="button">
+                    {{-- <button class="btn btn-search" data-toggle="modal" data-target="#tableModal" type="button">
                       <i class="mdi mdi-magnify"></i>
-                    </button>
+                    </button> --}}
                     <button class="btn btn-scan" data-toggle="modal" data-target="#scanModal" type="button">
                       <i class="mdi mdi-crop-free"></i>
                     </button>
                   </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 mb-4">
+          <div class="card card-noborder b-radius">
+            <div class="card-body">
+              <div class="row">
+                {{-- <div class="col-12 d-flex justify-content-start align-items-center">
+                  <div class="cart-icon mr-3">
+                    <i class="mdi mdi-cart-outline"></i>
+                  </div>
+                  <p class="m-0 text-black-50">Daftar Barang</p>
+                </div> --}}
+                <div class="col-12 mt-3">
+                  <div class="form-group">
+                    <input type="text" class="form-control" name="search" placeholder="Cari barang">
+                  </div>  
+                </div>
+                <div class="col-12">
+                  <ul style="overflow:auto; max-height:290px; padding-bottom:10px;" class="list-group product-list">
+                    {{-- @foreach($products as $product)
+                    @if($supply_system->status == true)
+                    @if($product->stok != 0)
+                    <li class="list-group-item d-flex justify-content-between align-items-center active-list">
+                      <div class="text-group">
+                        <p class="m-0">{{ $product->kode_barang }}</p>
+                        <p class="m-0 txt-light">{{ $product->nama_barang }}</p>
+                      </div>
+                      <div class="d-flex align-items-center">
+                        <span class="ammount-box bg-secondary mr-1"><i class="mdi mdi-cube-outline"></i></span>
+                        <p class="m-0">{{ $product->stok }}</p>
+                      </div>
+                      <a href="#" class="btn btn-icons btn-rounded btn-inverse-outline-primary font-weight-bold btn-pilih" role="button"><i class="mdi mdi-chevron-right"></i></a>
+                    </li>
+                    @endif
+                    @else
+                    <li class="list-group-item d-flex justify-content-between align-items-center active-list">
+                      <div class="text-group">
+                        <p class="m-0">{{ $product->kode_barang }}</p>
+                        <p class="m-0 txt-light">{{ $product->nama_barang }}</p>
+                      </div>
+                      <div class="d-flex align-items-center">
+                        <span class="ammount-box bg-green mr-1"><i class="mdi mdi-coin"></i></span>
+                        <p class="m-0">Rp. {{ number_format($product->harga,2,',','.') }}</p>
+                      </div>
+                      <a href="#" class="btn btn-icons btn-rounded btn-inverse-outline-primary font-weight-bold btn-pilih" role="button"><i class="mdi mdi-chevron-right"></i></a>
+                    </li>
+                    @endif
+                    @endforeach --}}
+                  </ul>
                 </div>
               </div>
             </div>
@@ -472,6 +524,59 @@ $(document).on('click', '.btn-bayar', function(){
           "error"
       );
     }
+  }
+});
+var xhrSearch = null;
+$('input[name=search]').on('keyup', function(){
+  if(xhrSearch != null){
+    xhrSearch.abort()
+  }
+  var el = $('.product-list');
+  var searchTerm = $(this).val().toLowerCase();
+  if(searchTerm.trim() != ''){
+    var loading = ''+
+          '<li class="list-group-item d-flex justify-content-between align-items-center active-list">'+
+            'Sedang mencari ...'+
+          '</li>';
+    el.html(loading)
+    xhrSearch = $.ajax({
+      url: "{{ url('/transaction/products/search') }}",
+      method: "get",
+      data:{
+        cari: searchTerm
+      },
+      success:function(response){
+        if(response.product.length>0){
+          var html = '';
+          for(var i=0; i<response.product.length; i++){
+            var productEl = ''+
+            '<li class="list-group-item d-flex justify-content-between align-items-center active-list">'+
+              '<div class="text-group">'+
+                '<p class="m-0">'+response.product[i].kode_barang+'</p>'+
+                '<p class="m-0 txt-light">'+response.product[i].nama_barang+'</p>'+
+              '</div>'+
+              '<div class="d-flex align-items-center">'+
+                '<span class="ammount-box bg-secondary mr-1"><i class="mdi mdi-cube-outline"></i></span>'+
+                '<p class="m-0">'+response.product[i].stok+'</p>'+
+              '</div>'+
+              '<a href="#" class="btn btn-icons btn-rounded btn-inverse-outline-primary font-weight-bold btn-pilih" role="button"><i class="mdi mdi-chevron-right"></i></a>'+
+            '</li>';
+            html+=productEl
+          }
+          el.html(html)
+        }else{
+          var html = ''+
+          '<li class="list-group-item d-flex justify-content-between align-items-center active-list">'+
+            'Product tidak ditemukan'+
+          '</li>';
+          el.html(html);
+        }
+        
+      }
+    });
+  }else{
+    var html = '';
+    el.html(html);
   }
 });
 </script>
