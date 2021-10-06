@@ -57,10 +57,10 @@
                                                 </a>
               <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list pb-0" aria-labelledby="notificationDropdown">
                 <div class="dropdown-item py-3 border-bottom">
-                                    <p class="mb-0 font-weight-medium float-left">Anda Memiliki 2 Pemberitahuan</p>
-                                    <a href="#" role="button" data-toggle="modal" data-target="#notificationModal"><span class="badge badge-pill badge-primary float-right">Semua</span></a>
+                  <p class="mb-0 font-weight-medium float-left">Anda Memiliki 2 Pemberitahuan</p>
+                   <a href="#" role="button" data-toggle="modal" data-target="#notificationModal"><span class="badge badge-pill badge-primary float-right">Semua</span></a>
                 </div>
-                                                                      <a class="dropdown-item preview-item py-3">
+                    <a class="dropdown-item preview-item py-3">
                     <div class="preview-thumbnail">
                       <i class="mdi mdi-alert m-auto text-warning"></i>
                     </div>
@@ -69,7 +69,7 @@
                       <p class="font-weight-light small-text mb-0"> Stok COCHO tersisa -2 </p>
                     </div>
                   </a>
-                                                                        <a class="dropdown-item preview-item py-3">
+                    <a class="dropdown-item preview-item py-">
                     <div class="preview-thumbnail">
                       <i class="mdi mdi-alert m-auto text-danger"></i>
                     </div>
@@ -78,7 +78,7 @@
                       <p class="font-weight-light small-text mb-0"> Stok barang batre telah habis</p>
                     </div>
                   </a>
-                                                                  </div>
+                </div>
             </li>
             <li class="nav-item dropdown d-none d-xl-inline-block user-dropdown">
               <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
@@ -155,7 +155,7 @@
                 </ul>
               </div>
             </li>
-                                                <li class="nav-item">
+            <li class="nav-item">
               <a class="nav-link" href="https://koperasi.ittelkom-sby.ac.id/transaction">
                 <span class="menu-title">Transaksi</span>
               </a>
@@ -176,7 +176,7 @@
                 </ul>
               </div>
             </li>
-                      </ul>
+          </ul>
         </nav>
         <!-- End-SideNav -->
 
@@ -194,8 +194,7 @@
                   <div class="modal-body">
                     <div class="row">
                       <div class="col-12">
-                                                                                                      <div class="d-flex justify-content-start align-items-center mb-3">
-                            <div class="icon-notification">
+                              <div class="icon-notification">
                               <i class="mdi mdi-alert m-auto text-warning"></i>
                             </div>
                             <div class="text-group ml-3">
@@ -203,8 +202,7 @@
                               <p class="m-0 description-notification">Stok COCHO tersisa -2</p>
                             </div>
                           </div>
-                                                                                                        <div class="d-flex justify-content-start align-items-center mb-3">
-                            <div class="icon-notification">
+                              <div class="icon-notification">
                               <i class="mdi mdi-alert m-auto text-danger"></i>
                             </div>
                             <div class="text-group ml-3">
@@ -212,7 +210,7 @@
                               <p class="m-0 description-notification">Stok barang batre telah habis</p>
                             </div>
                           </div>
-                                                                                                  </div>
+                          <div>
                     </div>
                   </div>
                 </div>
@@ -273,7 +271,7 @@
 	    <div class="modal-body">
 	    	<div class="row">
 	    		<div class="col-12 img-import-area">
-	    			<img src="https://koperasi.ittelkom-sby.ac.id/images/instructions/ImportSupply.jpg" class="img-import">
+	    			<img src="{{ asset('images/instructions/ImportSupply.jpg') }}" class="img-import">
 	    		</div>
 	    	</div>
 	    </div>
@@ -310,7 +308,7 @@
 										</div>
 										<div class="col-12">
 											<ul class="list-group product-list">
-											  											<li class="list-group-item d-flex justify-content-between align-items-center active-list">
+											  <li class="list-group-item d-flex justify-content-between align-items-center active-list">
 											  <div class="text-group">
 												  <p class="m-0">1</p>
 												  <p class="m-0 txt-light">COCHO</p>
@@ -321,7 +319,7 @@
 											  </div>
 											  <a href="#" class="btn btn-icons btn-rounded btn-inverse-outline-primary font-weight-bold btn-pilih" role="button"><i class="mdi mdi-chevron-right"></i></a>
 											</li>
-																						<li class="list-group-item d-flex justify-content-between align-items-center active-list">
+									     <li class="list-group-item d-flex justify-content-between align-items-center active-list">
 											  <div class="text-group">
 												  <p class="m-0">ELE-81842</p>
 												  <p class="m-0 txt-light">batre</p>
@@ -350,14 +348,14 @@
 											<div class="col-12">
 												<select name="kategori" required class="form-control">
 													<option value="">Pilih Jenis Barang</option>
-																											<option value="4">Minuman</option>
-																											<option value="5">Snack</option>
-																											<option value="6">ATK</option>
-																											<option value="7">Pantry</option>
-																											<option value="9">Ice Cream</option>
-																											<option value="10">Lain-lain</option>
-																											<option value="11">Elektronik</option>
-																									</select>
+													<option value="4">Minuman</option>
+												  <option value="5">Snack</option>
+													<option value="6">ATK</option>
+												  <option value="7">Pantry</option>
+												  <option value="9">Ice Cream</option>
+													<option value="10">Lain-lain</option>
+													<option value="11">Elektronik</option>
+												</select>
 											</div>
 										</div>
 										<div>
@@ -433,11 +431,10 @@
 										<div class="col-12 error-notice" id="harga_beli_error"></div>
 									</div>
 
-                                    <div class="form-group row top-min">
-                                    <label for="exampleFormControlTextarea1" class="col-12 font-weight-bold col-form-label" >Note</label>
-                                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="note"></textarea>
- 
-                                </div>
+                  <div class="form-group row top-min">
+                  <label for="exampleFormControlTextarea1" class="col-12 font-weight-bold col-form-label" >Note</label>
+                  <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="note"></textarea>
+                  </div>
 
 									<div class="row">
 										<div class="col-12 d-flex justify-content-end">

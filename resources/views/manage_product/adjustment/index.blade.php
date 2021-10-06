@@ -1,6 +1,6 @@
 @extends('templates/main')
 @section('css')
-<link rel="stylesheet" href="{{ asset('css/manage_product/supply_product/supply/style.css') }}">
+<link rel="stylesheet" href="{{ asset('css/manage_product/adjustment/style.css') }}">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
 <style>
   .btn-update{
@@ -33,11 +33,11 @@
             </div>
           </div>
         </div>
-	      <a href="#" class="btn btn-icons btn-inverse-primary btn-new ml-2">
+	      <a href="{{route('adjustment.create')}}" class="btn btn-icons btn-inverse-primary btn-new ml-2">
 	      	<i class="mdi mdi-plus"></i>
 	      </a>
         <a href="#" class="btn btn-inverse-primary btn-new ml-2">
-          Create Adjustment
+          Adjustment
         </a>
       </div>
     </div>
@@ -55,15 +55,16 @@
               @endforeach
               <div class="table-responsive">
                 <table class="table table-custom">
-                  <tr>
-                    <th>No</th>
-                    <th>In Stock</th>
-                    <th>Actual Stock</th>
-                    <th>Adjustment</th>
-                    <th>Note</th>
-                    <th>Action</th>
-                  </tr>
-                  
+                    <thead>
+                      <tr>
+                      <th>No</th>
+                      <th>In Stock</th>
+                      <th>Actual Stock</th>
+                      <th>Adjustment</th>
+                      <th>Note</th>
+                      <th>Action</th>
+                      </tr>
+                    </thead>
                 </table>
               </div>
             </ul>

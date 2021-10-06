@@ -13,7 +13,8 @@ class AdjustmentController extends Controller
      */
     public function index()
     {
-       return view("manage_product.adjustment.index");
+        $dates = now();
+        return view("manage_product.adjustment.index",["dates" => $dates]);
     }
 
     /**
