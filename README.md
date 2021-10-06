@@ -7,6 +7,10 @@
 
 ## About Project
 
+**untuk mengetahui branch repo:**
+
+> git branch
+
 **untuk mengetahui status dari repo lokal (komputer) :**
 
 > git status
