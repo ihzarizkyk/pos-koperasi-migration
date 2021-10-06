@@ -52,7 +52,7 @@
             <ul class="list-date">
               @foreach($dates as $date)
               <li class="txt-light">{{ date('d M, Y', strtotime($date)) }}</li>
-              
+              @endforeach
               <div class="table-responsive">
                 <table class="table table-custom">
                   <tr>
