@@ -13,7 +13,7 @@ class AdjustmentController extends Controller
      */
     public function index()
     {
-       return "adjustment";
+       return view("manage_product.adjustment.index");
     }
 
     /**
