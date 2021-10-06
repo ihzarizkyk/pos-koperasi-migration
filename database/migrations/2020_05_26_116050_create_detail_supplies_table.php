@@ -25,7 +25,7 @@ class CreateDetailSuppliesTable extends Migration
             $table->string('status');
             $table->timestamps();
 
-            $table->foreign('supplies_id')->references('id')->on('suppliers');
+            // $table->foreign('supplies_id')->references('id')->on('suppliers');
         });
     }
 

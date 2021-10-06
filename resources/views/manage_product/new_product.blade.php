@@ -102,6 +102,7 @@
 							  	<div class="col-12">
 							  		<select class="form-control" name="kategori" required>
 							  			<option value="">-- Pilih Jenis Barang --</option>
+										  <option value="sembako">sembako</option>
 										@foreach ($category as $item)
 											<option value="{{$item->id}}">{{$item->name}}</option>
 										@endforeach

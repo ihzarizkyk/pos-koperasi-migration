@@ -16,14 +16,13 @@ class CreateSupplyTable extends Migration
         Schema::create('supplies', function (Blueprint $table) {
             $table->id();
             $table->string('nota')->nullable();
-            $table->unsignedBigInteger('suppliers_id');
+            $table->unsignedInteger('suppliers_id')->nullable();
             $table->string('status');
             $table->integer('id_pemasok');
             $table->date('date')->nullable();
             $table->timestamps();
 
-            $table->foreign('suppliers_id')->references('id')->on('suppliers');
-        });
+           });
     }
 
     /**

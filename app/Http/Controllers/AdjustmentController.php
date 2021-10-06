@@ -13,7 +13,7 @@ class AdjustmentController extends Controller
      */
     public function index()
     {
-        //
+       return "adjustment";
     }
 
     /**
@@ -23,7 +23,7 @@ class AdjustmentController extends Controller
      */
     public function create()
     {
-        //
+         return view("manage_product.adjustment.create");
     }
 
     /**

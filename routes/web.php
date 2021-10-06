@@ -108,6 +108,11 @@ Route::group(['middleware' => ['auth', 'checkRole:admin,kasir']], function(){
 	Route::get("/category/{id}/delete","CategoryController@destroy")->name('deleteCategory');
 	Route::post("/category/store","CategoryController@store")->name("category.create");
 	Route::post("/category/edit/post/{id}","CategoryController@update")->name("category.update");
+
+	// > Adjustment
+	Route::get("/adjustment","AdjustmentController@index");
+	
+	Route::get("/adjustment/create","AdjustmentController@create");
 });
 
 // Auth::routes();
