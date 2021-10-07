@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="/css/main/style.css">
     <link rel="shortcut icon" href="/icons/favicon.png"/>
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/css/manage_product/adjustment/create/style.css">
+    <link rel="stylesheet" href="/css/manage_product/adjustment/detail/style.css">
 <style>
 	.margin{
 		margin-right: 5px;
@@ -492,57 +492,8 @@
 		<div class="card card-noborder b-radius">
 			<div class="card-body">
 				<form action="https://koperasi.ittelkom-sby.ac.id/supply/create" method="post">
-					<input type="hidden" name="_token" value="jXbVyE4XNiggp6m9NlI3BnUpKrMAdZ4q7lYMnXFo">					<div class="row">
-						<div class="col-12 table-responsive mb-4">
-							<table class="table table-custom">
-								<thead>
-									<tr>
-										<th>Barang</th>
-										<th>In-Stock</th>
-										<th>Actual Stock</th>
-										<th>Adjustment</th>
-										<th>Note</th>
-										<th></th>
-									</tr>
-								</thead>
-								<tbody>
-									
-								</tbody>
-							</table>
-						</div>
-<!-- 						<div class="form-hidden" id="detail">
-							<div class="container">
-								<div class="row">
-									<div class="col">
-										<div class="form-group row top-min">
-											<label class="col-12 font-weight-bold col-form-label">Nota Pembelian</label>
-											<div class="col-12">
-												<input type="text" class="form-control input-notzero" name="nota" placeholder="Masukkan Nota Pembelian" required>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="container">
-								<div class="row">
-									<div class="col">
-										<div class="form-group row top-min">
-											<label class="col-12 font-weight-bold col-form-label"><b>Tanggal</b></label>
-											<div class="col-12">
-												<div class="input-group">
-													<input type="date" class="form-control" name="date" required>
-												</div>
-											</div>
-											<div class="col-12 error-notice" id="backdate_error"></div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
- -->						<div class="col-12 d-flex justify-content-end">
-							<button class="btn btn-simpan btn-sm margin" type="submit" hidden="" name="create" value="create"><i class="mdi mdi-content-save"></i> Create</button>
-							<button class="btn btn-simpan btn-sm" type="submit" hidden="" name="fullfill" value="fullfill"><i class="mdi mdi-content-save"></i> Fullfill</button>
-						</div>
+					<input type="hidden" name="_token" value="jXbVyE4XNiggp6m9NlI3BnUpKrMAdZ4q7lYMnXFo">					
+
 					</div>
 				</form>
 			</div>
@@ -573,118 +524,5 @@
       </div>
     </div>
 
-    <!-- Javascript -->
-    <script src="{{ asset('assets/vendors/js/vendor.bundle.base.js')"></script>
-    <script src="{{ asset('assets/vendors/js/vendor.bundle.addons.js')"></script>
-    <script src="{{ asset('assets/js/shared/off-canvas.js') }}"></script>
-    <script src="{{ asset('assets/js/shared/misc.js') }}"></script>
-    <script src="{{ asset('plugins/js/jquery.form-validator.min.js')"></script>
-    <script src="{{ asset('plugins/js/sweetalert.min.js') }}"></script>
-    <script src="{{ asset('plugins/js/jquery-ui.min.js"></script>
-    <script src="{{ asset('js/templates/script.js"></script>
-    <script type="text/javascript">
-      $(document).on('input', 'input[name=search_page]', function(){
-        if($(this).val() != ''){
-          $('#content-web-page').prop('hidden', true);
-          $('#content-web-search').prop('hidden', false);
-          var search_word = $(this).val();
-          $.ajax({
-            url: "https://koperasi.ittelkom-sby.ac.id/search/" + search_word,
-            method: "GET",
-            success:function(response){
-              $('.result-1').html(response.length + ' Hasil Pencarian');
-              $('.result-2').html('dari "' + search_word + '"');
-              var lengthLoop = response.length - 1;
-              var searchResultList = '';
-              for(var i = 0; i <= lengthLoop; i++){
-                var page_url = "https://koperasi.ittelkom-sby.ac.id/%3Aid";
-                page_url = page_url.replace('%3Aid', response[i].page_url);
-                searchResultList += '<a href="'+ page_url +'" class="page-result-child mb-4 w-100"><div class="col-12"><div class="card card-noborder b-radius"><div class="card-body"><div class="row"><div class="col-12"><h5 class="d-block page_url">'+ response[i].page_name +'</h5><p class="align-items-center d-flex justify-content-start"><span class="icon-in-search mr-2"><i class="mdi mdi-chevron-double-right"></i></span> <span class="breadcrumbs-search page_url">'+ response[i].page_title +'</span></p><div class="search-description"><p class="m-0 p-0 page_url">'+ response[i].page_content.substring(0, 500) +'...</p></div></div></div></div></div></div></a>';
-              }
-              $('#page-result-parent').html(searchResultList);
-              $('.page_url:contains("'+search_word+'")').each(function(){
-                  var regex = new RegExp(search_word, 'gi');
-                  $(this).html($(this).text().replace(regex, '<span style="background-color: #607df3;">'+search_word+'</span>'));
-              });
-            }
-          });
-        }else{
-          $('#content-web-page').prop('hidden', false);
-          $('#content-web-search').prop('hidden', true);
-        }
-      });
-    </script>
-    <script src="{{ asset('plugins/js/quagga.min.js')"></script>
-<script src="{{asset('js/manage_product/supply_product/new_supply/script.js')}}"></script>
-<script type="text/javascript">
-	
-	
-	
-	$(document).on('click', '.btn-continue', function(){
-	  var kode_barang = $('.barcode-result-text').text();
-	  $.ajax({
-	  	url: "https://koperasi.ittelkom-sby.ac.id/supply/check/" + kode_barang,
-	  	method: "GET",
-	  	success:function(data){
-	  		if(data == 'sukses'){
-				$('input[name=kode_barang]').val(kode_barang);
-				$('#btn-scan-action').prop('hidden', true);
-				$('#area-scan').prop('hidden', true);
-				$('.barcode-result').prop('hidden', true);
-				$('.close-btn').click();
-				$('input[name=kode_barang]').valid();
-				stopScan();
-	  		}else{
-	  			swal(
-			        "",
-			        "Kode barang tidak tersedia",
-			        "error"
-			    );
-	  		}
-	  	}
-	  });
-	});
-
-
-	$(document).on('click', '.btn-tambah', function(e){
-		e.preventDefault();
-		$('form[name=manual_form]').valid();
-		// var detail = document.getElementById("detail");
-		var kode_barang = $('input[name=kode_barang]').val();
-    var nama_barang = $('input[name=nama_barang]').val();
-		var in_stock = $('input[name=in_stock]').val();
-		var actual_stock = $('input[name=actual_stock]').val();
-		var adjustment = $('input[name=adjustment]').val();
-		var note = $('input[name=note]').val();
-		if(validator.valid() == true){
-			$.ajax({
-				url: "supply/data/" + kode_barang,
-				method: "GET",
-				success:function(response){
-					var check = $('.kd-barang-field:contains('+ response.product.kode_barang +')').length;
-					if(check == 0){
-						$('input[name=kode_barang]').val('');
-						$('input[name=in_stock]').val('');
-						$('input[name=actual_stock]').val('');
-						$('input[name=adjustment]').val('');
-						$('input[name=note]').val('');
-						$('tbody').append('<tr><td><span class="kd-barang-field">'+ response.product.kode_barang +'</span><span class="nama-barang-field">'+ response.product.in_stock +'</span></td><td>'+  +'</td><td>'+ tempat_beli +'</td><td>Rp. '+ parseInt(harga_beli).toLocaleString() +'</td><td class="text-success">Rp. '+ parseInt(total).toLocaleString() +'</td><td><button type="button" class="btn btn-icons btn-rounded btn-secondary ml-1 btn-delete"><i class="mdi mdi-close"></i></button><div class="form-group" hidden=""><input type="text" class="form-control" name="kode_barang_supply[]" value="'+ response.product.kode_barang +'"><input type="text" class="form-control" name="jumlah_supply[]" value="'+ jumlah +'"><input type="text" class="form-control" name="tempat_beli[]" value="'+ tempat_beli +'"><input type="text" class="form-control" name="harga_beli_supply[]" value="'+ harga_beli +'"><input type="text" class="form-control" name="subtotal[]" value="'+ total +'"></div></td></tr>');
-						$('.btn-simpan').prop('hidden', false);
-						if (window.getComputedStyle(detail).visibility === "hidden") {
-							detail.style.visibility = "visible";
-						}
-					}else{
-						swal(
-					        "",
-					        "Barang telah ditambahkan",
-					        "error"
-					    );
-					}
-				}
-			});
-		}
-	});
-</script>
-    <!-- End-Javascript -->
   </body>
 </html>

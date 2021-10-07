@@ -15,6 +15,11 @@ class CreateAdjustmentsTable extends Migration
     {
         Schema::create('adjustments', function (Blueprint $table) {
             $table->id();
+            $table->string('kode_barang');
+            $table->string('nama_barang')->nullable();
+            $table->integer('in_stock')->nullable();
+            $table->integer('actual_stock')->nullable();
+            $table->integer('adjustment')->nullable();
             $table->timestamps();
         });
     }

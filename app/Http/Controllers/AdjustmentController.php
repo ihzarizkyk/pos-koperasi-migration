@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Adjustment;
+use App\Product;
 
 class AdjustmentController extends Controller
 {
@@ -33,9 +35,24 @@ class AdjustmentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $req)
     {
-        //
+
+    $adjust = new Adjustment;
+    $adjust->in_stock = $req->in_stock;
+    $adjust->actual_stock = $req->actual_stock;
+    $adjust->note = $req->note;
+    // $supply->date = $req->date;
+    $adjust->save();
+
+    foreach($req->kode_barang as $no => $kode_barang) {
+        $product = Product::where('kode_barang', $kode_barang)->first();
+
+        if($product->stok == 0){
+        $product->nama_barang = $req->nama_barang[$no];
+        $product->save();
+            }
+        }
     }
 
     /**
@@ -46,7 +63,9 @@ class AdjustmentController extends Controller
      */
     public function show($id)
     {
-        //
+        $data = Adjustment::find($id);
+        $products = Product::all();
+        return view('manage_product.adjustment.detail', compact('data','products'));
     }
 
     /**
