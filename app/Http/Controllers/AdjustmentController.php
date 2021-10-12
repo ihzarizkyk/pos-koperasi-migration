@@ -65,7 +65,7 @@ class AdjustmentController extends Controller
             $end->addDay(90);
         }
         $end->addDay(1);
-        $adjustment = Adjustment::whereBetween('adjustments.created_at', [$start, $end])->paginate(1);
+        $adjustment = Adjustment::whereBetween('adjustments.created_at', [$start, $end])->paginate(7);
         $total_nominal_adjustment = Adjustment::whereBetween('adjustments.created_at', [$start, $end])->totalNominal()->first()->append('total');
         $end = $end->subDay(1);
         $adjustment = $adjustment->withQueryString();
