@@ -101,8 +101,9 @@ class ProductManageController extends Controller
         	$check_product = Product::where('kode_barang', $req->kode_barang)
         	->count();
             $kode = Category::where('id', $req->kategori)->first();
+            echo json_encode($req);
             $lastProduct = Product::latest('id')->first();
-            $autoIncrements = substr($lastProduct->kode_barang, -1);
+            $autoIncrements = $lastProduct!=null ? substr($lastProduct->kode_barang, -1) : 0;
             $supply_system = Supply_system::first();
             if(trim($req->limit) == ""){
                 $req->limit = null;

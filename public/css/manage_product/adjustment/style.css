@@ -108,3 +108,9 @@
     background-color: rgba(25, 216, 149, 0.2);
     border-color: rgba(25, 216, 149, 0);
 }
+
+.bg-red{
+	color: #dc3545;
+    background-color: rgba(220, 53, 69, 0.2);
+    border-color: rgba(25, 216, 149, 0);
+}

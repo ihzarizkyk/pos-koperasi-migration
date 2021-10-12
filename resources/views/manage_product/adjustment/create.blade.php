@@ -1,24 +1,6 @@
-
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Website POS</title>
-
-    <!-- CSS -->
-    <link rel="stylesheet" href="/assets/vendors/iconfonts/mdi/css/materialdesignicons.min.css">
-    <link rel="stylesheet" href="/assets/vendors/iconfonts/ionicons/css/ionicons.css">
-    <link rel="stylesheet" href="/assets/vendors/iconfonts/typicons/src/font/typicons.css">
-    <link rel="stylesheet" href="/assets/vendors/iconfonts/flag-icon-css/css/flag-icon.min.css">
-    <link rel="stylesheet" href="/assets/vendors/css/vendor.bundle.base.css">
-    <link rel="stylesheet" href="/assets/vendors/css/vendor.bundle.addons.css">
-    <link rel="stylesheet" href="/assets/css/shared/style.css">
-    <link rel="stylesheet" href="/assets/css/demo_1/style.css">
-    <link rel="stylesheet" href="/css/main/style.css">
-    <link rel="shortcut icon" href="/icons/favicon.png"/>
-    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/css/manage_product/adjustment/create/style.css">
+@extends('templates/main')
+@section('css')
+<link rel="stylesheet" href="{{ asset('css/manage_product/adjustment/create/style.css') }}">
 <style>
 	.margin{
 		margin-right: 5px;
@@ -30,348 +12,141 @@
 		visibility: hidden;
 	}
 </style>
-    <!-- End-CSS -->
+@endsection
+@section('content')
 
-  </head>
-  <body>
-    <div class="container-scroller">
-      <!-- TopNav -->
-      <nav class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
-        <div class="text-center navbar-brand-wrapper d-flex align-items-top justify-content-center">
-          <a class="navbar-brand brand-logo" href="https://koperasi.ittelkom-sby.ac.id/dashboard">
-            <img src="https://koperasi.ittelkom-sby.ac.id/icons/logo.png" alt="logo" /> </a>
-          <a class="navbar-brand brand-logo-mini" href="https://koperasi.ittelkom-sby.ac.id/dashboard">
-            <img src="https://koperasi.ittelkom-sby.ac.id/icons/logo-mini.png" alt="logo" /> </a>
-        </div>
-        <div class="navbar-menu-wrapper d-flex align-items-center">
-          <form class="search-form d-none d-md-block" action="#">
-            <div class="form-group">
-              <input type="search" class="form-control" name="search_page" placeholder="Cari Halaman">
-            </div>
-          </form>
-          <ul class="navbar-nav ml-auto">
-            <li class="nav-item dropdown">
-                            <a class="nav-link count-indicator" id="notificationDropdown" href="#" data-toggle="dropdown">
-                <i class="mdi mdi-bell-outline"></i>
-                                                    <span class="count bg-success">2</span>
-                                                </a>
-              <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list pb-0" aria-labelledby="notificationDropdown">
-                <div class="dropdown-item py-3 border-bottom">
-                  <p class="mb-0 font-weight-medium float-left">Anda Memiliki 2 Pemberitahuan</p>
-                   <a href="#" role="button" data-toggle="modal" data-target="#notificationModal"><span class="badge badge-pill badge-primary float-right">Semua</span></a>
-                </div>
-                    <a class="dropdown-item preview-item py-3">
-                    <div class="preview-thumbnail">
-                      <i class="mdi mdi-alert m-auto text-warning"></i>
-                    </div>
-                    <div class="preview-item-content">
-                      <h6 class="preview-subject font-weight-normal text-dark mb-1">Barang Hampir Habis</h6>
-                      <p class="font-weight-light small-text mb-0"> Stok COCHO tersisa -2 </p>
-                    </div>
-                  </a>
-                    <a class="dropdown-item preview-item py-">
-                    <div class="preview-thumbnail">
-                      <i class="mdi mdi-alert m-auto text-danger"></i>
-                    </div>
-                    <div class="preview-item-content">
-                      <h6 class="preview-subject font-weight-normal text-dark mb-1">Barang Telah Habis</h6>
-                      <p class="font-weight-light small-text mb-0"> Stok barang batre telah habis</p>
-                    </div>
-                  </a>
-                </div>
-            </li>
-            <li class="nav-item dropdown d-none d-xl-inline-block user-dropdown">
-              <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
-                <img class="img-xs rounded-circle" src="https://koperasi.ittelkom-sby.ac.id/pictures/default.png" alt="Profile image"> </a>
-              <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
-                <div class="dropdown-header text-center">
-                  <img class="img-md rounded-circle" src="https://koperasi.ittelkom-sby.ac.id/pictures/default.png" alt="Profile image">
-                  <p class="mb-1 mt-3 font-weight-semibold">Mochammad Ihza Rizky Karim</p>
-                  <p class="font-weight-light text-muted mb-0">ihzarizky30@gmail.com</p>
-                </div>
-                <a href="https://koperasi.ittelkom-sby.ac.id/profile" class="dropdown-item">Profil</a>
-                <a href="https://koperasi.ittelkom-sby.ac.id/logout" class="dropdown-item">Sign Out</a>
-              </div>
-            </li>
-          </ul>
-          <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
-            <span class="mdi mdi-menu"></span>
-          </button>
-        </div>
-      </nav>
-      <!-- End-TopNav -->
-
-      <div class="container-fluid page-body-wrapper">
-        <!-- SideNav -->
-        <nav class="sidebar sidebar-offcanvas" id="sidebar">
-          <ul class="nav">
-            <li class="nav-item nav-profile">
-              <a href="https://koperasi.ittelkom-sby.ac.id/profile" class="nav-link">
-                <div class="profile-image">
-                  <img class="img-xs rounded-circle" src="https://koperasi.ittelkom-sby.ac.id/pictures/default.png" alt="profile image">
-                  <div class="dot-indicator bg-success"></div>
-                </div>
-                <div class="text-wrapper">
-                                    <p class="profile-name">Mochammad Ih..</p>
-                  <p class="designation">admin</p>
-                </div>
-              </a>
-            </li>
-            <li class="nav-item nav-category">Daftar Menu</li>
-            <li class="nav-item">
-              <a class="nav-link" href="https://koperasi.ittelkom-sby.ac.id/dashboard">
-                <span class="menu-title">Dashboard</span>
-              </a>
-            </li>
-                                    <li class="nav-item">
-              <a class="nav-link" data-toggle="collapse" href="#kelola_akun" aria-expanded="false" aria-controls="kelola_akun">
-                <span class="menu-title">Kelola Akun</span>
-                <i class="menu-arrow"></i>
-              </a>
-              <div class="collapse" id="kelola_akun">
-                <ul class="nav flex-column sub-menu">
-                  <li class="nav-item">
-                    <a class="nav-link" href="https://koperasi.ittelkom-sby.ac.id/account">Daftar Akun</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="https://koperasi.ittelkom-sby.ac.id/access">Hak Akses</a>
-                  </li>
-                </ul>
-              </div>
-            </li>
-                                                <li class="nav-item">
-              <a class="nav-link" data-toggle="collapse" href="#kelola_barang" aria-expanded="false" aria-controls="kelola_barang">
-                <span class="menu-title">Kelola Barang</span>
-                <i class="menu-arrow"></i>
-              </a>
-              <div class="collapse" id="kelola_barang">
-                <ul class="nav flex-column sub-menu">
-                  <li class="nav-item">
-                    <a class="nav-link" href="https://koperasi.ittelkom-sby.ac.id/product">Daftar Barang</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="https://koperasi.ittelkom-sby.ac.id/supply">Pasok Barang</a>
-                  </li>
-                </ul>
-              </div>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="https://koperasi.ittelkom-sby.ac.id/transaction">
-                <span class="menu-title">Transaksi</span>
-              </a>
-            </li>
-                                    <li class="nav-item">
-              <a class="nav-link" data-toggle="collapse" href="#kelola_laporan" aria-expanded="false" aria-controls="kelola_laporan">
-                <span class="menu-title">Kelola Laporan</span>
-                <i class="menu-arrow"></i>
-              </a>
-              <div class="collapse" id="kelola_laporan">
-                <ul class="nav flex-column sub-menu">
-                  <li class="nav-item">
-                    <a class="nav-link" href="https://koperasi.ittelkom-sby.ac.id/report/transaction">Laporan Transaksi</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="https://koperasi.ittelkom-sby.ac.id/report/workers">Laporan Pegawai</a>
-                  </li>
-                </ul>
-              </div>
-            </li>
-          </ul>
-        </nav>
-        <!-- End-SideNav -->
-
-        <div class="main-panel">
-          <div class="row">
-            <div class="modal fade" id="notificationModal" tabindex="-1" role="dialog" aria-labelledby="notificationModalLabel" aria-hidden="true">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="notificationModalLabel">Daftar Notifikasi</h5>
-                    <button type="button" class="close close-btn" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                    <div class="row">
-                      <div class="col-12">
-                              <div class="icon-notification">
-                              <i class="mdi mdi-alert m-auto text-warning"></i>
-                            </div>
-                            <div class="text-group ml-3">
-                              <p class="m-0 title-notification">Barang Hampir Habis</p>
-                              <p class="m-0 description-notification">Stok COCHO tersisa -2</p>
-                            </div>
-                          </div>
-                              <div class="icon-notification">
-                              <i class="mdi mdi-alert m-auto text-danger"></i>
-                            </div>
-                            <div class="text-group ml-3">
-                              <p class="m-0 title-notification">Barang Telah Habis</p>
-                              <p class="m-0 description-notification">Stok barang batre telah habis</p>
-                            </div>
-                          </div>
-                          <div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="content-wrapper" id="content-web-page">
-            <div class="row page-title-header">
-  <div class="col-12">
-    <div class="page-header d-flex justify-content-start align-items-center">
-      <div class="quick-link-wrapper d-md-flex flex-md-wrap">
-        <ul class="quick-links">
-          <li><a href="https://koperasi.ittelkom-sby.ac.id/supply">Riwayat Pasok</a></li>
-          <li><a href="https://koperasi.ittelkom-sby.ac.id/supply/new">Pasok Barang</a></li>
-        </ul>
-      </div>
-    </div>
-  </div>
+<div class="row page-title-header">
+	<div class="col-12">
+		<div class="page-header d-flex justify-content-start align-items-center">
+			<div class="quick-link-wrapper d-md-flex flex-md-wrap">
+				<ul class="quick-links">
+					<li><a href="https://koperasi.ittelkom-sby.ac.id/supply">Riwayat Pasok</a></li>
+					<li><a href="https://koperasi.ittelkom-sby.ac.id/supply/new">Pasok Barang</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
 </div>
 <div class="row modal-group">
-  <div class="modal fade" id="scanModal" tabindex="-1" role="dialog" aria-labelledby="scanModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-	      <div class="modal-header">
-	        <h5 class="modal-title" id="scanModalLabel">Scan Barcode</h5>
-	        <button type="button" class="close close-btn" data-dismiss="modal" aria-label="Close">
-	          <span aria-hidden="true">&times;</span>
-	        </button>
-	      </div>
-	      <div class="modal-body">
-	          <div class="row">
-	          	<div class="col-12 text-center" id="area-scan">
-	          	</div>
-	          	<div class="col-12 barcode-result" hidden="">
-	          		<h5 class="font-weight-bold">Hasil</h5>
-	          		<div class="form-border">
-	          			<p class="barcode-result-text"></p>
-	          		</div>
-	          	</div>
-	          </div>
-	      </div>
-	      <div class="modal-footer" id="btn-scan-action" hidden="">
-	        <button type="button" class="btn btn-primary btn-sm font-weight-bold rounded-0 btn-continue">Lanjutkan</button>
-	        <button type="button" class="btn btn-outline-secondary btn-sm font-weight-bold rounded-0 btn-repeat">Ulangi</button>
-	      </div>
-      </div>
-    </div>
-  </div>
-  <div class="modal fade" id="formatModal" tabindex="-1" role="dialog" aria-labelledby="formatModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-      	<div class="modal-header">
-	        <h5 class="modal-title" id="formatModalLabel">Format Upload</h5>
-	        <button type="button" class="close close-btn" data-dismiss="modal" aria-label="Close">
-	          <span aria-hidden="true">&times;</span>
-	        </button>
-	    </div>
-	    <div class="modal-body">
-	    	<div class="row">
-	    		<div class="col-12 img-import-area">
-	    			<img src="{{ asset('images/instructions/ImportSupply.jpg') }}" class="img-import">
-	    		</div>
-	    	</div>
-	    </div>
-      </div>
+	<div class="modal fade" id="scanModal" tabindex="-1" role="dialog" aria-labelledby="scanModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="scanModalLabel">Scan Barcode</h5>
+					<button type="button" class="close close-btn" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-12 text-center" id="area-scan">
+						</div>
+						<div class="col-12 barcode-result" hidden="">
+							<h5 class="font-weight-bold">Hasil</h5>
+							<div class="form-border">
+								<p class="barcode-result-text"></p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer" id="btn-scan-action" hidden="">
+					<button type="button" class="btn btn-primary btn-sm font-weight-bold rounded-0 btn-continue">Lanjutkan</button>
+					<button type="button" class="btn btn-outline-secondary btn-sm font-weight-bold rounded-0 btn-repeat">Ulangi</button>
+				</div>
+			</div>
+		</div>
 	</div>
-  </div>
-  <div class="modal fade" id="tableModal" tabindex="-1" role="dialog" aria-labelledby="tableModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-	      <div class="modal-header">
-	        <h5 class="modal-title" id="tableModalLabel">Daftar Barang</h5>
-	        <button type="button" class="close close-btn" data-dismiss="modal" aria-label="Close">
-	          <span aria-hidden="true">&times;</span>
-	        </button>
-	      </div>
-	      <div class="modal-body">
-			<div class="row">
-				<div class="col-12">
-					<div class="card card-noborder b-radius">
-						<div class="card-body">
-							<nav>
-								<div class="nav nav-tabs" id="nav-tab" role="tablist">
-								  <a class="nav-link active" id="master-form-tab" data-toggle="tab" href="#master-form" role="tab" aria-controls="master-form" aria-selected="true">Master</a>
-								  <a class="nav-link" id="new-form-tab" data-toggle="tab" href="#new-form" role="tab" aria-controls="new-form" aria-selected="false">New</a>
-								</div>
-							</nav>
-							<div class="tab-content" id="nav-tabContent">
-								<div class="tab-pane fade show active" id="master-form" role="tabpanel" aria-labelledby="master-form-tab">
-									<div class="row">
-										<div class="col-12">
-											<div class="form-group mg-top">
-												<input type="text" class="form-control" name="search" placeholder="Cari barang">
-											</div>	
+	<div class="modal fade" id="formatModal" tabindex="-1" role="dialog" aria-labelledby="formatModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="formatModalLabel">Format Upload</h5>
+					<button type="button" class="close close-btn" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-12 img-import-area">
+							<img src="{{ asset('images/instructions/ImportSupply.jpg') }}" class="img-import">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="modal_cari_barang" tabindex="-1" role="dialog" aria-labelledby="tableModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="tableModalLabel">Daftar Barang</h5>
+					<button type="button" class="close close-btn" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-12">
+							<div class="card card-noborder b-radius">
+								<div class="card-body">
+									<nav>
+										<div class="nav nav-tabs" id="nav-tab" role="tablist">
+										<a class="nav-link active" id="master-form-tab" data-toggle="tab" href="#master-form" role="tab" aria-controls="master-form" aria-selected="true">Master</a>
+										<a class="nav-link" id="new-form-tab" data-toggle="tab" href="#new-form" role="tab" aria-controls="new-form" aria-selected="false">New</a>
 										</div>
-										<div class="col-12">
-											<ul class="list-group product-list">
-											  <li class="list-group-item d-flex justify-content-between align-items-center active-list">
-											  <div class="text-group">
-												  <p class="m-0">1</p>
-												  <p class="m-0 txt-light">COCHO</p>
-											  </div>
-											  <div class="d-flex align-items-center">
-												  <span class="ammount-box bg-secondary mr-1"><i class="mdi mdi-cube-outline"></i></span>
-												  <p class="m-0">-2</p>
-											  </div>
-											  <a href="#" class="btn btn-icons btn-rounded btn-inverse-outline-primary font-weight-bold btn-pilih" role="button"><i class="mdi mdi-chevron-right"></i></a>
-											</li>
-									     <li class="list-group-item d-flex justify-content-between align-items-center active-list">
-											  <div class="text-group">
-												  <p class="m-0">ELE-81842</p>
-												  <p class="m-0 txt-light">batre</p>
-											  </div>
-											  <div class="d-flex align-items-center">
-												  <span class="ammount-box bg-secondary mr-1"><i class="mdi mdi-cube-outline"></i></span>
-												  <p class="m-0">0</p>
-											  </div>
-											  <a href="#" class="btn btn-icons btn-rounded btn-inverse-outline-primary font-weight-bold btn-pilih" role="button"><i class="mdi mdi-chevron-right"></i></a>
-											</li>
-																					  </ul>
+									</nav>
+									<div class="tab-content" id="nav-tabContent">
+										<div class="tab-pane fade show active" id="master-form" role="tabpanel" aria-labelledby="master-form-tab">
+											<div class="row">
+												<div class="col-12 mt-3">
+													<div class="form-group">
+													  <input type="text" class="form-control" name="search" placeholder="Cari barang">
+													</div>  
+												  </div>
+												<div class="col-12">
+													<ul style="overflow:auto; max-height:290px; padding-bottom:10px;" class="list-group product-list">
+													</ul>
+												</div>
+											</div>
+										</div>
+										<div class="tab-pane fade" id="new-form" role="tabpanel" aria-labelledby="new-form-tab">
+											<form action="https://koperasi.ittelkom-sby.ac.id/supply/new_product" method="POST">
+												<input type="hidden" name="_token" value="jXbVyE4XNiggp6m9NlI3BnUpKrMAdZ4q7lYMnXFo">	
+												<div class="form-group row top-min mg-top">
+													<label class="col-12 font-weight-bold col-form-label">Nama Barang</label>
+													<div class="col-12">
+														<input type="text" class="form-control" name="nama_barang" placeholder="Masukkan Nama Barang">
+													</div>
+												</div>
+												<div class="form-group row top-min mg-top">
+													<label class="col-12 font-weight-bold col-form-label">Jenis Barang</label>
+													<div class="col-12">
+														<select name="kategori" required class="form-control">
+															<option value="">Pilih Jenis Barang</option>
+															<option value="4">Minuman</option>
+															<option value="5">Snack</option>
+															<option value="6">ATK</option>
+															<option value="7">Pantry</option>
+															<option value="9">Ice Cream</option>
+															<option value="10">Lain-lain</option>
+															<option value="11">Elektronik</option>
+														</select>
+													</div>
+												</div>
+												<div>
+													<button class="btn btn-simpan" type="submit"><i class="mdi mdi-content-save"></i> Create</button>
+												</div>
+											</form>
 										</div>
 									</div>
-								</div>
-								<div class="tab-pane fade" id="new-form" role="tabpanel" aria-labelledby="new-form-tab">
-									<form action="https://koperasi.ittelkom-sby.ac.id/supply/new_product" method="POST">
-										<input type="hidden" name="_token" value="jXbVyE4XNiggp6m9NlI3BnUpKrMAdZ4q7lYMnXFo">	
-										<div class="form-group row top-min mg-top">
-											<label class="col-12 font-weight-bold col-form-label">Nama Barang</label>
-											<div class="col-12">
-												<input type="text" class="form-control" name="nama_barang" placeholder="Masukkan Nama Barang">
-											</div>
-										</div>
-										<div class="form-group row top-min mg-top">
-											<label class="col-12 font-weight-bold col-form-label">Jenis Barang</label>
-											<div class="col-12">
-												<select name="kategori" required class="form-control">
-													<option value="">Pilih Jenis Barang</option>
-													<option value="4">Minuman</option>
-												  <option value="5">Snack</option>
-													<option value="6">ATK</option>
-												  <option value="7">Pantry</option>
-												  <option value="9">Ice Cream</option>
-													<option value="10">Lain-lain</option>
-													<option value="11">Elektronik</option>
-												</select>
-											</div>
-										</div>
-										<div>
-											<button class="btn btn-simpan" type="submit"><i class="mdi mdi-content-save"></i> Create</button>
-										</div>
-									</form>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-	      </div>
-	  </div>
+		</div>
 	</div>
-  </div>
 </div>
 <div class="row">
 	<div class="col-lg-4 col-md-12 col-sm-12 mb-4">
@@ -386,15 +161,15 @@
 								<div class="btn-tab-underline"></div>
 							</div>
 							<div class="col-12 mt-3">
-								<form method="post" name="manual_form">
+								<form name="input_product">
 									<div class="form-group row">
-										<label class="col-12 font-weight-bold col-form-label">Kode Barang</label>
+										<label class="col-12 font-weight-bold col-form-label">Kode Barang <small>(read only)</small></label>
 										<div class="col-8">
-											<input type="text" class="form-control" name="kode_barang" readonly="">
+											<input type="text" required class="form-control" name="kode_barang" readonly="">
 										</div>
 										<div class="col-4 left-min d-flex">
 											<div class="btn-group">
-												<button class="btn btn-search" data-toggle="modal" data-target="#tableModal" type="button">
+												<button class="btn btn-search" data-toggle="modal" data-target="#modal_cari_barang" type="button">
 													<i class="mdi mdi-magnify"></i>
 												</button>
 												<button class="btn btn-scan" data-toggle="modal" data-target="#scanModal" type="button">
@@ -402,23 +177,44 @@
 												</button>
 											</div>
 										</div>
-										<div class="col-12 error-notice" id="kode_barang_error"></div>
+										<div class="col-12 text-danger" hidden id="kode_barang_error">Barang belum dipilih</div>
 									</div>
 									<div class="form-group row top-min">
-										<label class="col-12 font-weight-bold col-form-label">In-Stock</label>
+										<label class="col-12 font-weight-bold col-form-label">Nama Barang <small>(read only)</small></label>
 										<div class="col-12">
-											<input type="text" class="form-control number-input input-notzero" name="in_stock" placeholder="Masukkan Jumlah">
+											<input type="text" required readonly class="form-control number-input input-notzero" name="nama_barang">
+										</div>
+										{{-- <div class="col-12 error-notice" id="nama_"></div> --}}
+									</div>
+									<div class="form-group row top-min">
+										<label class="col-12 font-weight-bold col-form-label">In-Stock <small>(read only)</small></label>
+										<div class="col-12">
+											<input type="text" required readonly class="form-control number-input input-notzero" name="in_stock">
 										</div>
 										<div class="col-12 error-notice" id="jumlah_error"></div>
 									</div>
 									<div class="form-group row top-min">
-										<label class="col-12 font-weight-bold col-form-label">Actual Stock</label>
+										<label class="col-12 font-weight-bold col-form-label">Actual Stock <small class="text-danger">*</small></label>
 										<div class="col-12">
-											<input type="text" class="form-control input-notzero" name="actual_stock" placeholder="Masukkan Tempat Beli">
+											<input type="number" required class="form-control input-notzero" name="actual_stock" placeholder="Masukkan Stock Sebenarnya">
 										</div>
-										<div class="col-12 error-notice" id="jumlah_error"></div>
+										<div class="col-12 text-danger" hidden id="actual_stock_error">Wajib diisi</div>
 									</div>
 									<div class="form-group row top-min">
+										<label class="col-12 font-weight-bold col-form-label">Stok Difference <small>(read only)</small></label>
+										<div class="col-12">
+											<input type="number" required class="form-control number-input input-notzero" name="stock_difference" readonly value="0">
+										</div>
+										<div class="col-12 text-danger" hidden id="stock_difference_error">Tidak ada perubahan</div>
+									</div>
+									<input type="number" name="hpp" hidden>
+									<div class="form-group row top-min">
+										<label class="col-12 font-weight-bold col-form-label">Note</label>
+										<div class="col-12">
+											<textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="note"></textarea>
+										</div>
+									</div>
+									{{-- <div class="form-group row top-min">
 										<label class="col-12 font-weight-bold col-form-label">Adjustment</label>
 										<div class="col-12">
 											<div class="input-group">
@@ -429,57 +225,52 @@
 											</div>
 										</div>
 										<div class="col-12 error-notice" id="harga_beli_error"></div>
-									</div>
-
-                  <div class="form-group row top-min">
-                  <label for="exampleFormControlTextarea1" class="col-12 font-weight-bold col-form-label" >Note</label>
-                  <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="note"></textarea>
-                  </div>
-
+									</div> --}}
+		
 									<div class="row">
 										<div class="col-12 d-flex justify-content-end">
-											<button class="btn font-weight-bold btn-tambah" type="button">Tambah</button>
+											<button class="btn font-weight-bold btn-tambah" id="input_product" type="button">Tambah</button>
 										</div>
 									</div>
 								</form>
 								<form action="https://koperasi.ittelkom-sby.ac.id/supply/import" method="post" name="import_form" enctype="multipart/form-data" hidden="">
 									<input type="hidden" name="_token" value="jXbVyE4XNiggp6m9NlI3BnUpKrMAdZ4q7lYMnXFo">									<div class="d-flex justify-content-between pb-2 align-items-center">
-					                  <h2 class="font-weight-semibold mb-0">Import</h2>
-					                  <input type="file" name="excel_file" hidden="" accept=".xls, .xlsx">
-					                  <a href="#" class="excel-file">
-					                  	<div class="icon-holder">
-						                   <i class="mdi mdi-upload"></i>
-						                </div>
-					                  </a>
-					                </div>
-					                <div class="d-flex justify-content-between">
-					                  <h5 class="font-weight-semibold mb-0">Upload file excel</h5>
-					                  <p class="excel-name">Pilih File</p>
-					                </div>
-					                <button class="btn btn-block mt-3 btn-upload" type="submit" hidden="">Import Data</button>
-					                <div class="row mt-4">
-					                	<div class="col-12">
-					                		<h4 class="card-title mb-1">Langkah - Langkah Import</h4>
-						                    <div class="d-flex py-2 border-bottom">
-						                      <div class="wrapper">
-						                        <p class="font-weight-semibold text-gray mb-0">1. Siapkan data dengan format Excel (.xls atau .xlsx)</p>
-						                        <small class="text-muted">
-						                        	<a href="" role="button" class="link-how" data-toggle="modal" data-target="#formatModal">Selengkapnya</a>
-						                    	</small>
-						                      </div>
-						                    </div>
-						                    <div class="d-flex py-2 border-bottom">
-						                      <div class="wrapper">
-						                        <p class="font-weight-semibold text-gray mb-0">2. Jika sudah sesuai pilih file</p>
-						                      </div>
-						                    </div>
-						                    <div class="d-flex py-2">
-						                      <div class="wrapper">
-						                        <p class="font-weight-semibold text-gray mb-0">3. Klik simpan, maka data otomatis tersimpan</p>
-						                      </div>
-						                    </div>
-					                	</div>
-					                </div>
+									<h2 class="font-weight-semibold mb-0">Import</h2>
+									<input type="file" name="excel_file" hidden="" accept=".xls, .xlsx">
+									<a href="#" class="excel-file">
+										<div class="icon-holder">
+										<i class="mdi mdi-upload"></i>
+										</div>
+									</a>
+									</div>
+									<div class="d-flex justify-content-between">
+									<h5 class="font-weight-semibold mb-0">Upload file excel</h5>
+									<p class="excel-name">Pilih File</p>
+									</div>
+									<button class="btn btn-block mt-3 btn-upload" type="submit" hidden="">Import Data</button>
+									<div class="row mt-4">
+										<div class="col-12">
+											<h4 class="card-title mb-1">Langkah - Langkah Import</h4>
+											<div class="d-flex py-2 border-bottom">
+											<div class="wrapper">
+												<p class="font-weight-semibold text-gray mb-0">1. Siapkan data dengan format Excel (.xls atau .xlsx)</p>
+												<small class="text-muted">
+													<a href="" role="button" class="link-how" data-toggle="modal" data-target="#formatModal">Selengkapnya</a>
+												</small>
+											</div>
+											</div>
+											<div class="d-flex py-2 border-bottom">
+											<div class="wrapper">
+												<p class="font-weight-semibold text-gray mb-0">2. Jika sudah sesuai pilih file</p>
+											</div>
+											</div>
+											<div class="d-flex py-2">
+											<div class="wrapper">
+												<p class="font-weight-semibold text-gray mb-0">3. Klik simpan, maka data otomatis tersimpan</p>
+											</div>
+											</div>
+										</div>
+									</div>
 								</form>
 							</div>
 						</div>
@@ -491,8 +282,9 @@
 	<div class="col-lg-8 col-md-12 col-sm-12">
 		<div class="card card-noborder b-radius">
 			<div class="card-body">
-				<form action="https://koperasi.ittelkom-sby.ac.id/supply/create" method="post">
-					<input type="hidden" name="_token" value="jXbVyE4XNiggp6m9NlI3BnUpKrMAdZ4q7lYMnXFo">					<div class="row">
+				<form method="post" action="{{url('adjustment/store')}}">
+					@csrf			
+					<div class="row">
 						<div class="col-12 table-responsive mb-4">
 							<table class="table table-custom">
 								<thead>
@@ -500,17 +292,17 @@
 										<th>Barang</th>
 										<th>In-Stock</th>
 										<th>Actual Stock</th>
-										<th>Adjustment</th>
+										<th>Stock Difference</th>
+										<th>Nominal</th>
 										<th>Note</th>
 										<th></th>
 									</tr>
 								</thead>
-								<tbody>
-									
+								<tbody id="input_product_list">
 								</tbody>
 							</table>
 						</div>
-<!-- 						<div class="form-hidden" id="detail">
+						{{-- <div class="form-hidden" id="detail">
 							<div class="container">
 								<div class="row">
 									<div class="col">
@@ -538,10 +330,9 @@
 									</div>
 								</div>
 							</div>
-						</div>
- -->						<div class="col-12 d-flex justify-content-end">
-							<button class="btn btn-simpan btn-sm margin" type="submit" hidden="" name="create" value="create"><i class="mdi mdi-content-save"></i> Create</button>
-							<button class="btn btn-simpan btn-sm" type="submit" hidden="" name="fullfill" value="fullfill"><i class="mdi mdi-content-save"></i> Fullfill</button>
+						</div> --}}
+						<div class="col-12 d-flex justify-content-end">
+							<button class="btn btn-simpan btn-sm margin" disabled type="submit" name="save_adjustment" value="create"><i class="mdi mdi-content-save"></i> Save Adjustment</button>
 						</div>
 					</div>
 				</form>
@@ -549,142 +340,291 @@
 		</div>
 	</div>
 </div>
-          </div>
-          <div class="content-wrapper" id="content-web-search" hidden="">
-            <div class="row">
-              <div class="col-12 text-left">
-                <h3 class="d-block">Cari Halaman</h3>
-                <h5 class="mt-3 d-block"><span class="result-1"></span> <span class="result-2"></span></h5>
-              </div>
-              <div class="col-12 mt-3">
-                <div class="row" id="page-result-parent">
-                </div>
-              </div>
-            </div>
-          </div>
-          <footer class="footer" id="footer-content">
-            <div class="container-fluid clearfix">
-              <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © 2019 <a href="http://www.bootstrapdash.com/" target="_blank">Bootstrapdash</a>. All rights reserved.</span>
-              <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with <i class="mdi mdi-heart text-danger"></i>
-              </span>
-            </div>
-          </footer>
-        </div>
-      </div>
-    </div>
 
-    <!-- Javascript -->
-    <script src="{{ asset('assets/vendors/js/vendor.bundle.base.js')"></script>
-    <script src="{{ asset('assets/vendors/js/vendor.bundle.addons.js')"></script>
-    <script src="{{ asset('assets/js/shared/off-canvas.js') }}"></script>
-    <script src="{{ asset('assets/js/shared/misc.js') }}"></script>
-    <script src="{{ asset('plugins/js/jquery.form-validator.min.js')"></script>
-    <script src="{{ asset('plugins/js/sweetalert.min.js') }}"></script>
-    <script src="{{ asset('plugins/js/jquery-ui.min.js"></script>
-    <script src="{{ asset('js/templates/script.js"></script>
-    <script type="text/javascript">
-      $(document).on('input', 'input[name=search_page]', function(){
-        if($(this).val() != ''){
-          $('#content-web-page').prop('hidden', true);
-          $('#content-web-search').prop('hidden', false);
-          var search_word = $(this).val();
-          $.ajax({
-            url: "https://koperasi.ittelkom-sby.ac.id/search/" + search_word,
-            method: "GET",
-            success:function(response){
-              $('.result-1').html(response.length + ' Hasil Pencarian');
-              $('.result-2').html('dari "' + search_word + '"');
-              var lengthLoop = response.length - 1;
-              var searchResultList = '';
-              for(var i = 0; i <= lengthLoop; i++){
-                var page_url = "https://koperasi.ittelkom-sby.ac.id/%3Aid";
-                page_url = page_url.replace('%3Aid', response[i].page_url);
-                searchResultList += '<a href="'+ page_url +'" class="page-result-child mb-4 w-100"><div class="col-12"><div class="card card-noborder b-radius"><div class="card-body"><div class="row"><div class="col-12"><h5 class="d-block page_url">'+ response[i].page_name +'</h5><p class="align-items-center d-flex justify-content-start"><span class="icon-in-search mr-2"><i class="mdi mdi-chevron-double-right"></i></span> <span class="breadcrumbs-search page_url">'+ response[i].page_title +'</span></p><div class="search-description"><p class="m-0 p-0 page_url">'+ response[i].page_content.substring(0, 500) +'...</p></div></div></div></div></div></div></a>';
-              }
-              $('#page-result-parent').html(searchResultList);
-              $('.page_url:contains("'+search_word+'")').each(function(){
-                  var regex = new RegExp(search_word, 'gi');
-                  $(this).html($(this).text().replace(regex, '<span style="background-color: #607df3;">'+search_word+'</span>'));
-              });
-            }
-          });
-        }else{
-          $('#content-web-page').prop('hidden', false);
-          $('#content-web-search').prop('hidden', true);
-        }
-      });
-    </script>
-    <script src="{{ asset('plugins/js/quagga.min.js')"></script>
-<script src="{{asset('js/manage_product/supply_product/new_supply/script.js')}}"></script>
+@endsection
+@section('script')
+<script src="{{ asset('plugins/js/quagga.min.js') }}"></script>
 <script type="text/javascript">
-	
-	
-	
-	$(document).on('click', '.btn-continue', function(){
-	  var kode_barang = $('.barcode-result-text').text();
-	  $.ajax({
-	  	url: "https://koperasi.ittelkom-sby.ac.id/supply/check/" + kode_barang,
-	  	method: "GET",
-	  	success:function(data){
-	  		if(data == 'sukses'){
-				$('input[name=kode_barang]').val(kode_barang);
-				$('#btn-scan-action').prop('hidden', true);
-				$('#area-scan').prop('hidden', true);
-				$('.barcode-result').prop('hidden', true);
-				$('.close-btn').click();
-				$('input[name=kode_barang]').valid();
-				stopScan();
-	  		}else{
-	  			swal(
-			        "",
-			        "Kode barang tidak tersedia",
-			        "error"
-			    );
-	  		}
-	  	}
-	  });
-	});
+function startScan() {
+  Quagga.init({
+    inputStream : {
+      name : "Live",
+      type : "LiveStream",
+      target: document.querySelector('#area-scan')
+    },
+    decoder : {
+      readers : ["ean_reader"],
+      multiple: false
+    },
+    locate: false
+  }, function(err) {
+      if (err) {
+          return
+      }
+      console.log("Initialization finished. Ready to start");
+      Quagga.start();
+  });
+
+  Quagga.onDetected(function(data){
+    $('#area-scan').prop('hidden', true);
+    $('#btn-scan-action').prop('hidden', false);
+    $('.barcode-result').prop('hidden', false);
+    $('.barcode-result-text').html(data.codeResult.code);
+    $('.kode_barang_error').prop('hidden', true);
+    stopScan();
+  });
+}
+
+$(document).on('click', '.btn-scan', function(){
+  $('#area-scan').prop('hidden', false);
+  $('#btn-scan-action').prop('hidden', true);
+  $('.barcode-result').prop('hidden', true);
+  $('.barcode-result-text').html('');
+  $('.kode_barang_error').prop('hidden', true);
+  startScan();
+});
+
+$(document).on('click', '.btn-repeat', function(){
+  $('#area-scan').prop('hidden', false);
+  $('#btn-scan-action').prop('hidden', true);
+  $('.barcode-result').prop('hidden', true);
+  $('.barcode-result-text').html('');
+  $('.kode_barang_error').prop('hidden', true);
+  startScan();
+});
+
+$(document).on('click', '.btn-continue', function(e){
+  e.stopPropagation();
+  var kode_barang = $('.barcode-result-text').text();
+  $.ajax({
+    url: "{{ url('/transaction/product/check') }}/" + kode_barang,
+    method: "GET",
+    success:function(response){
+      var check = $('.kode-barang-td:contains('+ response.product.kode_barang +')').length;
+      if(response.check == 'tersedia'){
+        if(check == 0){
+          tambahData(response.product.kode_barang, response.product.nama_barang, response.product.harga, response.product.stok, response.product.limit, response.status);
+          $('.close-btn').click();  
+        }else{
+          swal(
+              "",
+              "Barang telah ditambahkan",
+              "error"
+          );
+        }
+      }else{
+        $('.kode_barang_error').prop('hidden', false);
+      }
+    }
+  });
+});
+
+$('#modal_cari_barang').on('hidden.bs.modal', function (e) {
+  $('input[name=search]').val('')
+  $('.product-list').html('');
+})
+
+var xhrSearch = null;
+$('input[name=search]').on('keyup', function(){
+  if(xhrSearch != null){
+    xhrSearch.abort()
+  }
+  var el = $('.product-list');
+  var searchTerm = $(this).val().toLowerCase();
+  if(searchTerm.trim() != ''){
+    var loading = ''+
+          '<li class="list-group-item d-flex justify-content-between align-items-center active-list">'+
+            'Sedang mencari ...'+
+          '</li>';
+    el.html(loading)
+    xhrSearch = $.ajax({
+      url: "{{ url('/adjustment/products/search') }}",
+      method: "get",
+      data:{
+        cari: searchTerm
+      },
+      success:function(response){
+		response.product = response.product.filter(p => {
+			return !input_product.some(q => q==p.kode_barang) 
+		})
+        if(response.product.length>0){
+          var html = '';
+          for(var i=0; i<response.product.length; i++){
+            var productEl = ''+
+            '<li class="list-group-item d-flex justify-content-between align-items-center active-list">'+
+              '<div class="text-group">'+
+                '<p class="m-0">'+response.product[i].kode_barang+'</p>'+
+                '<p class="m-0 txt-light">'+response.product[i].nama_barang+'</p>'+
+              '</div>'+
+              '<div class="d-flex align-items-center">'+
+                '<span class="ammount-box bg-secondary mr-1"><i class="mdi mdi-cube-outline"></i></span>'+
+                '<p class="m-0">'+response.product[i].stok+'</p>'+
+              '</div>'+
+            //   '<a href="{{url("adjustment/create/")}}/'+response.product[i].kode_barang+'" class="btn btn-icons btn-rounded btn-inverse-outline-primary font-weight-bold btn-pilih" role="button"><i class="mdi mdi-chevron-right"></i></a>'+
+              '<span onclick="pilihBarang('+"&quot;"+response.product[i].kode_barang+"&quot;"+', '+"&quot;"+response.product[i].nama_barang+"&quot;"+', '+"&quot;"+response.product[i].hpp+"&quot;"+', '+"&quot;"+response.product[i].stok+"&quot;"+')" class="btn btn-icons btn-rounded btn-inverse-outline-primary font-weight-bold btn-pilih" role="button"><i class="mdi mdi-chevron-right"></i></span>'+
+            '</li>';
+            html+=productEl
+          }
+          el.html(html)
+        }else{
+          var html = ''+
+          '<li class="list-group-item d-flex justify-content-between align-items-center active-list">'+
+            'Product tidak ditemukan'+
+          '</li>';
+          el.html(html);
+        }
+        
+      }
+    });
+  }else{
+    var html = '';
+    el.html(html);
+  }
+});
+$('input[name=actual_stock]').on('keyup', function(){
+	var value = $(this).val()-$('input[name=in_stock]').val()
+	$('input[name=stock_difference]').val(value)
+});
 
 
-	$(document).on('click', '.btn-tambah', function(e){
-		e.preventDefault();
-		$('form[name=manual_form]').valid();
-		// var detail = document.getElementById("detail");
-		var kode_barang = $('input[name=kode_barang]').val();
-    var nama_barang = $('input[name=nama_barang]').val();
-		var in_stock = $('input[name=in_stock]').val();
-		var actual_stock = $('input[name=actual_stock]').val();
-		var adjustment = $('input[name=adjustment]').val();
-		var note = $('input[name=note]').val();
-		if(validator.valid() == true){
-			$.ajax({
-				url: "supply/data/" + kode_barang,
-				method: "GET",
-				success:function(response){
-					var check = $('.kd-barang-field:contains('+ response.product.kode_barang +')').length;
-					if(check == 0){
-						$('input[name=kode_barang]').val('');
-						$('input[name=in_stock]').val('');
-						$('input[name=actual_stock]').val('');
-						$('input[name=adjustment]').val('');
-						$('input[name=note]').val('');
-						$('tbody').append('<tr><td><span class="kd-barang-field">'+ response.product.kode_barang +'</span><span class="nama-barang-field">'+ response.product.in_stock +'</span></td><td>'+  +'</td><td>'+ tempat_beli +'</td><td>Rp. '+ parseInt(harga_beli).toLocaleString() +'</td><td class="text-success">Rp. '+ parseInt(total).toLocaleString() +'</td><td><button type="button" class="btn btn-icons btn-rounded btn-secondary ml-1 btn-delete"><i class="mdi mdi-close"></i></button><div class="form-group" hidden=""><input type="text" class="form-control" name="kode_barang_supply[]" value="'+ response.product.kode_barang +'"><input type="text" class="form-control" name="jumlah_supply[]" value="'+ jumlah +'"><input type="text" class="form-control" name="tempat_beli[]" value="'+ tempat_beli +'"><input type="text" class="form-control" name="harga_beli_supply[]" value="'+ harga_beli +'"><input type="text" class="form-control" name="subtotal[]" value="'+ total +'"></div></td></tr>');
-						$('.btn-simpan').prop('hidden', false);
-						if (window.getComputedStyle(detail).visibility === "hidden") {
-							detail.style.visibility = "visible";
-						}
-					}else{
-						swal(
-					        "",
-					        "Barang telah ditambahkan",
-					        "error"
-					    );
-					}
+
+function resetInput(){
+	$('input[name=kode_barang]').val('')
+	$('input[name=nama_barang]').val('')
+	$('input[name=in_stock]').val('')
+	$('input[name=actual_stock]').val('')
+	$('input[name=stock_difference]').val('')
+	$('textarea[name=note]').val('')
+	$('input[name=hpp]').val('')
+}
+
+function changeSaveAdjustment(stat){
+	// var error = $('.error_stock_difference_array');
+	var er = $('.error_stock_difference_array.error');
+	if(er.length>0){
+		$('button[name=save_adjustment]').prop('disabled', true)
+	}else{
+		$('button[name=save_adjustment]').prop('disabled', false)
+	}
+}
+
+$(function() {
+    $("#input_product").click(function() {
+		var kode_barang = $('input[name=kode_barang]').val()
+		var nama_barang = $('input[name=nama_barang]').val()
+		var in_stock = $('input[name=in_stock]').val()
+		var actual_stock = $('input[name=actual_stock]').val()
+		var stock_difference = $('input[name=stock_difference]').val()
+		var hpp = $('input[name=hpp]').val()
+		var note = $('textarea[name=note]').val()
+		var nominal = stock_difference * hpp;
+		if(kode_barang.trim()=="" && nama_barang.trim()=="" && in_stock.trim()=="" && hpp.trim()==""){
+			$('#kode_barang_error').prop('hidden', false)
+		}else{
+			$('#kode_barang_error').prop('hidden', true)
+			if(actual_stock.trim()==''){
+				$('#actual_stock_error').prop('hidden', false)
+			}else{
+				$('#actual_stock_error').prop('hidden', true)
+				if(stock_difference == 0){
+					$('#stock_difference_error').prop('hidden', false)
+				}else{
+					$('#stock_difference_error').prop('hidden', true)
+					var productEl = ''+
+					'<tr>'+
+						'<td>'+
+							nama_barang+
+							'<input hidden value="'+kode_barang+'" class="kode_barang_array" name="kode_barang_array[]">'+
+						'</td>'+
+						'<td>'+
+							in_stock+
+							'<input hidden value="'+in_stock+'" class="in_stock_array" name="in_stock_array[]">'+
+						'</td>'+
+						'<td>'+
+							'<input type="number" oninput="editItemAdjustment(this)" class="form-control" value="'+actual_stock+'" name="actual_stock_array[]">'+
+							'<input type="number" hidden class="hpp_array" value="'+hpp+'" />'+
+						'</td>'+
+						'<td class="stock_difference">'+
+							'<span>'+stock_difference+'</span>'+
+							'<br>'+
+							'<small class="text-danger error_stock_difference_array" hidden>Tidak ada perubahan</small>'+
+						'</td>'+
+						'<td class="nominal_array">'+
+							(nominal<0 ? '-' : '')+'Rp'+(nominal<0 ? nominal * -1 : nominal).toLocaleString()+
+						'</td>'+
+						'<td>'+
+							'<textarea class="form-control" name="note_array[]">'+
+							note+
+							'</textarea>'+
+						'</td>'+
+						'<td>'+
+							'<button onclick="deleteBarang(this)" type="button" class="btn btn-icons btn-rounded btn-secondary ml-1 btn-delete">'+
+								'<i class="mdi mdi-close"></i>'+
+							'</button>'+
+						'</td>'+
+					'</tr>';
+					$('#input_product_list').append(productEl);
+					input_product.push(kode_barang)
+					changeSaveAdjustment(false)
+					resetInput();
 				}
-			});
+			}
 		}
-	});
+    });
+  });
+
+  var input_product = []
+
+function pilihBarang(kode_barang, nama_barang, hpp, stok){
+	resetInput();
+	$('input[name=kode_barang]').val(kode_barang)
+	$('input[name=nama_barang]').val(nama_barang)
+	$('input[name=in_stock]').val(stok)
+	$('input[name=hpp]').val(hpp)
+	$('button[data-dismiss=modal]').click()
+
+}
+
+function editItemAdjustment(self){
+	var tr = $(self.closest('tr'));
+	var stock_difference = tr.find('.stock_difference');
+	var in_stock = tr.find('input.in_stock_array').val();
+	var hpp = tr.find('.hpp_array').val();
+	var nominal = ($(self).val() - in_stock)*hpp;
+	if($(self).val() == in_stock){
+		tr.find('.error_stock_difference_array').prop('hidden', false)
+		tr.find('.error_stock_difference_array').addClass('error')
+	}else{
+		tr.find('.error_stock_difference_array').prop('hidden', true)
+		tr.find('.error_stock_difference_array').removeClass('error')
+	}
+	stock_difference.find('span').html($(self).val() - in_stock)
+	tr.find('.nominal_array').html((nominal<0 ? '-' : '')+'Rp'+(nominal<0 ? nominal * -1 : nominal).toLocaleString())
+	changeSaveAdjustment();
+}
+
+function deleteBarang(self){
+	var tr = $(self.closest('tr'));
+	var kode_barang = tr.find('.kode_barang_array').val();
+	var index = input_product.indexOf(kode_barang);
+	input_product.splice(index, 1);
+	tr.remove()
+	if(input_product.length<1){
+		changeSaveAdjustment(true)
+	}
+	// console.log(kode_barang)
+}
+
+
+
 </script>
-    <!-- End-Javascript -->
-  </body>
-</html>
+<script type="text/javascript">
+	@if ($message = Session::get('create_failed'))
+	  swal(
+		  "Gagal!",
+		  "{{ $message }}",
+		  "error"
+	  );
+	@endif
+  </script>
+@endsection

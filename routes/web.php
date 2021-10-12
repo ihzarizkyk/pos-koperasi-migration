@@ -112,8 +112,9 @@ Route::group(['middleware' => ['auth', 'checkRole:admin,kasir']], function(){
 	// > Adjustment
 	Route::get("/adjustment","AdjustmentController@index");
 	Route::get("/adjustment/create","AdjustmentController@create")->name("adjustment.create");
+	Route::get('/adjustment/products/search', 'AdjustmentController@ProductSearch');
 	Route::post("/adjustment/store","AdjustmentController@store");
-	Route::get("/adjustment/{id}/show","AdjustmentController@show");
+	Route::get("/adjustment/{id}/show","AdjustmentController@show")->name('adjustment_detail');
 });
 
 // Auth::routes();

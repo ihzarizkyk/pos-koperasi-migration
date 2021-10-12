@@ -45,6 +45,8 @@
 </div>
 <div class="row">
   <div class="col-md-12 grid-margin">
+    <input type="text" name="range" style="width:25%;" />
+    {{$total_nominal_adjustment->total}}
     <div class="card card-noborder b-radius">
       <div class="card-body">
         <div class="row">
@@ -57,15 +59,29 @@
                 <table class="table table-custom">
                     <thead>
                       <tr>
-                      <th>No</th>
-                      <th>In Stock</th>
-                      <th>Actual Stock</th>
-                      <th>Adjustment</th>
-                      <th>Note</th>
-                      <th>Action</th>
+                      <th>ID Stock Adjustment</th>
+                      <th>Date</th>
+                      <th>Item</th>
+                      <th>Nominal</th>
+                      <th></th>
                       </tr>
                     </thead>
+                    <tbody>
+                      <?php //$no=1; ?>
+                      @foreach($adjustment as $data)
+                      <tr>
+                        <td>{{$data->id_adjustment}}</td>
+                        <td>{{$data->created_at}}</td>
+                        <td><span class="ammount-box bg-secondary"><i class="mdi mdi-cube-outline"></i></span>{{$data->item}}</td>
+                        <td><span class="ammount-box {{$data->nominalInteger<0 ? 'bg-red' : 'bg-green'}}"><i class="mdi mdi-coin"></i></span>{{$data->nominal}}</td>
+                        <td>
+                          <a href="{{ route('adjustment_detail', $data->id) }}" type="button" title="DETAIL" class="btn btn-detail btn-icons btn-rounded btn-secondary"><i class="bi bi-info-lg"></i></a>
+                        </td>
+                      </tr>
+                      @endforeach
+                    </tbody>
                 </table>
+                <div class="d-flex justify-content-center">{!! $adjustment->links() !!}</div>
               </div>
             </ul>
         	</div>
@@ -78,27 +94,27 @@
 @section('script')
 <script src="{{ asset('js/manage_product/supply_product/supply/script.js') }}"></script>
 <script>
-  var rupiah = document.getElementById('harga');
-    rupiah.addEventListener('keyup', function(e){
-        rupiah.value = formatRupiah(this.value, '');
-    });
+  // var rupiah = document.getElementById('harga');
+  //   rupiah.addEventListener('keyup', function(e){
+  //       rupiah.value = formatRupiah(this.value, '');
+  //   });
 
     
-    function formatRupiah(angka, prefix){
-        var number_string = angka.replace(/[^,\d]/g, '').toString(),
-        split   		= number_string.split(','),
-        sisa     		= split[0].length % 3,
-        rupiah     		= split[0].substr(0, sisa),
-        ribuan     		= split[0].substr(sisa).match(/\d{3}/gi);
+  //   function formatRupiah(angka, prefix){
+  //       var number_string = angka.replace(/[^,\d]/g, '').toString(),
+  //       split   		= number_string.split(','),
+  //       sisa     		= split[0].length % 3,
+  //       rupiah     		= split[0].substr(0, sisa),
+  //       ribuan     		= split[0].substr(sisa).match(/\d{3}/gi);
 
-        if(ribuan){
-            separator = sisa ? '.' : '';
-            rupiah += separator + ribuan.join('.');
-        }
+  //       if(ribuan){
+  //           separator = sisa ? '.' : '';
+  //           rupiah += separator + ribuan.join('.');
+  //       }
 
-        rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
-        return prefix == undefined ? rupiah : (rupiah ? '' + rupiah : '');
-    }
+  //       rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+  //       return prefix == undefined ? rupiah : (rupiah ? '' + rupiah : '');
+  //   }
 </script>
 <script type="text/javascript">
   @if ($message = Session::get('create_success'))
@@ -117,4 +133,28 @@
     );
   @endif
 </script>
+<script type="text/javascript">
+  $(function() {
+    $('input[name="range"]').daterangepicker({
+      maxSpan:{
+        "days": 90
+      },
+      startDate: moment('{{$start}}'),
+      endDate: moment('{{$end}}'),
+      ranges: {
+           'Hari ini': [moment(), moment()],
+           'Kemarin': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+           '7 hari terakhir': [moment().subtract(6, 'days'), moment()],
+           '30 hari terakhir': [moment().subtract(29, 'days'), moment()],
+           'Bulan ini': [moment().startOf('month'), moment().endOf('month')],
+           'Bulan lalu': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+      }
+    }, function(start, end, label) {
+      window.location.href =  window.location.origin+window.location.pathname+'?start='+start.format('YYYY-MM-DD')+'&end='+end.format('YYYY-MM-DD')
+    });
+  });
+</script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 @endsection

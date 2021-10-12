@@ -64,15 +64,8 @@ class TransactionManageController extends Controller
         if($check_access->transaksi == 1){
             $cari = $req->cari;
             // $products = [];
-            $products = Product::query()
+            $products = Product::productSearch($cari)
                         ->where('keterangan', '!=', 'Habis')
-                        ->where(function ($query) use ($cari){
-                            $query->where('kode_barang', 'like',"%".$cari."%")
-                            ->orWhere('nama_barang', 'like',"%".$cari."%")
-                            ->orWhere('merek', 'like', "%".$cari."%")
-                            ->orWhere('stok', 'like', "%".$cari."%");
-                        })
-                        // ->take(4)
                         ->get();
             $data = $products->count();
             $supply_system = Supply_system::first();
