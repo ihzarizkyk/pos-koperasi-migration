@@ -147,6 +147,7 @@ class TransactionManageController extends Controller
                     $transaction_detail->total_barang = $req->total_barang[$i];
                     $transaction_detail->jenis_diskon_per_barang = $req->jenis_diskon_per_barang[$i];
                     $transaction_detail->diskon_per_barang = $req->diskon_per_barang[$i];
+                    $transaction_detail->laba = ($req->jumlah_barang[$i] * $req->total_barang[$i]) - ($req->jumlah_barang[$i] * $product_data->hpp);
                     $transaction_detail->save();
                 }    
                 $check_supply_system = Supply_system::first();
