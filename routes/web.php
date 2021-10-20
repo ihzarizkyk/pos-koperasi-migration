@@ -13,6 +13,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::view("/profile/home","profile.index");
+
+Route::view("/project/home","project.index");
+
 Route::get('/', function () {
     return view('welcome');
 });
