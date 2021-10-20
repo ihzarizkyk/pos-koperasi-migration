@@ -13,7 +13,7 @@ class CreateAdjustmentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('adjustment', function (Blueprint $table) {
+        Schema::create('adjustments', function (Blueprint $table) {
             $table->id();
             $table->string('kode_barang');
             $table->string('nama_barang')->nullable();

@@ -13,6 +13,7 @@ use App\Activity;
 use App\Transaction;
 use App\TransactionDetail;
 use App\Supply_system;
+use App\Shift;
 use Illuminate\Http\Request;
 
 class TransactionManageController extends Controller
@@ -23,12 +24,20 @@ class TransactionManageController extends Controller
         $id_account = Auth::id();
         $check_access = Acces::where('user', $id_account)
         ->first();
+        $checkShift = Shift::latest('id')->first();
         if($check_access->transaksi == 1){
-        	// $products = Product::all()
-        	// ->sortBy('kode_barang');
-            $supply_system = Supply_system::first();
-
-            return view('transaction.transaction', compact('supply_system'));
+            if ($checkShift) {
+                if ($checkShift->selesai == null ) {
+                    $supply_system = Supply_system::first();
+                    return view('transaction.transaction', compact('supply_system'));
+                }
+                else{
+                    return view('transaction.error_page');
+                }
+            }
+            else{
+                return view('transaction.error_page');
+            }
         }else{
             return back();
         }

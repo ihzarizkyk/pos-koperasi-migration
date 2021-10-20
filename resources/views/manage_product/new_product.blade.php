@@ -74,18 +74,6 @@
 			<div class="card-body">
 				<form action="{{ url('product/create') }}" method="post" name="create_form">
 					@csrf
-					{{-- <div class="form-group row">
-			  			<label class="col-12 font-weight-bold col-form-label">Kode Barang <span class="text-danger">*</span></label>
-					  	<div class="col-12">
-					  		<div class="input-group">
-					  			<input type="text" class="form-control number-input" name="kode_barang" placeholder="Masukkan Kode Barang" required>
-					  			<div class="inpu-group-prepend">
-					  				<button class="btn btn-inverse-primary btn-sm btn-scan shadow-sm ml-2" type="button" data-toggle="modal" data-target="#scanModal"><i class="mdi mdi-crop-free"></i></button>
-					  			</div>
-					  		</div>
-					  	</div>
-						<div class="col-12 error-notice" id="kode_barang_error"></div>
-					</div> --}}
 					<div class="form-group row">
 					  	<div class="col-lg-6 col-md-6 col-sm-12 space-bottom">
 					  		<div class="row">
@@ -102,7 +90,6 @@
 							  	<div class="col-12">
 							  		<select class="form-control" name="kategori" required>
 							  			<option value="">-- Pilih Jenis Barang --</option>
-										  {{-- <option value="sembako">sembako</option> --}}
 										@foreach ($category as $item)
 											<option value="{{$item->id}}">{{$item->name}}</option>
 										@endforeach

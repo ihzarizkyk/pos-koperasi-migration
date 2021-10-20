@@ -10,6 +10,9 @@
   #kode{
     width: 285px;
   }
+  .btn-aksi{
+    margin-bottom: 10px;
+  }
 </style>
 @endsection
 @section('content')
@@ -18,9 +21,9 @@
     <div class="page-header d-flex justify-content-between align-items-center">
       <h4 class="page-title">Riwayat Shift</h4>
       <div class="d-flex justify-content-start">
-        <a href="{{ url('/supply/statistics') }}" class="btn btn-icons btn-inverse-primary btn-filter shadow-sm ml-2">
+        {{-- <a href="{{ url('/supply/statistics') }}" class="btn btn-icons btn-inverse-primary btn-filter shadow-sm ml-2">
           <i class="mdi mdi-poll"></i>
-        </a>
+        </a> --}}
         <div class="dropdown dropdown-search">
           <button class="btn btn-icons btn-inverse-primary btn-filter shadow-sm ml-2" type="button" id="dropdownMenuIconButton1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="mdi mdi-magnify"></i>
@@ -28,17 +31,26 @@
           <div class="dropdown-menu search-dropdown" aria-labelledby="dropdownMenuIconButton1">
             <div class="row">
               <div class="col-11">
-                <input type="text" class="form-control" name="search" placeholder="Cari barang">
+                <input type="text" class="form-control" name="search" placeholder="Cari Shift">
               </div>
             </div>
           </div>
         </div>
-	      <a href="" class="btn btn-icons btn-inverse-primary btn-new ml-2">
-	      	<i class="mdi mdi-plus"></i>
-	      </a>
-        <a href="" class="btn btn-inverse-primary btn-new ml-2">
-          Shift
-        </a>
+	      @if ($lastShift)
+          @if ($lastShift->selesai != null)
+            <a href="{{ route('shift.new') }}" class="btn btn-icons btn-inverse-primary btn-new ml-2" title="Mulai Shift">
+              <i class="bi bi-eye"></i>
+            </a>
+          @else
+            <a href="{{ route('shift.endShift', $lastShift->id) }}" class="btn btn-icons  btn-danger ml-2" title="Akhiri Shift">
+              <i class="bi bi-eye-slash"></i>
+            </a>
+          @endif
+        @else
+          <a href="{{ route('shift.new') }}" class="btn btn-icons btn-inverse-primary btn-new ml-2" title="Mulai Shift">
+            <i class="bi bi-eye"></i>
+          </a>
+        @endif
       </div>
     </div>
   </div>
@@ -50,42 +62,64 @@
         <div class="row">
         	<div class="col-12">
             <ul class="list-date">
+              @if ($lastShift)
+                @if ($lastShift->selesai == null)
+                  <div class="alert alert-success" role="alert">
+                    <h5>Shift Sedang Berlangsung</h5>
+                    <p>Dimulai pada: {{$lastShift->mulai}}</p>
+                  </div>
+                @else
+                  <div class="alert alert-info" role="alert">
+                    <h5>Shift Telah Diakhiri</h5>
+                    <p>Selesai pada: {{$lastShift->selesai}}</p>
+                  </div>
+                @endif
+                @else
+                <div class="alert alert-info" role="alert">
+                  <h5> Data Shift Masih Kosong</h5>
+                </div>
+              @endif
+             
               
-              <li class="txt-light">#</li>
-              #
               <div class="table-responsive">
                 <table class="table table-custom">
                   <tr>
                     <th>Nama</th>
-                    <th>Outlet</th>
+                    <th>Expected</th>
+                    <th>Actual</th>
+                    <th>Difference</th>
                     <th>Starting Shift</th>
-                    <th>Expense/Income</th>
-                    <th>Sold Items</th>
-                    <th>Refunced items</th>
                     <th>End Shift</th>
                   </tr>
-                  #
+                  @if ($data->count() == 0)
                   <tr>
-                    <td class="td-1 font-weight-bold">
-                      #
-                      <span class="d-block mt-2 txt-light"></span>
-                    </td>
-                    <td class="td-2 font-weight-bold">#</td>
-                    #
-                    <td class="td-3 font-weight-bold">#</td>
-                    <td class="font-weight-bold td-4">#</td>
-                    <td class="font-weight-bold">
-                      #
-                    </td>
-                    <td>
-                      <!-- Button trigger modal -->
-                    #
+                    <td colspan="6" style="text-align: center">
+                      <div class="alert alert-secondary" role="alert">
+                        History Shift Masih Kosong
+                      </div>
                     </td>
                   </tr>
-                 
+                  @endif
+                  @foreach ($data as $item)
+                    <tr>
+                      <td class="td-1 font-weight-bold">
+                        {{$item->user->nama}}
+                        <span class="d-block mt-2 txt-light"></span>
+                      </td>
+                      <td class="td-2 font-weight-bold">Rp. {{number_format($item->modal,2,',','.')}}</td>
+                      <td class="td-3 font-weight-bold">Rp. {{number_format($item->pemasukan,2,',','.')}}</td>
+                      <td class="td-3 font-weight-bold">
+                        @php
+                            $selisih = $item->pemasukan - $item->modal;
+                        @endphp
+                        Rp. {{number_format($selisih,2,',','.')}}
+                      </td>
+                      <td class="font-weight-bold td-4">{{$item->mulai}}</td>
+                      <td class="font-weight-bold">{{$item->selesai}}</td>
+                    </tr>
+                  @endforeach
                 </table>
               </div>
-              
             </ul>
         	</div>
         </div>

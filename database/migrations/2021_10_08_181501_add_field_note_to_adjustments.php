@@ -14,7 +14,7 @@ class AddFieldNoteToAdjustments extends Migration
     public function up()
     {
         Schema::table('adjustments', function (Blueprint $table) {
-            $table->string('note', 255)->after('adjustment')->nullable()->default(null);
+            $table->string('note', 255)->after('adjustments')->nullable()->default(null);
         });
     }
 
