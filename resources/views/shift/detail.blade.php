@@ -46,7 +46,7 @@
                     <div class="form-group row top-min">
                         <label class="col-12 font-weight-bold col-form-label">Pemasukan</label>
                         <div class="col-12">
-                            <input type="text" id="pemasukan" class="form-control input-notzero" value="{{number_format($total,0,',','.')}}" name="pemasukan" placeholder="Masukkan Pemasukan" required>
+                            <input type="text" id="pemasukan" readonly class="form-control input-notzero" value="{{number_format($data->pemasukan,0,',','.')}}" name="pemasukan" placeholder="Masukkan Pemasukan" required>
                         </div>
                     </div>
                 </div>
@@ -54,18 +54,15 @@
                   <div class="form-group row top-min">
                       <label class="col-12 font-weight-bold col-form-label">Barang Terjual</label>
                       <div class="col-12">
-                          <input type="text" class="form-control input-notzero" value="{{$items}}" name="sold" readonly>
+                          <input type="text" class="form-control input-notzero" value="{{$data->sold}}" name="sold" readonly>
                       </div>
                   </div>
               </div>
               <div class="col-6">
                 <div class="form-group row top-min">
                     <label class="col-12 font-weight-bold col-form-label">Total Expected</label>
-                    @php
-                        $expected = $data->modal + $total;
-                    @endphp
                     <div class="col-12">
-                        <input type="text" class="form-control input-notzero" value="{{number_format($expected,0,',','.')}}" name="total" readonly>
+                        <input type="text" class="form-control input-notzero" value="{{number_format($data->total,0,',','.')}}" name="total" readonly>
                     </div>
                 </div>
             </div>
@@ -86,7 +83,7 @@
                         <label class="col-12 font-weight-bold col-form-label"><b>Tanggal dan Waktu Selesai</b></label>
                         <div class="col-12">
                             <div class="input-group">
-                                <input type="text" class="form-control" name="selesai" value="{{ date('Y-m-d H:i:s') }}" readonly>
+                                <input type="text" class="form-control" name="selesai" value="{{ $data->selesai }}" readonly>
                             </div>
                         </div>
                     </div>
@@ -94,7 +91,7 @@
             </div>
             <div class="row">
                 <div class="col-12 d-flex justify-content-end mg-top">
-                  <input type="submit" name="simpan" class="btn btn-simpan btn-sm" value="Akhiri">
+                  <a href="/shift" type="button" class="btn btn-simpan btn-sm"><i class="bi bi-arrow-bar-left"></i> Back</a>
                 </div>
             </div>
         </form>

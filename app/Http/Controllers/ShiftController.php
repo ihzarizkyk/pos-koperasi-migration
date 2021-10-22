@@ -44,12 +44,14 @@ class ShiftController extends Controller
         $shift = Shift::where('id', $id)->first();
         $startShift = $shift->mulai;
         $endShift = date('Y-m-d H:i:s');
-        $getTransaction = Transaction::whereBetween('created_at', [$startShift, $endShift])->select('total')->get();
+        $getTransaction = Transaction::whereBetween('created_at', [$startShift, $endShift])->get();
         $total = 0;
+        $items = 0;
         foreach ($getTransaction as $sold) {
             $total += $sold->total;
+            $items += 1;
         }
-        return view('shift.edit', compact('data', 'total'));
+        return view('shift.edit', compact('data', 'total', 'items'));
     }
 
     public function end(Request $req, $id)
@@ -58,10 +60,29 @@ class ShiftController extends Controller
 
         $endShift->users_id = Auth::id();
         $endShift->pemasukan = preg_replace("/[^a-zA-Z0-9]/", "", $req->pemasukan);
+        $endShift->sold = $req->sold;
+        $masuk = preg_replace("/[^a-zA-Z0-9]/", "", $req->pemasukan);
+        $modal = preg_replace("/[^a-zA-Z0-9]/", "", $req->modal);
+        $total = $masuk + $modal;
+        $endShift->total = $total;
         $endShift->selesai = $req->selesai;
 
         $endShift->save();
         Session::flash('create_success', 'Shift Telah Diakhiri');
         return redirect('/shift');
+    }
+
+    public function detail($id)
+    {
+        $data = Shift::find($id);
+        return view('shift.detail', compact('data'));
+    }
+
+    public function delete($id)
+    {
+        $destroy = Shift::find($id);
+        $destroy->delete();
+        Session::flash('create_success', 'Shift telah dihapus');
+        return redirect()->back();
     }
 }

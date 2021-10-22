@@ -18,6 +18,8 @@ class CreateShiftsTable extends Migration
             $table->unsignedBigInteger('users_id')->nullable();
             $table->bigInteger('modal')->default(0);
             $table->bigInteger('pemasukan')->default(0);
+            $table->bigInteger('sold')->default(0);
+            $table->bigInteger('total')->default(0);
             $table->dateTime('mulai')->nullable();
             $table->dateTime('selesai')->nullable();
             $table->timestamps();

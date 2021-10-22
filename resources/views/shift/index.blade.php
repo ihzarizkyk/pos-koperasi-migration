@@ -89,7 +89,7 @@
                     <th>Actual</th>
                     <th>Difference</th>
                     <th>Starting Shift</th>
-                    <th>End Shift</th>
+                    <th></th>
                   </tr>
                   @if ($data->count() == 0)
                   <tr>
@@ -115,7 +115,10 @@
                         Rp. {{number_format($selisih,2,',','.')}}
                       </td>
                       <td class="font-weight-bold td-4">{{$item->mulai}}</td>
-                      <td class="font-weight-bold">{{$item->selesai}}</td>
+                      <td>
+                        <a href="{{ route('shift.detail', $item->id) }}" class="btn btn-edit btn-icons btn-rounded btn-secondary" title="DETAIL"><i class="bi bi-info-lg"></i></a>
+                        <a href="{{ route('shift.delete', $item->id) }}" class="btn btn-edit btn-icons btn-rounded btn-secondary" title="HAPUS"><i class="bi bi-trash"></i></a>
+                      </td>
                     </tr>
                   @endforeach
                 </table>
@@ -141,8 +144,8 @@
         var number_string = angka.replace(/[^,\d]/g, '').toString(),
         split   		= number_string.split(','),
         sisa     		= split[0].length % 3,
-        rupiah     		= split[0].substr(0, sisa),
-        ribuan     		= split[0].substr(sisa).match(/\d{3}/gi);
+        rupiah     	= split[0].substr(0, sisa),
+        ribuan     	= split[0].substr(sisa).match(/\d{3}/gi);
 
         if(ribuan){
             separator = sisa ? '.' : '';

@@ -126,6 +126,8 @@ Route::group(['middleware' => ['auth', 'checkRole:admin,kasir']], function(){
 	Route::post('shift/newShift/startShift', 'ShiftController@start')->name('shift.start');
 	Route::get('shift/endShift/{id}', 'ShiftController@endShift')->name('shift.endShift');
 	Route::post('shift/endShift/end/{id}', 'ShiftController@end')->name('shift.end');
+	Route::get('shift/detail_shift/{id}', 'ShiftController@detail')->name('shift.detail');
+	Route::get('shift/delete/{id}', 'ShiftController@delete')->name('shift.delete');
 });
 
 // Auth::routes();
