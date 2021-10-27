@@ -15,14 +15,14 @@ class CreateDetailSuppliesTable extends Migration
     {
         Schema::create('detail_supplies', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('supplies_id');
+            $table->unsignedBigInteger('supplies_id')->nullable();
             $table->string('kode_barang');
-            $table->string('nama_barang');
-            $table->string('jumlah');
-            $table->string('harga_beli');
-            $table->string('tempat_beli');
-            $table->string('subtotal');
-            $table->string('status');
+            $table->string('nama_barang')->nullable();
+            $table->string('jumlah')->nullable();
+            $table->string('harga_beli')->nullable();
+            $table->string('tempat_beli')->nullable();
+            $table->string('subtotal')->nullable();
+            $table->string('status')->nullable();
             $table->timestamps();
 
             // $table->foreign('supplies_id')->references('id')->on('suppliers');

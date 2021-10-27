@@ -14,6 +14,7 @@ use App\Transaction;
 use App\TransactionDetail;
 use App\Supply_system;
 use App\Shift;
+use App\Payment;
 use Illuminate\Http\Request;
 
 class TransactionManageController extends Controller
@@ -29,7 +30,8 @@ class TransactionManageController extends Controller
             if ($checkShift) {
                 if ($checkShift->selesai == null ) {
                     $supply_system = Supply_system::first();
-                    return view('transaction.transaction', compact('supply_system'));
+                    $method = Payment::all();
+                    return view('transaction.transaction', compact('supply_system', 'method'));
                 }
                 else{
                     return view('transaction.error_page');
@@ -141,9 +143,11 @@ class TransactionManageController extends Controller
         		$transaction->total = $req->total;
         		$transaction->bayar = $req->bayar;
         		$transaction->kembali = $req->bayar - $req->total;
+                $transaction->payment_id = $req->payment;
         		$transaction->id_kasir = Auth::id();
                 $transaction->kasir = Auth::user()->nama;
         		$transaction->save();
+
                 for($i = 0; $i < $jml_barang; $i++){
                     $transaction_detail = new TransactionDetail;
                     $transaction_detail->transaction_id = $transaction->id;

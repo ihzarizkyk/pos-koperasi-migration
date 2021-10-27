@@ -151,6 +151,10 @@
 				<td class="left">Total</td>
 				<td class="right">{{ number_format($transaction->total,2,',','.') }}</td>
 			</tr>
+			<tr>
+				<td class="left">Payment</td>
+				<td class="right">{{$transaction->payment->name}}</td>
+			</tr>
 		</table>
 		<hr class="hr-dash">
 		<table class="w-100">

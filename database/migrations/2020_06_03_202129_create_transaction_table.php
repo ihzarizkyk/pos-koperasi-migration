@@ -26,10 +26,12 @@ class CreateTransactionTable extends Migration
             $table->bigInteger('total');
             $table->bigInteger('bayar');
             $table->bigInteger('kembali');
+            $table->unsignedBigInteger('payment_id');
             $table->unsignedBigInteger('id_kasir');
             $table->string('kasir');
             $table->timestamps();
 
+            $table->foreign('payment_id')->references('id')->on('payments');
             $table->foreign('id_kasir')->references('id')->on('users');
         });
     }

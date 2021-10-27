@@ -290,6 +290,21 @@
                 <tr>
                   <td>
                     <div class="input-group">
+                      <select class="js-example-basic-single payment" name="payment" style="width: 223px" required>
+                        <option selected disabled>Metode Pembayaran</option>
+                        @foreach ($method as $payments)
+                            <option value="{{$payments->id}}">{{$payments->name}}</option>
+                        @endforeach
+                      </select>
+                    </div>
+                  </td>
+                </tr>
+                <tr class="paymentNull" hidden="">
+                  <td class="text-danger nominal-min">Harap pilih metode pembayaran</td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="input-group">
                       <div class="input-group-prepend">
                         <div class="input-group-text">Rp.</div>
                       </div>
@@ -349,22 +364,26 @@
 @section('script')
 <script src="{{ asset('plugins/js/quagga.min.js') }}"></script>
 <script src="{{ asset('js/transaction/script.js') }}"></script>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script type="text/javascript">
+  $(document).ready(function() {
+    $('.js-example-basic-single').select2();
+  });
 
+  function mySuggest(data) {
+    var bayar = document.getElementById('bayar').value;
+    if (bayar == 0) {
+      document.getElementById('bayar').value = data;
+      }
+      else{
+        document.getElementById('bayar').value = parseInt(bayar) + data;
+      }
+  }
 
-function mySuggest(data) {
-  var bayar = document.getElementById('bayar').value;
-  if (bayar == 0) {
-    document.getElementById('bayar').value = data;
-    }
-    else{
-      document.getElementById('bayar').value = parseInt(bayar) + data;
-    }
-}
-
-@if ($message = Session::get('transaction_success'))
-  $('#successModal').modal('show');
-@endif
+  @if ($message = Session::get('transaction_success'))
+    $('#successModal').modal('show');
+  @endif
 
 $(document).on('click', '.btn-pilih', function(e){
   e.preventDefault();
@@ -466,6 +485,10 @@ $(document).on('click', '.btn-bayar', function(){
   var total = parseInt($('.nilai-total2-td').val());
   var bayar = parseInt($('.bayar-input').val());
   var check_barang = parseInt($('.jumlah_barang_text').length);
+  var payment = $('.payment').val();
+  if (!payment) {
+    $('.paymentNull').prop('hidden', false);
+  }
   if(bayar >= total){
     $('.nominal-error').prop('hidden', true);
     if(check_barang != 0){
