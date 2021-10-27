@@ -79,6 +79,7 @@ Route::group(['middleware' => ['auth', 'checkRole:admin,kasir']], function(){
 	Route::post('/supply/new_product', 'SupplyManageController@newProduct')->name('newProduct');
 	Route::get('/supply/detail_pasok/{id}', 'SupplyManageController@detail')->name('detail_pasok');
 	Route::post('/supply/detail_pasok/edited/{id}', 'SupplyManageController@edited')->name('edited_supply');
+	Route::post('/supply/detail_pasok/delete/{id}', 'SupplyManageController@deleted')->name('deleted_supply');
 	Route::get('/suppply/pasok_complete/{id}', 'SupplyManageController@pasok_complate')->name('pasok_complate');
 	// ------------------------- Transaksi -------------------------
 	Route::get('/transaction', 'TransactionManageController@viewTransaction');

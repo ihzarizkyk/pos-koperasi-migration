@@ -91,6 +91,10 @@
                       <!-- Button trigger modal -->
                       @if ($supply->status == 0)
                         <a href="{{ route('detail_pasok', $supply->id) }}" type="button" title="EDIT" class="btn btn-edit btn-icons btn-rounded btn-secondary"><i class="mdi mdi-pencil"></i></a>
+                        <button onclick="openConfirmModal()" type="button" title="DELETE" class="btn btn-delete btn-icons btn-rounded btn-danger"><i class="mdi mdi-delete"></i></button>
+                        <form id="formDelete" action="{{ route('deleted_supply', $supply->id) }}" method="POST" hidden>
+                        @csrf
+                        </form>
                       @else 
                         <a href="{{ route('pasok_complate', $supply->id) }}" type="button" title="DETAIL" class="btn btn-detail btn-icons btn-rounded btn-secondary"><i class="bi bi-info-lg"></i></a>
                       @endif
@@ -133,9 +137,32 @@
         rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
         return prefix == undefined ? rupiah : (rupiah ? '' + rupiah : '');
     }
+
+    function openConfirmModal(){
+      swal({
+        title: "Apa kamu yakin?",
+        text: "Kamu akan menghapus riwayat pasok ini secara permanen!",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      })
+      .then((willDelete) => {
+        if (willDelete) {
+          $('#formDelete').submit();
+        }
+      });
+    }
 </script>
 <script type="text/javascript">
   @if ($message = Session::get('create_success'))
+    swal(
+        "Berhasil!",
+        "{{ $message }}",
+        "success"
+    );
+  @endif
+
+  @if ($message = Session::get('delete_success'))
     swal(
         "Berhasil!",
         "{{ $message }}",

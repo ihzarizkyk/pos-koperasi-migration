@@ -372,9 +372,10 @@ $('input[name=search]').on('keyup', function(){
                 '<p class="m-0">'+response.product[i].kode_barang+'</p>'+
                 '<p class="m-0 txt-light">'+response.product[i].nama_barang+'</p>'+
               '</div>'+
-              '<div class="d-flex align-items-center">'+
+              '<div class="d-flex align-items-center">' +
+				'<p class="m-0 mr-5">'+response.product[i].merek+'</p>' +
                 '<span class="ammount-box bg-secondary mr-1"><i class="mdi mdi-cube-outline"></i></span>'+
-                '<p class="m-0">'+response.product[i].stok+'</p>'+
+                '<p class="m-0">'+response.product[i].stok+'</p>' +
               '</div>'+
             //   '<a href="{{url("adjustment/create/")}}/'+response.product[i].kode_barang+'" class="btn btn-icons btn-rounded btn-inverse-outline-primary font-weight-bold btn-pilih" role="button"><i class="mdi mdi-chevron-right"></i></a>'+
               '<span onclick="pilihBarang('+"&quot;"+response.product[i].kode_barang+"&quot;"+', '+"&quot;"+response.product[i].nama_barang+"&quot;"+', '+"&quot;"+response.product[i].hpp+"&quot;"+', '+"&quot;"+response.product[i].stok+"&quot;"+')" class="btn btn-icons btn-rounded btn-inverse-outline-primary font-weight-bold btn-pilih" role="button"><i class="mdi mdi-chevron-right"></i></span>'+

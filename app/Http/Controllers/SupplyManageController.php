@@ -595,6 +595,22 @@ class SupplyManageController extends Controller
             return back();
         }
     }
+    public function deleted($id)
+    {
+        $id_account = Auth::id();
+        $check_access = Acces::where('user', $id_account)
+        ->first();
+        $supply_system = Supply_system::first();
+        $delete_supply = Supply::where('id', $id)->first();
+        if($check_access->kelola_barang == 1 && $supply_system->status == true && $delete_supply->status == 0){
+            $delete_supply->delete();
+            Session::flash('delete_success', 'Berhasil hapus riwayat pasok barang');
+            return redirect('/supply');
+        }
+        else{
+            return back();
+        }
+    }
 
     //view history pasok
     public function pasok_complate($id)
