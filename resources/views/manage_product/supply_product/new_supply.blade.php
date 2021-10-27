@@ -106,14 +106,15 @@
 											<ul class="list-group product-list">
 											  @foreach($products as $product)
 											<li class="list-group-item d-flex justify-content-between align-items-center active-list">
-											  <div class="text-group">
+											  	<div class="text-group">
 												  <p class="m-0">{{ $product->kode_barang }}</p>
 												  <p class="m-0 txt-light">{{ $product->nama_barang }}</p>
-											  </div>
-											  <div class="d-flex align-items-center">
+											  	</div>
+											  	<div class="d-flex align-items-center">
+												  <p class="m-0 mr-5">{{ $product->merek }}</p>
 												  <span class="ammount-box bg-secondary mr-1"><i class="mdi mdi-cube-outline"></i></span>
 												  <p class="m-0">{{ $product->stok }}</p>
-											  </div>
+											  	</div>
 											  <a href="#" class="btn btn-icons btn-rounded btn-inverse-outline-primary font-weight-bold btn-pilih" role="button"><i class="mdi mdi-chevron-right"></i></a>
 											</li>
 											@endforeach
@@ -277,6 +278,7 @@
 								<thead>
 									<tr>
 										<th>Barang</th>
+										<th>Merek</th>
 										<th>Jumlah</th>
 										<th>Tempat Beli</th>
 										<th>Harga Satuan</th>
@@ -416,7 +418,7 @@
 						$('input[name=jumlah]').val('');
 						$('input[name=harga_beli]').val('');
 						$('input[name=tempat_beli]').val('');
-						$('tbody').append('<tr><td><span class="kd-barang-field">'+ response.product.kode_barang +'</span><span class="nama-barang-field">'+ response.product.nama_barang +'</span></td><td>'+ jumlah +'</td><td>'+ tempat_beli +'</td><td>Rp. '+ parseInt(harga_beli).toLocaleString() +'</td><td class="text-success">Rp. '+ parseInt(total).toLocaleString() +'</td><td><button type="button" class="btn btn-icons btn-rounded btn-secondary ml-1 btn-delete"><i class="mdi mdi-close"></i></button><div class="form-group" hidden=""><input type="text" class="form-control" name="kode_barang_supply[]" value="'+ response.product.kode_barang +'"><input type="text" class="form-control" name="jumlah_supply[]" value="'+ jumlah +'"><input type="text" class="form-control" name="tempat_beli[]" value="'+ tempat_beli +'"><input type="text" class="form-control" name="harga_beli_supply[]" value="'+ harga_beli +'"><input type="text" class="form-control" name="subtotal[]" value="'+ total +'"></div></td></tr>');
+						$('tbody').append('<tr><td><span class="kd-barang-field">'+ response.product.kode_barang +'</span><span class="nama-barang-field">'+ response.product.nama_barang +'</span></td><td>'+ response.product.merek +'</td><td>'+ jumlah +'</td><td>'+ tempat_beli +'</td><td>Rp. '+ parseInt(harga_beli).toLocaleString() +'</td><td class="text-success">Rp. '+ parseInt(total).toLocaleString() +'</td><td><button type="button" class="btn btn-icons btn-rounded btn-secondary ml-1 btn-delete"><i class="mdi mdi-close"></i></button><div class="form-group" hidden=""><input type="text" class="form-control" name="kode_barang_supply[]" value="'+ response.product.kode_barang +'"><input type="text" class="form-control" name="jumlah_supply[]" value="'+ jumlah +'"><input type="text" class="form-control" name="tempat_beli[]" value="'+ tempat_beli +'"><input type="text" class="form-control" name="harga_beli_supply[]" value="'+ harga_beli +'"><input type="text" class="form-control" name="subtotal[]" value="'+ total +'"></div></td></tr>');
 						$('.btn-simpan').prop('hidden', false);
 						if (window.getComputedStyle(detail).visibility === "hidden") {
 							detail.style.visibility = "visible";

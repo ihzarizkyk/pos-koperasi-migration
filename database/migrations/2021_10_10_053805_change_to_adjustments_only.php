@@ -18,7 +18,7 @@ class ChangeToAdjustmentsOnly extends Migration
             $table->dropColumn('nama_barang');
             $table->dropColumn('in_stock');
             $table->dropColumn('actual_stock');
-            $table->dropColumn('adjustment');
+            $table->dropColumn('adjustments');
             $table->string('id_adjustment')->after('id')->nullable()->default(null)->unique();
         });
     }
@@ -30,12 +30,12 @@ class ChangeToAdjustmentsOnly extends Migration
      */
     public function down()
     {
-        Schema::table('adjustments', function (Blueprint $table) {
+        Schema::table('adjustment', function (Blueprint $table) {
             $table->string('kode_barang')->after('id');
             $table->string('nama_barang')->after('kode_barang')->nullable();
             $table->integer('in_stock')->after('nama_barang')->nullable();
             $table->integer('actual_stock')->after('in_stock')->nullable();
-            $table->integer('adjustment')->after('actual_stock')->nullable();
+            $table->integer('adjustments')->after('actual_stock')->nullable();
             $table->dropColumn('id_adjustment');
         });
     }

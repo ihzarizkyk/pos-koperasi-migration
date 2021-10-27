@@ -22,6 +22,7 @@ class CreateTransactionDetailsTable extends Migration
             $table->integer('jumlah');
             $table->bigInteger('total_barang');
             $table->integer('diskon_per_barang');
+            $table->bigInteger('laba');
             $table->timestamps();
 
             $table->foreign('transaction_id')->references('id')->on('transactions');

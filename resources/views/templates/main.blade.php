@@ -150,6 +150,11 @@
             @endphp
             @if($access->kelola_akun == 1)
             <li class="nav-item">
+              <a class="nav-link" href="{{ route('shift') }}">
+                <span class="menu-title">Shift</span>
+              </a>
+            </li>
+            <li class="nav-item">
               <a class="nav-link" data-toggle="collapse" href="#kelola_akun" aria-expanded="false" aria-controls="kelola_akun">
                 <span class="menu-title">Kelola Akun</span>
                 <i class="menu-arrow"></i>

@@ -467,9 +467,9 @@ class SupplyManageController extends Controller
         if($check_access->kelola_barang == 1){
             $kode = Category::where('id', $req->kategori)->first();
             $lastProduct = Product::latest('id')->first();
-            $autoIncrements = substr($lastProduct->kode_barang, -1);
             $new = new Product;
             if ($lastProduct) {
+                $autoIncrements = substr($lastProduct->kode_barang, -1);
                 $newId = (int)$autoIncrements + 1;
                 $new->kode_barang = $kode->kode. $newId;
             } else {

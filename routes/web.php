@@ -13,6 +13,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::view("/profile/home","profile.index");
+
+Route::view("/project/home","project.index");
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -115,6 +119,15 @@ Route::group(['middleware' => ['auth', 'checkRole:admin,kasir']], function(){
 	Route::get('/adjustment/products/search', 'AdjustmentController@ProductSearch');
 	Route::post("/adjustment/store","AdjustmentController@store");
 	Route::get("/adjustment/{id}/show","AdjustmentController@show")->name('adjustment_detail');
+
+	// Shift
+	Route::get('shift', 'ShiftController@index')->name('shift');
+	Route::get('shift/newShift', 'ShiftController@new')->name('shift.new');
+	Route::post('shift/newShift/startShift', 'ShiftController@start')->name('shift.start');
+	Route::get('shift/endShift/{id}', 'ShiftController@endShift')->name('shift.endShift');
+	Route::post('shift/endShift/end/{id}', 'ShiftController@end')->name('shift.end');
+	Route::get('shift/detail_shift/{id}', 'ShiftController@detail')->name('shift.detail');
+	Route::get('shift/delete/{id}', 'ShiftController@delete')->name('shift.delete');
 });
 
 // Auth::routes();

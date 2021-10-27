@@ -19,7 +19,7 @@ class CreateAdjustmentsTable extends Migration
             $table->string('nama_barang')->nullable();
             $table->integer('in_stock')->nullable();
             $table->integer('actual_stock')->nullable();
-            $table->integer('adjustment')->nullable();
+            $table->integer('adjustments')->nullable();
             $table->timestamps();
         });
     }

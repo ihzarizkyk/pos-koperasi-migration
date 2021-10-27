@@ -13,6 +13,7 @@ use App\Activity;
 use App\Transaction;
 use App\TransactionDetail;
 use App\Supply_system;
+use App\Shift;
 use Illuminate\Http\Request;
 
 class TransactionManageController extends Controller
@@ -23,12 +24,20 @@ class TransactionManageController extends Controller
         $id_account = Auth::id();
         $check_access = Acces::where('user', $id_account)
         ->first();
+        $checkShift = Shift::latest('id')->first();
         if($check_access->transaksi == 1){
-        	// $products = Product::all()
-        	// ->sortBy('kode_barang');
-            $supply_system = Supply_system::first();
-
-            return view('transaction.transaction', compact('supply_system'));
+            if ($checkShift) {
+                if ($checkShift->selesai == null ) {
+                    $supply_system = Supply_system::first();
+                    return view('transaction.transaction', compact('supply_system'));
+                }
+                else{
+                    return view('transaction.error_page');
+                }
+            }
+            else{
+                return view('transaction.error_page');
+            }
         }else{
             return back();
         }
@@ -147,6 +156,7 @@ class TransactionManageController extends Controller
                     $transaction_detail->total_barang = $req->total_barang[$i];
                     $transaction_detail->jenis_diskon_per_barang = $req->jenis_diskon_per_barang[$i];
                     $transaction_detail->diskon_per_barang = $req->diskon_per_barang[$i];
+                    $transaction_detail->laba = ($req->jumlah_barang[$i] * $req->total_barang[$i]) - ($req->jumlah_barang[$i] * $product_data->hpp);
                     $transaction_detail->save();
                 }    
                 $check_supply_system = Supply_system::first();
