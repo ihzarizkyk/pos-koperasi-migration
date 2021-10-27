@@ -79,7 +79,7 @@
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title" id="tableModalLabel">Daftar Barang</h5>
+					<h5 class="modal-title" id="tableModalLabel">Add Product</h5>
 					<button type="button" class="close close-btn" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 					</button>
@@ -103,10 +103,53 @@
 													  <input type="text" class="form-control" name="search" placeholder="Cari barang">
 													</div>  
 												  </div>
-												<div class="col-12">
+												<div class="product_search col-12">
 													<ul style="overflow:auto; max-height:290px; padding-bottom:10px;" class="list-group product-list">
 													</ul>
 												</div>
+												<form class="col-12 input_product" name="input_product" style="display: none;">
+													<input type="hidden" required class="form-control" name="kode_barang" readonly="">
+													<div class="form-group row top-min">
+														<label class="col-12 font-weight-bold col-form-label">Nama Barang <small>(read only)</small></label>
+														<div class="col-12">
+															<input type="text" required readonly class="form-control number-input input-notzero" name="nama_barang">
+														</div>
+														{{-- <div class="col-12 error-notice" id="nama_"></div> --}}
+													</div>
+													<div class="form-group row top-min">
+														<label class="col-12 font-weight-bold col-form-label">In-Stock <small>(read only)</small></label>
+														<div class="col-12">
+															<input type="text" required readonly class="form-control number-input input-notzero" name="in_stock">
+														</div>
+														<div class="col-12 error-notice" id="jumlah_error"></div>
+													</div>
+													<div class="form-group row top-min">
+														<label class="col-12 font-weight-bold col-form-label">Actual Stock <small class="text-danger">*</small></label>
+														<div class="col-12">
+															<input type="number" required class="form-control input-notzero" name="actual_stock" placeholder="Masukkan Stock Sebenarnya">
+														</div>
+														<div class="col-12 text-danger" hidden id="actual_stock_error">Wajib diisi</div>
+													</div>
+													<div class="form-group row top-min">
+														<label class="col-12 font-weight-bold col-form-label">Stok Difference <small>(read only)</small></label>
+														<div class="col-12">
+															<input type="number" required class="form-control number-input input-notzero" name="stock_difference" readonly value="0">
+														</div>
+														<div class="col-12 text-danger" hidden id="stock_difference_error">Tidak ada perubahan</div>
+													</div>
+													<input type="number" name="hpp" hidden>
+													<div class="form-group row top-min">
+														<label class="col-12 font-weight-bold col-form-label">Note</label>
+														<div class="col-12">
+															<textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="note"></textarea>
+														</div>
+													</div>
+													<div class="row">
+														<div class="col-12 d-flex justify-content-end">
+															<button class="btn font-weight-bold btn-tambah" id="input_product" type="button">Tambah</button>
+														</div>
+													</div>
+												</form>
 											</div>
 										</div>
 										<div class="tab-pane fade" id="new-form" role="tabpanel" aria-labelledby="new-form-tab">
@@ -149,144 +192,14 @@
 	</div>
 </div>
 <div class="row">
-	<div class="col-lg-4 col-md-12 col-sm-12 mb-4">
-		<div class="row">
-			<div class="col-12">
-				<div class="card card-noborder b-radius">
-					<div class="card-body">
-						<div class="row">
-							<div class="col-12 d-flex">
-								<button class="btn-tab manual_form_btn btn-tab-active">Manual</button>
-								<button class="btn-tab import_form_btn">Import</button>
-								<div class="btn-tab-underline"></div>
-							</div>
-							<div class="col-12 mt-3">
-								<form name="input_product">
-									<div class="form-group row">
-										<label class="col-12 font-weight-bold col-form-label">Kode Barang <small>(read only)</small></label>
-										<div class="col-8">
-											<input type="text" required class="form-control" name="kode_barang" readonly="">
-										</div>
-										<div class="col-4 left-min d-flex">
-											<div class="btn-group">
-												<button class="btn btn-search" data-toggle="modal" data-target="#modal_cari_barang" type="button">
-													<i class="mdi mdi-magnify"></i>
-												</button>
-												<button class="btn btn-scan" data-toggle="modal" data-target="#scanModal" type="button">
-													<i class="mdi mdi-crop-free"></i>
-												</button>
-											</div>
-										</div>
-										<div class="col-12 text-danger" hidden id="kode_barang_error">Barang belum dipilih</div>
-									</div>
-									<div class="form-group row top-min">
-										<label class="col-12 font-weight-bold col-form-label">Nama Barang <small>(read only)</small></label>
-										<div class="col-12">
-											<input type="text" required readonly class="form-control number-input input-notzero" name="nama_barang">
-										</div>
-										{{-- <div class="col-12 error-notice" id="nama_"></div> --}}
-									</div>
-									<div class="form-group row top-min">
-										<label class="col-12 font-weight-bold col-form-label">In-Stock <small>(read only)</small></label>
-										<div class="col-12">
-											<input type="text" required readonly class="form-control number-input input-notzero" name="in_stock">
-										</div>
-										<div class="col-12 error-notice" id="jumlah_error"></div>
-									</div>
-									<div class="form-group row top-min">
-										<label class="col-12 font-weight-bold col-form-label">Actual Stock <small class="text-danger">*</small></label>
-										<div class="col-12">
-											<input type="number" required class="form-control input-notzero" name="actual_stock" placeholder="Masukkan Stock Sebenarnya">
-										</div>
-										<div class="col-12 text-danger" hidden id="actual_stock_error">Wajib diisi</div>
-									</div>
-									<div class="form-group row top-min">
-										<label class="col-12 font-weight-bold col-form-label">Stok Difference <small>(read only)</small></label>
-										<div class="col-12">
-											<input type="number" required class="form-control number-input input-notzero" name="stock_difference" readonly value="0">
-										</div>
-										<div class="col-12 text-danger" hidden id="stock_difference_error">Tidak ada perubahan</div>
-									</div>
-									<input type="number" name="hpp" hidden>
-									<div class="form-group row top-min">
-										<label class="col-12 font-weight-bold col-form-label">Note</label>
-										<div class="col-12">
-											<textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="note"></textarea>
-										</div>
-									</div>
-									{{-- <div class="form-group row top-min">
-										<label class="col-12 font-weight-bold col-form-label">Adjustment</label>
-										<div class="col-12">
-											<div class="input-group">
-												<div class="input-group-prepend">
-													<div class="input-group-text">Rp.</div>
-												</div>
-												<input type="text" class="form-control number-input input-notzero" name="adjustment" placeholder="Masukkan Harga Satuan">
-											</div>
-										</div>
-										<div class="col-12 error-notice" id="harga_beli_error"></div>
-									</div> --}}
-		
-									<div class="row">
-										<div class="col-12 d-flex justify-content-end">
-											<button class="btn font-weight-bold btn-tambah" id="input_product" type="button">Tambah</button>
-										</div>
-									</div>
-								</form>
-								<form action="https://koperasi.ittelkom-sby.ac.id/supply/import" method="post" name="import_form" enctype="multipart/form-data" hidden="">
-									<input type="hidden" name="_token" value="jXbVyE4XNiggp6m9NlI3BnUpKrMAdZ4q7lYMnXFo">									<div class="d-flex justify-content-between pb-2 align-items-center">
-									<h2 class="font-weight-semibold mb-0">Import</h2>
-									<input type="file" name="excel_file" hidden="" accept=".xls, .xlsx">
-									<a href="#" class="excel-file">
-										<div class="icon-holder">
-										<i class="mdi mdi-upload"></i>
-										</div>
-									</a>
-									</div>
-									<div class="d-flex justify-content-between">
-									<h5 class="font-weight-semibold mb-0">Upload file excel</h5>
-									<p class="excel-name">Pilih File</p>
-									</div>
-									<button class="btn btn-block mt-3 btn-upload" type="submit" hidden="">Import Data</button>
-									<div class="row mt-4">
-										<div class="col-12">
-											<h4 class="card-title mb-1">Langkah - Langkah Import</h4>
-											<div class="d-flex py-2 border-bottom">
-											<div class="wrapper">
-												<p class="font-weight-semibold text-gray mb-0">1. Siapkan data dengan format Excel (.xls atau .xlsx)</p>
-												<small class="text-muted">
-													<a href="" role="button" class="link-how" data-toggle="modal" data-target="#formatModal">Selengkapnya</a>
-												</small>
-											</div>
-											</div>
-											<div class="d-flex py-2 border-bottom">
-											<div class="wrapper">
-												<p class="font-weight-semibold text-gray mb-0">2. Jika sudah sesuai pilih file</p>
-											</div>
-											</div>
-											<div class="d-flex py-2">
-											<div class="wrapper">
-												<p class="font-weight-semibold text-gray mb-0">3. Klik simpan, maka data otomatis tersimpan</p>
-											</div>
-											</div>
-										</div>
-									</div>
-								</form>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="col-lg-8 col-md-12 col-sm-12">
+	<div class="col-lg-12 col-md-12 col-sm-12">
 		<div class="card card-noborder b-radius">
 			<div class="card-body">
 				<form method="post" action="{{url('adjustment/store')}}">
 					@csrf			
 					<div class="row">
 						<div class="col-12 table-responsive mb-4">
-							<table class="table table-custom">
+							<table class="table table-custom mb-5">
 								<thead>
 									<tr>
 										<th>Barang</th>
@@ -301,6 +214,7 @@
 								<tbody id="input_product_list">
 								</tbody>
 							</table>
+							<button class="btn btn-info btn-sm margin w-100" data-toggle="modal" data-target="#modal_cari_barang" type="button" name="add_product" value="Add Product"><i class="mdi mdi-plus"></i>Add Product</button>
 						</div>
 						{{-- <div class="form-hidden" id="detail">
 							<div class="container">
@@ -422,6 +336,7 @@ $(document).on('click', '.btn-continue', function(e){
 $('#modal_cari_barang').on('hidden.bs.modal', function (e) {
   $('input[name=search]').val('')
   $('.product-list').html('');
+  resetInput();
 })
 
 var xhrSearch = null;
@@ -431,6 +346,7 @@ $('input[name=search]').on('keyup', function(){
   }
   var el = $('.product-list');
   var searchTerm = $(this).val().toLowerCase();
+  resetInput();
   if(searchTerm.trim() != ''){
     var loading = ''+
           '<li class="list-group-item d-flex justify-content-between align-items-center active-list">'+
@@ -496,6 +412,8 @@ function resetInput(){
 	$('input[name=stock_difference]').val('')
 	$('textarea[name=note]').val('')
 	$('input[name=hpp]').val('')
+	$('.input_product').css('display', 'none')
+	$('.product_search').css('display', 'block')
 }
 
 function changeSaveAdjustment(stat){
@@ -567,6 +485,7 @@ $(function() {
 					input_product.push(kode_barang)
 					changeSaveAdjustment(false)
 					resetInput();
+					$('button[data-dismiss=modal]').click()
 				}
 			}
 		}
@@ -581,7 +500,8 @@ function pilihBarang(kode_barang, nama_barang, hpp, stok){
 	$('input[name=nama_barang]').val(nama_barang)
 	$('input[name=in_stock]').val(stok)
 	$('input[name=hpp]').val(hpp)
-	$('button[data-dismiss=modal]').click()
+	$('.product_search').css("display", 'none')
+	$('.input_product').css("display", 'block')
 
 }
 
