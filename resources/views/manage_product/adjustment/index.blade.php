@@ -45,9 +45,26 @@
 </div>
 <div class="row">
   <div class="col-md-12 grid-margin">
-    <input type="text" name="range" style="width:25%;" />
-    {{$total_nominal_adjustment->total}}
-    <div class="card card-noborder b-radius">
+      <input type="text" name="range" style="width:25%;" />
+  </div>
+  <div class="col-md-12 grid-margin">
+    <div class="card card-noborder b-tl-radius b-tr-radius">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12 d-flex justify-content-around">
+            <div class="d-flex flex-column align-items-center">
+              <h5 class="font-weight-bold">{{$jumlah_adjustment}}</h5>
+              <h6 class="font-weight-light">Adjustments</h6>
+            </div>
+            <div class="d-flex flex-column align-items-center">
+              <h5 class="font-weight-bold">{{$total_nominal_adjustment->total}}</h5>
+              <h6 class="font-weight-light">Total Adjustment</h6>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card card-noborder b-bl-radius b-br-radius">
       <div class="card-body">
         <div class="row">
         	<div class="col-12">
@@ -59,11 +76,11 @@
                 <table class="table table-custom">
                     <thead>
                       <tr>
-                      <th>ID Stock Adjustment</th>
-                      <th>Date</th>
-                      <th>Item</th>
-                      <th>Nominal</th>
-                      <th></th>
+                        <th>ID Stock Adjustment</th>
+                        <th>Date</th>
+                        <th>Item</th>
+                        <th>Nominal</th>
+                        <th></th>
                       </tr>
                     </thead>
                     <tbody>
@@ -137,17 +154,17 @@
   $(function() {
     $('input[name="range"]').daterangepicker({
       maxSpan:{
-        "days": 90
+        "years": 1
       },
       startDate: moment('{{$start}}'),
       endDate: moment('{{$end}}'),
       ranges: {
            'Hari ini': [moment(), moment()],
-           'Kemarin': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
            '7 hari terakhir': [moment().subtract(6, 'days'), moment()],
-           '30 hari terakhir': [moment().subtract(29, 'days'), moment()],
            'Bulan ini': [moment().startOf('month'), moment().endOf('month')],
-           'Bulan lalu': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+           'Bulan lalu': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+           'Tahun ini': [moment().startOf('year'), moment().endOf('year')],
+           'Tahun lalu': [moment().subtract(1, 'year').startOf('year'), moment().subtract(1, 'year').endOf('year')]
       }
     }, function(start, end, label) {
       window.location.href =  window.location.origin+window.location.pathname+'?start='+start.format('YYYY-MM-DD')+'&end='+end.format('YYYY-MM-DD')

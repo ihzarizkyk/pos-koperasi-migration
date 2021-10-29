@@ -33,6 +33,18 @@
 .b-radius{
 	border-radius: 10px;
 }
+.b-tl-radius{
+	border-top-left-radius: 10px;
+}
+.b-tr-radius{
+	border-top-right-radius: 10px;
+}
+.b-bl-radius{
+	border-bottom-left-radius: 10px;
+}
+.b-br-radius{
+	border-bottom-right-radius: 10px;
+}
 
 .table-responsive{
     width: 100%;

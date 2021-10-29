@@ -57,19 +57,21 @@ class AdjustmentController extends Controller
 
     public function index()
     {
-        $dates = now();
-        $start = isset($_GET['start']) ? new Carbon($_GET['start']) : Carbon::today()->subDay(29);
-        $end = isset($_GET['end']) ? new Carbon($_GET['end']) : Carbon::today();
-        if($start->diffInDays($end) > 90){
+        $dates = Carbon::now();
+        $start = isset($_GET['start']) ? new Carbon($_GET['start']) : Carbon::now()->startOfMonth();
+        $end = isset($_GET['end']) ? new Carbon($_GET['end']) : Carbon::now()->endOfMonth();
+        if($start->diffInYears($end) > 1){
             $end = new Carbon($start);
-            $end->addDay(90);
+            $end->addYear();
         }
-        $end->addDay(1);
-        $adjustment = Adjustment::whereBetween('adjustments.created_at', [$start, $end])->paginate(7);
-        $total_nominal_adjustment = Adjustment::whereBetween('adjustments.created_at', [$start, $end])->totalNominal()->first()->append('total');
-        $end = $end->subDay(1);
+        $start = $start->toDateString();
+        $end = $end->toDateString();
+        $data = Adjustment::whereBetween(DB::raw('DATE_FORMAT(adjustments.created_at, "%Y-%m-%d")'), [$start, $end]);
+        $adjustment = $data->paginate(7);
+        $jumlah_adjustment = $data->count();
+        $total_nominal_adjustment = Adjustment::whereBetween(DB::raw('DATE_FORMAT(adjustments.created_at, "%Y-%m-%d")'), [$start, $end])->totalNominal()->first()->append('total');
         $adjustment = $adjustment->withQueryString();
-        return view("manage_product.adjustment.index", compact('dates', 'adjustment', 'total_nominal_adjustment', 'start', 'end'));
+        return view("manage_product.adjustment.index", compact('dates', 'adjustment', 'jumlah_adjustment', 'total_nominal_adjustment', 'start', 'end'));
     }
     public function create()
     {

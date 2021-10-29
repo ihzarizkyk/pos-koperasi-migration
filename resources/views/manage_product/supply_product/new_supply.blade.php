@@ -324,7 +324,7 @@
 											<label class="col-12 font-weight-bold col-form-label"><b>Tanggal</b></label>
 											<div class="col-12">
 												<div class="input-group">
-													<input type="date" class="form-control" name="date" required>
+													<input value="{{date('Y-m-d')}}" type="date" class="form-control" name="date" required>
 												</div>
 											</div>
 											<div class="col-12 error-notice" id="backdate_error"></div>

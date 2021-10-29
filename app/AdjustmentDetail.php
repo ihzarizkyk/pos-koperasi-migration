@@ -28,6 +28,6 @@ class AdjustmentDetail extends Model
 
     public function getNominalAttribute(){
         $nominal = $this->append('nominal_integer')->nominal_integer;
-        return ($nominal<0 ? '-' : '').'Rp. '.number_format(($nominal<0 ? $nominal*-1 : $nominal));
+        return ($nominal<0 ? '(' : '').'Rp. '.number_format(($nominal<0 ? $nominal*-1 : $nominal)).($nominal<0 ? ')' : '');
     }
 }

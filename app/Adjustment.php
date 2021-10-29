@@ -47,7 +47,7 @@ class Adjustment extends Model
     public function getNominalAttribute()
     {
         $nominal = $this->adjustment_details->sum('nominal_integer');
-        return ($nominal<0 ? '-' : '').'Rp. '.number_format(($nominal<0 ? $nominal*-1 : $nominal));
+        return ($nominal<0 ? '(' : '').'Rp. '.number_format(($nominal<0 ? $nominal*-1 : $nominal)).($nominal<0 ? ')' : '');
     }
 
     public function scopeLastIdAdjustment($query){
@@ -65,6 +65,6 @@ class Adjustment extends Model
     public function getTotalAttribute()
     {
         $nominal = $this->totalInteger;
-        return ($nominal<0 ? '-' : '').'Rp. '.number_format(($nominal<0 ? $nominal*-1 : $nominal));
+        return ($nominal<0 ? '(' : '').'Rp. '.number_format(($nominal<0 ? $nominal*-1 : $nominal)).($nominal<0 ? ')' : '');
     }
 }
