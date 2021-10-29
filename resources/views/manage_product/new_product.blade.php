@@ -102,7 +102,7 @@
 					<div class="form-group row">
 					  	<div class="col-lg-6 col-md-6 col-sm-12 space-bottom">
 					  		<div class="row">
-					  			<label class="col-12 font-weight-bold col-form-label">Berat Barang</label>
+					  			<label class="col-12 font-weight-bold col-form-label">Berat Barang <span class="text-danger">*</span></label>
 							  	<div class="col-12">
 							  		<div class="input-group">
 							  			<input type="text" class="form-control number-input" name="berat_barang" placeholder="Masukkan Berat Barang" required>
@@ -122,7 +122,7 @@
 					  	</div>
 					  	<div class="col-lg-6 col-md-6 col-sm-12">
 					  		<div class="row">
-					  			<label class="col-12 font-weight-bold col-form-label">Merek Barang</label>
+					  			<label class="col-12 font-weight-bold col-form-label">Merek Barang <span class="text-danger">*</span></label>
 							  	<div class="col-12">
 							  		<input type="text" class="form-control" name="merek" placeholder="Masukkan Merek Barang" required>
 							  	</div>

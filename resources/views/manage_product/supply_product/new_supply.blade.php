@@ -189,14 +189,14 @@
 										<div class="col-12 error-notice" id="kode_barang_error"></div>
 									</div>
 									<div class="form-group row top-min">
-										<label class="col-12 font-weight-bold col-form-label">Jumlah Barang</label>
+										<label class="col-12 font-weight-bold col-form-label">Jumlah Barang <span class="text-danger">*</span></label>
 										<div class="col-12">
 											<input type="text" class="form-control number-input input-notzero" name="jumlah" placeholder="Masukkan Jumlah">
 										</div>
 										<div class="col-12 error-notice" id="jumlah_error"></div>
 									</div>
 									<div class="form-group row top-min">
-										<label class="col-12 font-weight-bold col-form-label">Tempat Beli</label>
+										<label class="col-12 font-weight-bold col-form-label">Tempat Beli <span class="text-danger">*</span></label>
 										<div class="col-12">
 											<input type="text" class="form-control input-notzero" name="tempat_beli" placeholder="Masukkan Tempat Beli">
 										</div>

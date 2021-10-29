@@ -87,7 +87,7 @@
                 <div class="col-lg-9 col-md-9 col-sm-12 offset-lg-3 offset-md-3 error-notice" id="kode_barang_error"></div>
               </div>
               <div class="form-group row">
-                <label class="col-lg-3 col-md-3 col-sm-12 col-form-label font-weight-bold">Jenis Barang</label>
+                <label class="col-lg-3 col-md-3 col-sm-12 col-form-label font-weight-bold">Jenis Barang <span class="text-danger">*</span></label>
                 <div class="col-lg-9 col-md-9 col-sm-12">
                   <select class="form-control" name="kategori" id="kategori" required>
                     <option value="">Pilih Kategori</option>
@@ -98,14 +98,14 @@
                 </div>
               </div>
               <div class="form-group row">
-                <label class="col-lg-3 col-md-3 col-sm-12 col-form-label font-weight-bold">Nama Barang</label>
+                <label class="col-lg-3 col-md-3 col-sm-12 col-form-label font-weight-bold">Nama Barang <span class="text-danger">*</span></label>
                 <div class="col-lg-9 col-md-9 col-sm-12">
                   <input type="text" class="form-control" name="nama_barang">
                 </div>
                 <div class="col-lg-9 col-md-9 col-sm-12 offset-lg-3 offset-md-3 error-notice" id="nama_barang_error"></div>
               </div>
               <div class="form-group row">
-                <label class="col-lg-3 col-md-3 col-sm-12 col-form-label font-weight-bold">Berat Barang</label>
+                <label class="col-lg-3 col-md-3 col-sm-12 col-form-label font-weight-bold">Berat Barang <span class="text-danger">*</span></label>
                 <div class="col-lg-9 col-md-9 col-sm-12">
                   <div class="input-group">
                       <input type="text" class="form-control number-input input-notzero" name="berat_barang">
@@ -123,13 +123,13 @@
                 </div>
               </div>
               <div class="form-group row">
-                <label class="col-lg-3 col-md-3 col-sm-12 col-form-label font-weight-bold">Merek Barang</label>
+                <label class="col-lg-3 col-md-3 col-sm-12 col-form-label font-weight-bold">Merek Barang <span class="text-danger">*</span></label>
                 <div class="col-lg-9 col-md-9 col-sm-12">
                   <input type="text" class="form-control" name="merek">
                 </div>
               </div>
               <div class="form-group row" @if($supply_system->status == false) hidden="" @endif>
-                <label class="col-lg-3 col-md-3 col-sm-12 col-form-label font-weight-bold">Stok Barang</label>
+                <label class="col-lg-3 col-md-3 col-sm-12 col-form-label font-weight-bold">Stok Barang <span class="text-danger">*</span></label>
                 <div class="col-lg-9 col-md-9 col-sm-12">
                   <input type="text" class="form-control number-input" name="stok">
                 </div>
@@ -150,7 +150,7 @@
                 <div class="col-lg-9 col-md-9 col-sm-12 offset-lg-3 offset-md-3 error-notice" id="stok_error"></div>
               </div>
               <div class="form-group row">
-                <label class="col-lg-3 col-md-3 col-sm-12 col-form-label font-weight-bold">Harga Barang</label>
+                <label class="col-lg-3 col-md-3 col-sm-12 col-form-label font-weight-bold">Harga Barang <span class="text-danger">*</span></label>
                 <div class="col-lg-9 col-md-9 col-sm-12">
                   <div class="input-group">
                       <div class="input-group-prepend">
@@ -162,7 +162,7 @@
                 <div class="col-lg-9 col-md-9 col-sm-12 offset-lg-3 offset-md-3 error-notice" id="harga_error"></div>
               </div>
               <div class="form-group row">
-                <label class="col-lg-3 col-md-3 col-sm-12 col-form-label font-weight-bold">Laba Rupiah</label>
+                <label class="col-lg-3 col-md-3 col-sm-12 col-form-label font-weight-bold">Laba Rupiah <span class="text-danger">*</span></label>
                 <div class="col-lg-9 col-md-9 col-sm-12">
                   <div class="input-group">
                       <div class="input-group-prepend">
@@ -174,7 +174,7 @@
                 <div class="col-lg-9 col-md-9 col-sm-12 offset-lg-3 offset-md-3 error-notice" id="laba_rupiah_error"></div>
               </div>
               <div class="form-group row">
-                <label class="col-lg-3 col-md-3 col-sm-12 col-form-label font-weight-bold">Hpp Barang</label>
+                <label class="col-lg-3 col-md-3 col-sm-12 col-form-label font-weight-bold">Hpp Barang <span class="text-danger">*</span></label>
                 <div class="col-lg-9 col-md-9 col-sm-12">
                   <div class="input-group">
                       <div class="input-group-prepend">
