@@ -531,7 +531,7 @@ function deleteBarang(self){
 	input_product.splice(index, 1);
 	tr.remove()
 	if(input_product.length<1){
-		changeSaveAdjustment(true)
+		$('button[name=save_adjustment]').prop('disabled', true)
 	}
 	// console.log(kode_barang)
 }

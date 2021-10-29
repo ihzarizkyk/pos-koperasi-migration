@@ -172,20 +172,6 @@
 						</div>
 						<div class="col-lg-6 col-md-6 col-sm-12">
 							<div class="row">
-								<label class="col-12 font-weight-bold col-form-label">Laba Rupiah</label>
-								<div class="col-12">
-									<div class="input-group">
-										<div class="input-group-prepend">
-											<span class="input-group-text">Rp. </span>
-										</div>
-										<input type="text" id="laba_rupiah" class="form-control number-input" name="laba_rupiah" placeholder="Masukkan Laba Rupiah">
-									</div>
-								</div>
-								<div class="col-12 error-notice" id="laba_rupiah_error"></div>
-							</div>
-						</div>
-					  	<div class="col-lg-12 col-md-12 col-sm-12">
-							<div class="row">
 								<label class="col-12 font-weight-bold col-form-label">Hpp Barang <span class="text-danger">*</span></label>
 								<div class="col-12">
 									<div class="input-group">
@@ -196,6 +182,20 @@
 									</div>
 								</div>
 							  	<div class="col-12 error-notice" id="hpp_error"></div>
+							</div>
+						</div>
+						<div class="col-lg-12 col-md-12 col-sm-12">
+							<div class="row">
+								<label class="col-12 font-weight-bold col-form-label">Laba Rupiah</label>
+								<div class="col-12">
+									<div class="input-group">
+										<div class="input-group-prepend">
+											<span class="input-group-text">Rp. </span>
+										</div>
+										<input type="text" readonly id="laba_rupiah" class="form-control" name="laba_rupiah" placeholder="Masukkan Laba Rupiah">
+									</div>
+								</div>
+								<div class="col-12 error-notice" id="laba_rupiah_error"></div>
 							</div>
 						</div>
 						@else
@@ -215,20 +215,6 @@
 							</div>
 							<div class="col-lg-6 col-md-6 col-sm-12">
 								<div class="row">
-									<label class="col-12 font-weight-bold col-form-label">Laba Rupiah</label>
-									<div class="col-12">
-										<div class="input-group">
-											<div class="input-group-prepend">
-												<span class="input-group-text">Rp. </span>
-											</div>
-											<input type="text" id="laba_rupiah" class="form-control number-input" name="laba_rupiah" placeholder="Masukkan Laba Rupiah">
-										</div>
-									</div>
-									<div class="col-12 error-notice" id="laba_rupiah_error"></div>
-								</div>
-							</div>
-							<div class="col-lg-12 col-md-12 col-sm-12">
-								<div class="row">
 									<label class="col-12 font-weight-bold col-form-label">Hpp Barang <span class="text-danger">*</span></label>
 									<div class="col-12">
 										<div class="input-group">
@@ -239,6 +225,20 @@
 										</div>
 									</div>
 									<div class="col-12 error-notice" id="hpp_error"></div>
+								</div>
+							</div>
+							<div class="col-lg-12 col-md-12 col-sm-12">
+								<div class="row">
+									<label class="col-12 font-weight-bold col-form-label">Laba Rupiah</label>
+									<div class="col-12">
+										<div class="input-group">
+											<div class="input-group-prepend">
+												<span class="input-group-text">Rp. </span>
+											</div>
+											<input readonly type="text" id="laba_rupiah" class="form-control" name="laba_rupiah" placeholder="Masukkan Laba Rupiah">
+										</div>
+									</div>
+									<div class="col-12 error-notice" id="laba_rupiah_error"></div>
 								</div>
 							</div>
 					  	@endif
@@ -333,6 +333,25 @@
 			$("#limit").prop('required', false)
 			$("#limit").prop('value', '')
 		}
+	});
+
+	function edit_laba_rupiah(harga, hpp){
+		var harga = harga.trim() != "" ? harga : 0;
+		var hpp = hpp.trim() != "" ? hpp : 0;
+		var laba = harga - hpp;
+		$('#laba_rupiah').val((laba<0 ? '-' : '') +formatRupiah(laba.toString(), ''))
+	}
+
+	$(document).on('input', '#harga', function(e){
+		var harga = $(this).val();
+		var hpp = $('#hpp').val();
+		edit_laba_rupiah(harga, hpp);
+	});
+
+	$(document).on('input', '#hpp', function(e){
+		var harga = $('#harga').val();
+		var hpp = $(this).val();
+		edit_laba_rupiah(harga, hpp);
 	});
 
 	function formatRupiah(angka, prefix){

@@ -144,7 +144,7 @@ class ProductManageController extends Controller
 
                 */
                 $product->hpp = $hpp;
-                $product->laba_rupiah = trim($req->laba_rupiah) != "" ? preg_replace("/[^a-zA-Z0-9]/", "", $req->laba_rupiah) : 0;
+                $product->laba_rupiah = trim($req->laba_rupiah) != "" ? str_replace(".", "", $req->laba_rupiah) : 0;
                 $product->laba_persen = $product->laba_rupiah / $hpp * 100;
     	    	$product->save();
 
