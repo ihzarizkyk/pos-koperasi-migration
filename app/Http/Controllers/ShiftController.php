@@ -45,13 +45,33 @@ class ShiftController extends Controller
         $startShift = $shift->mulai;
         $endShift = date('Y-m-d H:i:s');
         $getTransaction = Transaction::whereBetween('created_at', [$startShift, $endShift])->get();
-        $total = 0;
+        $tf = 0;
+        $cash = 0;
         $items = 0;
+        $qris = 0;
+        $ovo = 0;
+        $gopay = 0;
+        $total = 0;
         foreach ($getTransaction as $sold) {
-            $total += $sold->total;
+            if ($sold->jenisPayment_id == 1) {
+                $cash += $sold->total;
+            }
+            elseif ($sold->jenisPayment_id == 2) {
+                $tf += $sold->total;
+            }
+            elseif ($sold->jenisPayment_id == 3) {
+                $qris += $sold->total;
+            }
+            elseif ($sold->jenisPayment_id == 4) {
+                $ovo += $sold->total;
+            }
+            elseif ($sold->jenisPayment_id == 5) {
+                $gopay += $sold->total;
+            }
             $items += 1;
+            $total += $sold->total;
         }
-        return view('shift.edit', compact('data', 'total', 'items'));
+        return view('shift.edit', compact('data', 'cash', 'items', 'tf', 'qris', 'ovo', 'gopay', 'total'));
     }
 
     public function end(Request $req, $id)
@@ -59,11 +79,10 @@ class ShiftController extends Controller
         $endShift = Shift::where('id', $id)->first();
 
         $endShift->users_id = Auth::id();
-        $endShift->pemasukan = preg_replace("/[^a-zA-Z0-9]/", "", $req->pemasukan);
+        $endShift->pemasukan = preg_replace("/[^a-zA-Z0-9]/", "", $req->total);
         $endShift->sold = $req->sold;
-        $masuk = preg_replace("/[^a-zA-Z0-9]/", "", $req->pemasukan);
         $modal = preg_replace("/[^a-zA-Z0-9]/", "", $req->modal);
-        $total = $masuk + $modal;
+        $total = $req->total + $modal;
         $endShift->total = $total;
         $endShift->selesai = $req->selesai;
 

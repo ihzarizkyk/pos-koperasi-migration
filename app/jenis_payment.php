@@ -4,13 +4,12 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Payment extends Model
+class jenis_payment extends Model
 {
-    /**
-     * Get the user associated with the Payment
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
-     */
+    protected $fillable = [
+        'jenis'
+    ];
+    
     public function transaction()
     {
         return $this->hasOne(Transaction::class);

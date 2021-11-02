@@ -14,7 +14,8 @@ use App\Transaction;
 use App\TransactionDetail;
 use App\Supply_system;
 use App\Shift;
-use App\Payment;
+use App\jenis_payment;
+use App\payment_customer;
 use Illuminate\Http\Request;
 
 class TransactionManageController extends Controller
@@ -30,7 +31,7 @@ class TransactionManageController extends Controller
             if ($checkShift) {
                 if ($checkShift->selesai == null ) {
                     $supply_system = Supply_system::first();
-                    $method = Payment::all();
+                    $method = jenis_payment::all();
                     return view('transaction.transaction', compact('supply_system', 'method'));
                 }
                 else{
@@ -128,6 +129,7 @@ class TransactionManageController extends Controller
     // Transaction Process
     public function transactionProcess(Request $req)
     {
+        // dd($req);
         $id_account = Auth::id();
         $check_access = Acces::where('user', $id_account)
         ->first();
@@ -142,11 +144,28 @@ class TransactionManageController extends Controller
         		$transaction->diskon = $req->diskon;
         		$transaction->total = $req->total;
         		$transaction->bayar = $req->bayar;
-        		$transaction->kembali = $req->bayar - $req->total;
-                $transaction->payment_id = $req->payment;
+                if ($req->payment == 6) {
+        		    $transaction->kembali = 0;
+                }
+                else{
+        		    $transaction->kembali = $req->bayar - $req->total;
+                }
+                $transaction->jenisPayment_id = $req->payment;
         		$transaction->id_kasir = Auth::id();
                 $transaction->kasir = Auth::user()->nama;
         		$transaction->save();
+
+                $payment = new payment_customer;
+                $payment->transaksi_id = $transaction->id;
+                $payment->nama = $req->customer;
+                $payment->nominal = $req->total;
+                if ($req->payment == 6) {
+                    $payment->tenggat = $req->tenggat;
+                    $payment->status = 0;
+                } else {
+                    $payment->status = 1;
+                }
+                $payment->save();
 
                 for($i = 0; $i < $jml_barang; $i++){
                     $transaction_detail = new TransactionDetail;

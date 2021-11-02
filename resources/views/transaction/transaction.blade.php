@@ -290,10 +290,10 @@
                 <tr>
                   <td>
                     <div class="input-group">
-                      <select class="js-example-basic-single payment" name="payment" style="width: 223px" required>
+                      <select class="js-example-basic-single payment" id="payment" name="payment" style="width: 223px" required>
                         <option selected disabled>Metode Pembayaran</option>
                         @foreach ($method as $payments)
-                            <option value="{{$payments->id}}">{{$payments->name}}</option>
+                            <option value="{{$payments->id}}">{{$payments->jenis}}</option>
                         @endforeach
                       </select>
                     </div>
@@ -301,6 +301,24 @@
                 </tr>
                 <tr class="paymentNull" hidden="">
                   <td class="text-danger nominal-min">Harap pilih metode pembayaran</td>
+                </tr>
+                <tr class="tenggat" hidden="">
+                  <td>
+                    <label class="col-12 font-weight-bold col-form-label"><b>Jatuh Tempo</b></label>
+                      <div class="input-group">
+                          <input type="date" class="form-control" name="tenggat">
+                      </div>
+                  </td>
+                </tr>
+                <tr class="tenggatNull" hidden="">
+                  <td class="text-danger nominal-min">Harap pilih tenggat pembayaran</td>
+                </tr>
+                <tr>
+                  <td>
+                      <div class="input-group">
+                          <input type="text" required class="form-control" name="customer" placeholder="Nama Customer">
+                      </div>
+                  </td>
                 </tr>
                 <tr>
                   <td>
@@ -369,6 +387,22 @@
 <script type="text/javascript">
   $(document).ready(function() {
     $('.js-example-basic-single').select2();
+  });
+
+  $(function(){
+    $("#payment").on("change", function(){
+      var payments = $('option:selected', this).attr('value');
+      if (payments == 6) {
+        $('.tenggat').prop('hidden', false).attr('required', true);
+        $('#bayar').attr('min', 0);
+        $('.tenggatNull').prop('hidden', false);
+      }
+      else{
+        $('.tenggat').prop('hidden', true);
+        $('.tenggatNull').prop('hidden', true);
+        $('#bayar').attr('min', 1);
+      }
+    });
   });
 
   function mySuggest(data) {
@@ -486,10 +520,12 @@ $(document).on('click', '.btn-bayar', function(){
   var bayar = parseInt($('.bayar-input').val());
   var check_barang = parseInt($('.jumlah_barang_text').length);
   var payment = $('.payment').val();
+  var payment_method = document.getElementById('payment').value;
   if (!payment) {
     $('.paymentNull').prop('hidden', false);
   }
-  if(bayar >= total){
+  
+  if(bayar >= total || payment_method == 6){
     $('.nominal-error').prop('hidden', true);
     if(check_barang != 0){
       if($('.diskon-input').attr('hidden') != 'hidden'){
