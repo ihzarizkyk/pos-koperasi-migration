@@ -90,7 +90,7 @@
                 <div class="form-group row top-min">
                   <label class="col-12 font-weight-bold col-form-label">Cash</label>
                   <div class="col-12">
-                      <input type="text" class="form-control input-notzero" value="{{number_format($cash,0,',','.')}}"  readonly>
+                      <input type="text" class="form-control input-notzero" name="cash" value="{{number_format($cash,0,',','.')}}"  readonly>
                   </div>
                 </div>
               </div>
@@ -98,7 +98,7 @@
                 <div class="form-group row top-min">
                   <label class="col-12 font-weight-bold col-form-label">Transfer</label>
                   <div class="col-12">
-                      <input type="text" class="form-control input-notzero" value="{{number_format($tf,0,',','.')}}"  readonly>
+                      <input type="text" class="form-control input-notzero" name="tf" value="{{number_format($tf,0,',','.')}}"  readonly>
                   </div>
                 </div>
               </div>
@@ -106,23 +106,31 @@
                 <div class="form-group row top-min">
                   <label class="col-12 font-weight-bold col-form-label">Qris</label>
                   <div class="col-12">
-                      <input type="text" class="form-control input-notzero" value="{{number_format($tf,0,',','.')}}"  readonly>
+                      <input type="text" class="form-control input-notzero" name="qris" value="{{number_format($qris,0,',','.')}}"  readonly>
                   </div>
                 </div>
               </div>
-              <div class="col-6">
+              <div class="col-4">
                 <div class="form-group row top-min">
                   <label class="col-12 font-weight-bold col-form-label">Ovo</label>
                   <div class="col-12">
-                      <input type="text" class="form-control input-notzero" value="{{number_format($ovo,0,',','.')}}"  readonly>
+                      <input type="text" class="form-control input-notzero" name="ovo" value="{{number_format($ovo,0,',','.')}}"  readonly>
                   </div>
                 </div>
               </div>
-              <div class="col-6">
+              <div class="col-4">
                 <div class="form-group row top-min">
                   <label class="col-12 font-weight-bold col-form-label">Gopay</label>
                   <div class="col-12">
-                      <input type="text" class="form-control input-notzero" value="{{number_format($gopay,0,',','.')}}"  readonly>
+                      <input type="text" class="form-control input-notzero" name="gopay" value="{{number_format($gopay,0,',','.')}}"  readonly>
+                  </div>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="form-group row top-min">
+                  <label class="col-12 font-weight-bold col-form-label">Invoice</label>
+                  <div class="col-12">
+                      <input type="text" class="form-control input-notzero" name="hutang" value="{{number_format($hutang,0,',','.')}}"  readonly>
                   </div>
                 </div>
               </div>

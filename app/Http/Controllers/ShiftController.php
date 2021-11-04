@@ -52,6 +52,7 @@ class ShiftController extends Controller
         $ovo = 0;
         $gopay = 0;
         $total = 0;
+        $hutang = 0;
         foreach ($getTransaction as $sold) {
             if ($sold->jenisPayment_id == 1) {
                 $cash += $sold->total;
@@ -68,10 +69,13 @@ class ShiftController extends Controller
             elseif ($sold->jenisPayment_id == 5) {
                 $gopay += $sold->total;
             }
+            elseif ($sold->jenisPayment_id == 6) {
+                $hutang += $sold->total;
+            }
             $items += 1;
             $total += $sold->total;
         }
-        return view('shift.edit', compact('data', 'cash', 'items', 'tf', 'qris', 'ovo', 'gopay', 'total'));
+        return view('shift.edit', compact('data', 'cash', 'items', 'tf', 'qris', 'ovo', 'gopay', 'total', 'hutang'));
     }
 
     public function end(Request $req, $id)
@@ -84,6 +88,12 @@ class ShiftController extends Controller
         $modal = preg_replace("/[^a-zA-Z0-9]/", "", $req->modal);
         $total = $req->total + $modal;
         $endShift->total = $total;
+        $endShift->cash = preg_replace("/[^a-zA-Z0-9]/", "", $req->cash);
+        $endShift->transfer = preg_replace("/[^a-zA-Z0-9]/", "", $req->tf);
+        $endShift->qris = preg_replace("/[^a-zA-Z0-9]/", "", $req->qris);
+        $endShift->ovo = preg_replace("/[^a-zA-Z0-9]/", "", $req->ovo);
+        $endShift->gopay = preg_replace("/[^a-zA-Z0-9]/", "", $req->gopay);
+        $endShift->invoice = preg_replace("/[^a-zA-Z0-9]/", "", $req->hutang);
         $endShift->selesai = $req->selesai;
 
         $endShift->save();

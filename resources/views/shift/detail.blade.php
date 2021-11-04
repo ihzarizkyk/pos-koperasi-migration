@@ -31,22 +31,14 @@
   <div class="col-md-12 grid-margin">
     <div class="card card-noborder b-radius">
       <div class="card-body">
-        <form action="{{ route('shift.end', $data->id) }}" method="POST">
+        <form action="" method="POST">
             @csrf
             <div class="row">
-                <div class="col-6">
+                <div class="col-12">
                     <div class="form-group row top-min">
                         <label class="col-12 font-weight-bold col-form-label">Modal Awal</label>
                         <div class="col-12">
                           <input type="text" id="modal" class="form-control input-notzero" value="{{number_format($data->modal,0,',','.')}}" name="modal" placeholder="Masukkan Modal Awal" readonly>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-6">
-                    <div class="form-group row top-min">
-                        <label class="col-12 font-weight-bold col-form-label">Pemasukan</label>
-                        <div class="col-12">
-                            <input type="text" id="pemasukan" readonly class="form-control input-notzero" value="{{number_format($data->pemasukan,0,',','.')}}" name="pemasukan" placeholder="Masukkan Pemasukan" required>
                         </div>
                     </div>
                 </div>
@@ -68,30 +60,81 @@
             </div>
             </div>
             <div class="row">
-                <div class="col-6">
-                    <div class="form-group row top-min">
-                        <label class="col-12 font-weight-bold col-form-label"><b>Tanggal dan Waktu Mulai</b></label>
-                        <div class="col-12">
-                            <div class="input-group">
-                                <input type="text" class="form-control" name="start" value="{{ $data->mulai }}" readonly>
-                            </div>
-                        </div>
-                    </div>
+              <div class="col-6">
+                  <div class="form-group row top-min">
+                      <label class="col-12 font-weight-bold col-form-label"><b>Tanggal dan Waktu Mulai</b></label>
+                      <div class="col-12">
+                          <div class="input-group">
+                              <input type="text" class="form-control" name="start" value="{{ $data->mulai }}" readonly>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <div class="col-6">
+                  <div class="form-group row top-min">
+                      <label class="col-12 font-weight-bold col-form-label"><b>Tanggal dan Waktu Selesai</b></label>
+                      <div class="col-12">
+                          <div class="input-group">
+                              <input type="text" class="form-control" name="selesai" value="{{ date('Y-m-d H:i:s') }}" readonly>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+            </div>
+            <h4>Detail Pembayaran:</h4>
+            <div class="row">
+              <div class="col-4">
+                <div class="form-group row top-min">
+                  <label class="col-12 font-weight-bold col-form-label">Cash</label>
+                  <div class="col-12">
+                      <input type="text" class="form-control input-notzero" name="cash" value="{{number_format($data->cash,0,',','.')}}"  readonly>
+                  </div>
                 </div>
-                <div class="col-6">
-                    <div class="form-group row top-min">
-                        <label class="col-12 font-weight-bold col-form-label"><b>Tanggal dan Waktu Selesai</b></label>
-                        <div class="col-12">
-                            <div class="input-group">
-                                <input type="text" class="form-control" name="selesai" value="{{ $data->selesai }}" readonly>
-                            </div>
-                        </div>
-                    </div>
+              </div>
+              <div class="col-4">
+                <div class="form-group row top-min">
+                  <label class="col-12 font-weight-bold col-form-label">Transfer</label>
+                  <div class="col-12">
+                      <input type="text" class="form-control input-notzero" name="tf" value="{{number_format($data->transfer,0,',','.')}}"  readonly>
+                  </div>
                 </div>
+              </div>
+              <div class="col-4">
+                <div class="form-group row top-min">
+                  <label class="col-12 font-weight-bold col-form-label">Qris</label>
+                  <div class="col-12">
+                      <input type="text" class="form-control input-notzero" name="qris" value="{{number_format($data->qris,0,',','.')}}"  readonly>
+                  </div>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="form-group row top-min">
+                  <label class="col-12 font-weight-bold col-form-label">Ovo</label>
+                  <div class="col-12">
+                      <input type="text" class="form-control input-notzero" name="ovo" value="{{number_format($data->ovo,0,',','.')}}"  readonly>
+                  </div>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="form-group row top-min">
+                  <label class="col-12 font-weight-bold col-form-label">Gopay</label>
+                  <div class="col-12">
+                      <input type="text" class="form-control input-notzero" name="gopay" value="{{number_format($data->gopay,0,',','.')}}"  readonly>
+                  </div>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="form-group row top-min">
+                  <label class="col-12 font-weight-bold col-form-label">Invoice</label>
+                  <div class="col-12">
+                      <input type="text" class="form-control input-notzero" name="hutang" value="{{number_format($data->invoice,0,',','.')}}"  readonly>
+                  </div>
+                </div>
+              </div>
             </div>
             <div class="row">
                 <div class="col-12 d-flex justify-content-end mg-top">
-                  <a href="/shift" type="button" class="btn btn-simpan btn-sm"><i class="bi bi-arrow-bar-left"></i> Back</a>
+                  <a type="button" href="{{ route('shift') }}" class="btn btn-simpan btn-sm">Kembali</a>
                 </div>
             </div>
         </form>
