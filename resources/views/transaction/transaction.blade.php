@@ -428,7 +428,7 @@ $(document).on('click', '.btn-pilih', function(e){
     success:function(response){
       var check = $('.kode-barang-td:contains('+ response.product.kode_barang +')').length;
       if(check == 0){
-        tambahData(response.product.kode_barang, response.product.nama_barang, response.product.harga, response.product.stok, response.product.limit, response.status);
+        tambahData(response.product.kode_barang, response.product.nama_barang+' '+response.product.merek+' '+response.product.berat_barang, response.product.harga, response.product.stok, response.product.limit, response.status);
       }else{
         swal(
             "",
@@ -583,13 +583,13 @@ $('input[name=search]').on('keyup', function(){
             '<li class="list-group-item d-flex justify-content-between align-items-center active-list">'+
               '<div class="text-group">'+
                 '<p class="m-0">'+response.product[i].kode_barang+'</p>'+
-                '<p class="m-0 txt-light">'+response.product[i].nama_barang+'</p>'+
+                '<p class="m-0 txt-light">'+response.product[i].nama_barang+' '+response.product[i].merek+' '+response.product[i].berat_barang+'</p>'+
               '</div>'+
               '<div class="d-flex align-items-center">'+
                 '<span class="ammount-box bg-secondary mr-1"><i class="mdi mdi-cube-outline"></i></span>'+
                 '<p class="m-0">'+response.product[i].stok+'</p>'+
               '</div>'+
-              '<a href="#" class="btn btn-icons btn-rounded btn-inverse-outline-primary font-weight-bold btn-pilih" role="button"><i class="mdi mdi-chevron-right"></i></a>'+
+              '<button class="btn btn-icons btn-rounded btn-inverse-outline-primary font-weight-bold btn-pilih" role="button"><i class="mdi mdi-chevron-right"></i></button>'+
             '</li>';
             html+=productEl
           }

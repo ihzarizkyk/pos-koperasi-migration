@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+// use App\Payment;
 
 class Transaction extends Model
 {
@@ -16,8 +17,8 @@ class Transaction extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function payment()
+    public function jenisPayment()
     {
-        return $this->belongsTo(Payment::class, 'payment_id');
+        return $this->hasOne(jenis_payment::class, 'id', 'jenisPayment_id');
     }
 }

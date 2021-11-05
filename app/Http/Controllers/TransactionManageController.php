@@ -173,7 +173,7 @@ class TransactionManageController extends Controller
                     $transaction_detail->kode_barang = $req->kode_barang[$i];
                     $product_data = Product::where('kode_barang', $req->kode_barang[$i])
                     ->first();
-                    $transaction_detail->nama_barang = $product_data->nama_barang;
+                    $transaction_detail->nama_barang = $product_data->nama_barang.' '.$product_data->merek.' '.$product_data->berat_barang;
                     $transaction_detail->harga = $product_data->harga;
                     $transaction_detail->jumlah = $req->jumlah_barang[$i];
                     $transaction_detail->total_barang = $req->total_barang[$i];
@@ -234,7 +234,7 @@ class TransactionManageController extends Controller
         $check_access = Acces::where('user', $id_account)
         ->first();
         if($check_access->transaksi == 1){
-            $transaction = Transaction::where('kode_transaksi', '=', $id)
+            $transaction = Transaction::with('jenisPayment')->where('kode_transaksi', '=', $id)
             ->select('transactions.*')
             ->first();
             $transactions = TransactionDetail::where('transaction_id', '=', $transaction->id)
