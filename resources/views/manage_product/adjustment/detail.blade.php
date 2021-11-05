@@ -98,7 +98,7 @@
                                   <input type="text" value="{{$item->kode_barang}}" class="form-control" readonly>
                                 </td>
                                 <td>
-                                  <input type="text" value="{{$item->product->nama_barang}}" class="form-control" readonly>
+                                  <input type="text" value="{{$item->product->nama_barang.' '.$item->product->berat_barang}}" class="form-control" readonly>
                                 </td>
                                 <td>
                                   <input type="text" value="{{$item->in_stock}}" class="form-control" readonly>
