@@ -116,6 +116,7 @@ class AdjustmentController extends Controller
             $kode_barang = $_POST['kode_barang_array'];
             $in_stock = $_POST['in_stock_array'];
             $actual_stock = $_POST['actual_stock_array'];
+            $note = $_POST['note_array'];
             for($i=0; $i < count($kode_barang); $i++){
                 if($in_stock[$i]==$actual_stock[$i]){
                     throw new \ErrorException('Error found');
@@ -125,6 +126,7 @@ class AdjustmentController extends Controller
                 $adjust_detail->kode_barang = $kode_barang[$i];
                 $adjust_detail->in_stock = $in_stock[$i];
                 $adjust_detail->actual_stock = $actual_stock[$i];
+                $adjust_detail->note = $note[$i];
                 $adjust_detail->save();
                 $product = Product::where('kode_barang', $kode_barang[$i])->first();
                 $product->stok = $actual_stock[$i];
