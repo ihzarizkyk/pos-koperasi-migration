@@ -18,6 +18,7 @@ use App\Supply_system;
 use App\Imports\SupplyImport;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
+use DB;
 
 class SupplyManageController extends Controller
 {
@@ -52,15 +53,24 @@ class SupplyManageController extends Controller
     // Show View Supply
     public function viewSupply()
     {
+        $dates = Carbon::now();
+        $start = isset($_GET['start']) ? new Carbon($_GET['start']) : Carbon::now()->startOfYear();
+        $end = isset($_GET['end']) ? new Carbon($_GET['end']) : Carbon::now()->endOfYear();
+        if($start->diffInYears($end) > 1){
+            $end = new Carbon($start);
+            $end->addYear();
+        }
+        $start = $start->toDateString();
+        $end = $end->toDateString();
         $id_account = Auth::id();
         $product = Product::all();
         $supplier = Supplier::all();
         $check_access = Acces::where('user', $id_account)
         ->first();
-        $pasok = Supply::all();
+        $pasok = Supply::whereBetween(DB::raw('DATE_FORMAT(supplies.date, "%Y-%m-%d")'), [$start, $end])->get();
         $supply_system = Supply_system::first();
         if($check_access->kelola_barang == 1 && $supply_system->status == true){
-            $supplies = Supply::all();
+            $supplies = $pasok;
             $array = array();
             foreach ($supplies as $no => $supply) {
                 array_push($array, $supplies[$no]->created_at->toDateString());
@@ -68,7 +78,7 @@ class SupplyManageController extends Controller
             $dates = array_unique($array);
             rsort($dates);
 
-            return view('manage_product.supply_product.supply', compact('dates', 'product', 'pasok', 'supplier'));
+            return view('manage_product.supply_product.supply', compact('dates', 'product', 'pasok', 'supplier', 'start', 'end'));
         }else{
             return back();
         }
