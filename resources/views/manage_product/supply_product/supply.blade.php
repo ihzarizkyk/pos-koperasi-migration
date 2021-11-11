@@ -52,16 +52,11 @@
       <div class="card-body">
         <div class="row">
         	<div class="col-12">
-            @if(count($dates) > 0)
+            @if(count($supplies) > 0)
             <ul class="list-date">
-              @foreach($dates as $date)
+              {{-- {{json_encode($supplies)}} --}}
+              @foreach($supplies as $date => $supplies)
               <li class="txt-light">{{ date('d M, Y', strtotime($date)) }}</li>
-              @php
-              $supplies = \App\Supply::whereDate('supplies.created_at', $date)
-              ->select('supplies.*')
-              ->latest()
-              ->get();
-              @endphp
               <div class="table-responsive">
                 <table class="table table-custom">
                   <tr>
@@ -110,8 +105,11 @@
               </div>
               @endforeach
             </ul>
+            <div class="d-flex justify-content-center">{!! $pasok->links() !!}</div>
             @else
-            <h5 class="text-center">Data tidak ada</h5>
+            <div class="alert alert-secondary text-center" role="alert">
+              Data Tidak Ditemukan
+            </div>
             @endif
         	</div>
         </div>

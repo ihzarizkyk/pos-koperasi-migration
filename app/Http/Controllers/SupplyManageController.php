@@ -67,18 +67,23 @@ class SupplyManageController extends Controller
         $supplier = Supplier::all();
         $check_access = Acces::where('user', $id_account)
         ->first();
-        $pasok = Supply::whereBetween(DB::raw('DATE_FORMAT(supplies.date, "%Y-%m-%d")'), [$start, $end])->get();
+        $pasok = Supply::orderBy('date', 'desc')->whereBetween(DB::raw('DATE_FORMAT(supplies.date, "%Y-%m-%d")'), [$start, $end])->paginate(7)->withQueryString();
         $supply_system = Supply_system::first();
         if($check_access->kelola_barang == 1 && $supply_system->status == true){
-            $supplies = $pasok;
-            $array = array();
-            foreach ($supplies as $no => $supply) {
-                array_push($array, $supplies[$no]->created_at->toDateString());
-            }
-            $dates = array_unique($array);
-            rsort($dates);
+            $itemsTransformed = $pasok->getCollection()->groupBy('date');
+            $supplies = new \Illuminate\Pagination\LengthAwarePaginator(
+                $itemsTransformed,
+                $pasok->total(),
+                $pasok->perPage(),
+                $pasok->currentPage(), [
+                    'path' => \Request::url(),
+                    'query' => [
+                        'page' => $pasok->currentPage()
+                    ]
+                ]
+            );
 
-            return view('manage_product.supply_product.supply', compact('dates', 'product', 'pasok', 'supplier', 'start', 'end'));
+            return view('manage_product.supply_product.supply', compact('supplies', 'pasok', 'supplier', 'start', 'end'));
         }else{
             return back();
         }
