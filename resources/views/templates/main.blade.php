@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="{{ asset('css/main/style.css') }}">
     <link rel="shortcut icon" href="{{ asset('icons/favicon.png') }}"/>
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
     @yield('css')
     <!-- End-CSS -->
 
@@ -342,6 +343,8 @@
         }
       });
     </script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
     @yield('script')
     <!-- End-Javascript -->
   </body>
