@@ -226,6 +226,9 @@
       @endif
     </div>
   </div>
+  <div class="col-md-12 grid-margin">
+    <input type="text" name="range" style="width:25%;" />
+  </div>
   <div class="col-12 grid-margin">
     <div class="card card-noborder b-radius">
       <div class="card-body">
@@ -313,6 +316,7 @@
                 @endif
               </tbody>
             </table>
+            <div class="d-flex justify-content-center">{!! $products->links() !!}</div>
         	</div>
         </div>
       </div>
@@ -496,6 +500,27 @@
       if (willDelete) {
         window.open("{{ url('/product/delete') }}/" + data_delete, "_self");
       }
+    });
+  });
+</script>
+<script type="text/javascript">
+  $(function() {
+    $('input[name="range"]').daterangepicker({
+      maxSpan:{
+        "years": 1
+      },
+      startDate: moment('{{$start}}'),
+      endDate: moment('{{$end}}'),
+      ranges: {
+           'Hari ini': [moment(), moment()],
+           '7 hari terakhir': [moment().subtract(6, 'days'), moment()],
+           'Bulan ini': [moment().startOf('month'), moment().endOf('month')],
+           'Bulan lalu': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+           'Tahun ini': [moment().startOf('year'), moment().endOf('year')],
+           'Tahun lalu': [moment().subtract(1, 'year').startOf('year'), moment().subtract(1, 'year').endOf('year')]
+      }
+    }, function(start, end, label) {
+      window.location.href =  window.location.origin+window.location.pathname+'?start='+start.format('YYYY-MM-DD')+'&end='+end.format('YYYY-MM-DD')
     });
   });
 </script>

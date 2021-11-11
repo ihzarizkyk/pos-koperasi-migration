@@ -17,25 +17,34 @@ use App\Exports\ProductExport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use DB;
+use Carbon\Carbon;
 
 class ProductManageController extends Controller
 {
     // Show View Product
     public function viewProduct()
     {
+        $dates = Carbon::now();
+        $start = isset($_GET['start']) ? new Carbon($_GET['start']) : Carbon::now()->startOfYear();
+        $end = isset($_GET['end']) ? new Carbon($_GET['end']) : Carbon::now()->endOfYear();
+        if($start->diffInYears($end) > 1){
+            $end = new Carbon($start);
+            $end->addYear();
+        }
+        $start = $start->toDateString();
+        $end = $end->toDateString();
         $id_account = Auth::id();
         $category = Category::all();
         $check_access = Acces::where('user', $id_account)
         ->first();
         if($check_access->kelola_barang == 1){
-        	$products = Product::all()
-            ->sortBy('kode_barang');
+        	$products = Product::whereBetween(DB::raw('DATE_FORMAT(products.created_at, "%Y-%m-%d")'), [$start, $end])->orderBy('kode_barang', 'asc')->paginate(7)->withQueryString();
             $supply_system = Supply_system::first();
             $cari = '';
             $sort = '';
             $data = $products->count();
-
-        	return view('manage_product.product', compact('sort', 'data', 'cari', 'products', 'supply_system', 'category'));
+        	return view('manage_product.product', compact('sort', 'data', 'cari', 'products', 'supply_system', 'category', 'start', 'end'));
         }else{
             return back();
         }
