@@ -34,30 +34,46 @@
         <form action="" method="POST">
             @csrf
             <div class="row">
-                <div class="col-12">
+                <div class="col-4">
                     <div class="form-group row top-min">
-                        <label class="col-12 font-weight-bold col-form-label">Modal Awal</label>
+                        <label class="col-12 font-weight-bold col-form-label">Starting Cash</label>
                         <div class="col-12">
-                          <input type="text" id="modal" class="form-control input-notzero" value="{{number_format($data->modal,0,',','.')}}" name="modal" placeholder="Masukkan Modal Awal" readonly>
+                          <input type="text" id="modal" class="form-control input-notzero" value="{{number_format($data->start_cash,0,',','.')}}" name="modal" placeholder="Masukkan Modal Awal" readonly>
                         </div>
                     </div>
                 </div>
-                <div class="col-6">
-                  <div class="form-group row top-min">
-                      <label class="col-12 font-weight-bold col-form-label">Barang Terjual</label>
-                      <div class="col-12">
-                          <input type="text" class="form-control input-notzero" value="{{$data->sold}}" name="sold" readonly>
-                      </div>
-                  </div>
-              </div>
-              <div class="col-6">
+              <div class="col-4">
                 <div class="form-group row top-min">
                     <label class="col-12 font-weight-bold col-form-label">Total Expected</label>
                     <div class="col-12">
-                        <input type="text" class="form-control input-notzero" value="{{number_format($data->total,0,',','.')}}" name="total" readonly>
+                        <input type="text" class="form-control input-notzero" value="{{number_format($data->expected,0,',','.')}}" name="total" readonly>
                     </div>
                 </div>
-            </div>
+              </div>
+              <div class="col-4">
+                <div class="form-group row top-min">
+                    <label class="col-12 font-weight-bold col-form-label">Total Actual</label>
+                    <div class="col-12">
+                        <input type="text" class="form-control input-notzero" value="{{number_format($data->actual,0,',','.')}}" name="total" readonly>
+                    </div>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="form-group row top-min">
+                    <label class="col-12 font-weight-bold col-form-label">Difference</label>
+                    <div class="col-12">
+                        <input type="text" class="form-control input-notzero" value="{{number_format($data->difference,0,',','.')}}" name="sold" readonly>
+                    </div>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="form-group row top-min">
+                    <label class="col-12 font-weight-bold col-form-label">Barang Terjual</label>
+                    <div class="col-12">
+                        <input type="text" class="form-control input-notzero" value="{{$data->sold}}" name="sold" readonly>
+                    </div>
+                </div>
+              </div>
             </div>
             <div class="row">
               <div class="col-6">

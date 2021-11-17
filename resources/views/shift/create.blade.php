@@ -36,7 +36,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="form-group row top-min">
-                        <label class="col-12 font-weight-bold col-form-label">Modal Awal</label>
+                        <label class="col-12 font-weight-bold col-form-label">Starting Cash</label>
                         <div class="col-12">
                             <input type="text" id="modal" class="form-control input-notzero" name="modal" placeholder="Masukkan Modal Awal" required>
                         </div>

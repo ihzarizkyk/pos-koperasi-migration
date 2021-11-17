@@ -34,13 +34,46 @@
         <form action="{{ route('shift.end', $data->id) }}" method="POST">
             @csrf
             <div class="row">
-                <div class="col-12">
+                <div class="col-4">
                     <div class="form-group row top-min">
-                        <label class="col-12 font-weight-bold col-form-label">Modal Awal</label>
+                        <label class="col-12 font-weight-bold col-form-label">Starting Cash</label>
                         <div class="col-12">
-                          <input type="text" id="modal" class="form-control input-notzero" value="{{number_format($data->modal,0,',','.')}}" name="modal" placeholder="Masukkan Modal Awal" readonly>
+                          <input type="text" id="modal" class="form-control input-notzero" value="{{number_format($data->start_cash,0,',','.')}}" name="start_cash" placeholder="Masukkan Modal Awal" readonly>
                         </div>
                     </div>
+                </div>
+                <div class="col-4">
+                  <div class="form-group row top-min">
+                      <label class="col-12 font-weight-bold col-form-label">Total Expected</label>
+                      @php
+                          $expected = $data->start_cash + $cash;
+                      @endphp
+                      <div class="col-12">
+                          <input type="text" class="form-control input-notzero" value="{{number_format($expected,0,',','.')}}" name="expected" readonly>
+                      </div>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="form-group row top-min">
+                      <label class="col-12 font-weight-bold col-form-label">Total Actual</label>
+                      @php
+                          $actual = $total + $data->start_cash;
+                      @endphp
+                      <div class="col-12">
+                          <input type="text" class="form-control input-notzero" value="{{number_format($actual,0,',','.')}}" name="actual" readonly>
+                      </div>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="form-group row top-min">
+                      <label class="col-12 font-weight-bold col-form-label">Difference</label>
+                      @php
+                          $selisih = $expected - $data->start_cash;
+                      @endphp
+                      <div class="col-12">
+                          <input type="text" class="form-control input-notzero" value="{{number_format($selisih,0,',','.')}}" name="beda" readonly>
+                      </div>
+                  </div>
                 </div>
                 <div class="col-6">
                   <div class="form-group row top-min">
@@ -49,19 +82,8 @@
                           <input type="text" class="form-control input-notzero" value="{{$items}}" name="sold" readonly>
                       </div>
                   </div>
-              </div>
-              <div class="col-6">
-                <div class="form-group row top-min">
-                    <label class="col-12 font-weight-bold col-form-label">Total Expected</label>
-                    @php
-                        $expected = $data->modal + $cash;
-                    @endphp
-                    <div class="col-12">
-                        <input type="text" class="form-control input-notzero" value="{{number_format($expected,0,',','.')}}" name="total" readonly>
-                    </div>
                 </div>
-            </div>
-            </div>
+          </div>
             <div class="row">
               <div class="col-6">
                   <div class="form-group row top-min">
@@ -134,7 +156,6 @@
                   </div>
                 </div>
               </div>
-              <input type="text" hidden name="total" value="{{$total}}">
             </div>
             <div class="row">
                 <div class="col-12 d-flex justify-content-end mg-top">

@@ -85,6 +85,7 @@
                 <table class="table table-custom">
                   <tr>
                     <th>Nama</th>
+                    <th>Start Cash</th>
                     <th>Expected</th>
                     <th>Actual</th>
                     <th>Difference</th>
@@ -106,14 +107,10 @@
                         {{$item->user->nama}}
                         <span class="d-block mt-2 txt-light"></span>
                       </td>
-                      <td class="td-2 font-weight-bold">Rp. {{number_format($item->modal,2,',','.')}}</td>
-                      <td class="td-3 font-weight-bold">Rp. {{number_format($item->pemasukan,2,',','.')}}</td>
-                      <td class="td-3 font-weight-bold">
-                        @php
-                            $selisih = $item->pemasukan - $item->modal;
-                        @endphp
-                        Rp. {{number_format($selisih,2,',','.')}}
-                      </td>
+                      <td class="td-2 font-weight-bold">Rp. {{number_format($item->start_cash,2,',','.')}}</td>
+                      <td class="td-3 font-weight-bold">Rp. {{number_format($item->expected,2,',','.')}}</td>
+                      <td class="td-4 font-weight-bold">Rp. {{number_format($item->actual,2,',','.')}}</td>
+                      <td class="td-5 font-weight-bold">Rp. {{number_format($item->difference,2,',','.')}}</td>
                       <td class="font-weight-bold td-4">{{$item->mulai}}</td>
                       <td>
                         <a href="{{ route('shift.detail', $item->id) }}" class="btn btn-edit btn-icons btn-rounded btn-secondary" title="DETAIL"><i class="bi bi-info-lg"></i></a>

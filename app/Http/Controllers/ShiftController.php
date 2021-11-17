@@ -29,7 +29,7 @@ class ShiftController extends Controller
         $startShift = new Shift;
 
         $startShift->users_id = Auth::id();
-        $startShift->modal = preg_replace("/[^a-zA-Z0-9]/", "", $req->modal);
+        $startShift->start_cash = preg_replace("/[^a-zA-Z0-9]/", "", $req->modal);
         $startShift->mulai = $req->start;
 
         $startShift->save();
@@ -83,11 +83,11 @@ class ShiftController extends Controller
         $endShift = Shift::where('id', $id)->first();
 
         $endShift->users_id = Auth::id();
-        $endShift->pemasukan = preg_replace("/[^a-zA-Z0-9]/", "", $req->total);
+        $endShift->expected = preg_replace("/[^a-zA-Z0-9]/", "", $req->expected);
+        $endShift->difference = preg_replace("/[^a-zA-Z0-9]/", "", $req->beda);
         $endShift->sold = $req->sold;
-        $modal = preg_replace("/[^a-zA-Z0-9]/", "", $req->modal);
-        $total = $req->total + $modal;
-        $endShift->total = $total;
+        $start_cash = preg_replace("/[^a-zA-Z0-9]/", "", $req->start_cash);
+        $endShift->actual = preg_replace("/[^a-zA-Z0-9]/", "", $req->actual);
         $endShift->cash = preg_replace("/[^a-zA-Z0-9]/", "", $req->cash);
         $endShift->transfer = preg_replace("/[^a-zA-Z0-9]/", "", $req->tf);
         $endShift->qris = preg_replace("/[^a-zA-Z0-9]/", "", $req->qris);
