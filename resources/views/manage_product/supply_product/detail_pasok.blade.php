@@ -86,7 +86,7 @@
                                     <select style="width: 250px" name="barang[]" id="product{{$loop->iteration}}" required @if ($data->status == 1) disabled @endif>
                                         <option value="">Pilih Barang</option>
                                         @foreach ($products as $value)
-                                            <option value="{{$value->kode_barang}}" {{$value->kode_barang == $item->kode_barang ? 'selected' : ''}}>{{$value->nama_barang}} - {{$value->merek}}</option>
+                                            <option value="{{$value->kode_barang}}" {{$value->kode_barang == $item->kode_barang ? 'selected' : ''}}>{{$value->nama_barang}} - {{$value->merek}} {{$value->berat_barang}}</option>
                                         @endforeach
                                     </select>
                                 </td>
