@@ -311,15 +311,15 @@
 <script src="{{ asset('plugins/js/quagga.min.js') }}"></script>
 <script src="{{ asset('js/manage_product/new_product/script.js') }}"></script>
 <script>
-	var rupiah = document.getElementById('harga');
-	rupiah.addEventListener('keyup', function(e){
-		rupiah.value = formatRupiah(this.value, '');
-	});
+	var rupiah = $('#harga');
+	// rupiah.on("keyup", function(){
+	// 	rupiah.val(formatRupiah(this.value, ''));
+	// });
 
-	var laba_rupiah = document.getElementById('laba_rupiah');
-	laba_rupiah.addEventListener('keyup', function(e){
-		laba_rupiah.value = formatRupiah(this.value, '');
-	});
+	// var laba_rupiah = document.getElementById('laba_rupiah');
+	// laba_rupiah.addEventListener('keyup', function(e){
+	// 	laba_rupiah.value = formatRupiah(this.value, '');
+	// });
 
 	$(document).on('input', '#atur_limit', function(e){
 		var val = $(this).prop('checked')
