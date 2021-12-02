@@ -57,9 +57,8 @@ class Adjustment extends Model
     }
 
     public function scopeTotalNominal($query){
-        return $query->select(DB::raw('sum((adjustment_details.actual_stock-adjustment_details.in_stock)*products.hpp) as totalInteger'))
-        ->join('adjustment_details', 'adjustment_details.adjustment_id', '=', 'adjustments.id_adjustment')
-        ->join('products', 'adjustment_details.kode_barang', '=', 'products.kode_barang');
+        return $query->select(DB::raw('sum((adjustment_details.actual_stock-adjustment_details.in_stock)*adjustment_details.hpp) as totalInteger'))
+        ->join('adjustment_details', 'adjustment_details.adjustment_id', '=', 'adjustments.id_adjustment');
     }
 
     public function getTotalAttribute()

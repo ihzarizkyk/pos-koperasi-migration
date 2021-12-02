@@ -20,8 +20,7 @@ class AdjustmentDetail extends Model
     }
 
     public function getNominalIntegerAttribute(){
-        $hpp = Product::where('kode_barang', $this->kode_barang)->first()->hpp;
-        $nominal = $this->stock_difference * $hpp;
+        $nominal = $this->stock_difference * $this->hpp;
         return $nominal;
         // return ($nominal<0 ? '-' : '').'Rp. '.number_format(($nominal<0 ? $nominal*-1 : $nominal));
     }
