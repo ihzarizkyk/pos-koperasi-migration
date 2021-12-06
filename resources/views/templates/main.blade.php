@@ -203,9 +203,27 @@
             @endif
             @if($access->transaksi == 1)
             <li class="nav-item">
-              <a class="nav-link" href="{{ url('/transaction') }}">
+              <a class="nav-link" data-toggle="collapse" href="#transaksi" aria-expanded="false" aria-controls="transaksi">
                 <span class="menu-title">Transaksi</span>
+                <i class="menu-arrow"></i>
               </a>
+              <div class="collapse" id="transaksi">
+                <ul class="nav flex-column sub-menu">
+                  <li class="nav-item">
+                    <a class="nav-link" href="{{ url('/transaction') }}">
+                      <span class="menu-title">Point Of Sale</span>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{{ url('/transaction/activity') }}">
+                      <span class="menu-title">Activity</span>
+                    </a>
+                  </li>
+                  {{-- <li class="nav-item">
+                    <a class="nav-link" href="{{ url('/adjustment') }}">Adjustment</a>
+                  </li> --}}
+                </ul>
+              </div>
             </li>
             @endif
             @if($access->kelola_laporan == 1)
