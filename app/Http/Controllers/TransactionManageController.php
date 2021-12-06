@@ -17,9 +17,11 @@ use App\Shift;
 use App\jenis_payment;
 use App\payment_customer;
 use Illuminate\Http\Request;
+use App\Http\Traits\AdjustmentTrait;
 
 class TransactionManageController extends Controller
 {
+    use AdjustmentTrait;
     // Show View Transaction
     public function viewTransaction()
     {
@@ -250,4 +252,136 @@ class TransactionManageController extends Controller
             return back();
         }
     }
+
+
+    // Transaction Activity
+    public function viewActivity()
+    {
+        $id_account = Auth::id();
+        $check_access = Acces::where('user', $id_account)
+        ->first();
+        $checkShift = Shift::latest('id')->first();
+        if($check_access->transaksi == 1){
+            // if ($checkShift) {
+            //     if ($checkShift->selesai == null ) {
+                    $transactionPaginate = Transaction::select('id')->where('kode_transaksi', 'like', '%'.(isset($_GET['search']) ? $_GET['search']: '').'%')->orderBy('created_at', 'DESC')->paginate(10);
+                    $transactions = Transaction::select('id', 'kode_transaksi', 'is_refund', 'total', 'created_at', 'total', DB::raw('DATE_FORMAT(created_at, "%d %M %Y") as date'))->with(['transaction_details'])->where('kode_transaksi', 'like', '%'.(isset($_GET['search']) ? $_GET['search']: '').'%')->orderBy('created_at', 'DESC')->paginate(10)->groupBy('date');
+                    $transaction_details = $transactions->first()!=null ? $transactions->first()[0] : null;
+                    return view('transaction.activity.activity', compact('transactions','transactionPaginate', 'transaction_details'));
+            //     }
+            //     else{
+            //         return view('transaction.error_page');
+            //     }
+            // }
+            // else{
+            //     return view('transaction.error_page');
+            // }
+        }else{
+            return back();
+        }
+    }
+
+    public function getTransactionCanRefund($id)
+    {
+        $id_account = Auth::id();
+        $check_access = Acces::where('user', $id_account)
+        ->first();
+        $checkShift = Shift::latest('id')->first();
+        if($check_access->transaksi == 1){
+            // if ($checkShift) {
+            //     if ($checkShift->selesai == null ) {
+                    $transactions = Transaction::select('id', 'kode_transaksi', 'created_at', 'total', DB::raw('DATE_FORMAT(created_at, "%d %M %Y") as date'))->with(['transaction_details'])->where("is_refund", 0)->find($id);
+                    echo json_encode($transactions);
+            //     }
+            //     else{
+            //         return view('transaction.error_page');
+            //     }
+            // }
+            // else{
+            //     return view('transaction.error_page');
+            // }
+        }else{
+            return back();
+        }
+    }
+
+    public function transactionRefundProcess(Request $request, $id){
+        $id_account = Auth::id();
+        $check_access = Acces::where('user', $id_account)
+        ->first();
+        $checkShift = Shift::latest('id')->first();
+        if($check_access->transaksi == 1){
+            // if ($checkShift) {
+            //     if ($checkShift->selesai == null ) {
+                    DB::beginTransaction();
+                    try{
+                        $transaction_details = TransactionDetail::where('transaction_id', $id)->get();
+                        $kode_barang = [];
+                        $in_stock  = [];
+                        $actual_stock  = [];
+                        $note  = [];
+                        for($i=0; $i<count($transaction_details); $i++){
+                            $product = Product::where('kode_barang', $transaction_details[$i]->kode_barang)->first();
+                            $hpp = (($product->stok * $product->hpp) + ($transaction_details[$i]->jumlah * $transaction_details[$i]->hpp)) / ($product->stok + $transaction_details[$i]->jumlah);
+                            $product->hpp = $hpp;
+                            $product->save();
+                            array_push($kode_barang, $transaction_details[$i]->kode_barang);
+                            array_push($in_stock, $product->stok);
+                            array_push($actual_stock, $product->stok+$transaction_details[$i]->jumlah);
+                            array_push($note, $request->alasan_refund);
+                        }
+                        if (!$this->addAdjustment($kode_barang, $in_stock, $actual_stock, $note)) {
+                            throw new Exception("Gagal buat adjustment");
+                        }
+                        $update_transaction = Transaction::find($id);
+                        $update_transaction->is_refund = 1;
+                        $update_transaction->alasan_refund = $request->alasan_refund;
+                        $update_transaction->save();
+                        DB::commit();
+                        return response()->json("Berhasil Refund", 200);
+                    }catch(Exception $exception){
+                        DB::rollback();
+                        return response()->json("Gagal Refund", 500);
+                    }
+            //     }
+            //     else{
+            //         return view('transaction.error_page');
+            //     }
+            // }
+            // else{
+            //     return view('transaction.error_page');
+            // }
+        }else{
+            return back();
+        }
+    }
+
+    public function getDetailTransactions(Request $request){
+        $id_account = Auth::id();
+        $check_access = Acces::where('user', $id_account)
+        ->first();
+        $checkShift = Shift::latest('id')->first();
+        if($check_access->transaksi == 1){
+            // if ($checkShift) {
+            //     if ($checkShift->selesai == null ) {
+                    $transactions = Transaction::select('id', 'kode_transaksi', 'is_refund', 'total', 'created_at', DB::raw('DATE_FORMAT(created_at, "%d %M %Y") as date'))->with(['transaction_details' => function($q){
+                        $q->select('transaction_id','nama_barang', 'total_barang', 'jumlah');
+                    }])->find($request->id)->append('jam');
+                    $transactions->waktu_pembelian = $transactions->date.' pada '.$transactions->jam;
+                    echo json_encode($transactions);
+                    // return view('transaction.activity.activity', compact('transactions'));
+            //     }
+            //     else{
+            //         return view('transaction.error_page');
+            //     }
+            // }
+            // else{
+            //     return view('transaction.error_page');
+            // }
+        }else{
+            return back();
+        }
+    }
+
+    // End Transaction Activity
 }
