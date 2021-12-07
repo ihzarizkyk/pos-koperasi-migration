@@ -265,7 +265,7 @@ class TransactionManageController extends Controller
             // if ($checkShift) {
             //     if ($checkShift->selesai == null ) {
                     $transactionPaginate = Transaction::select('id')->where('kode_transaksi', 'like', '%'.(isset($_GET['search']) ? $_GET['search']: '').'%')->orderBy('created_at', 'DESC')->paginate(10);
-                    $transactions = Transaction::select('id', 'kode_transaksi', 'is_refund', 'total', 'created_at', 'total', DB::raw('DATE_FORMAT(created_at, "%d %M %Y") as date'))->with(['transaction_details'])->where('kode_transaksi', 'like', '%'.(isset($_GET['search']) ? $_GET['search']: '').'%')->orderBy('created_at', 'DESC')->paginate(10)->groupBy('date');
+                    $transactions = Transaction::select('id', 'kode_transaksi', 'is_refund', 'alasan_refund', 'total', 'created_at', 'total', DB::raw('DATE_FORMAT(created_at, "%d %M %Y") as date'))->with(['transaction_details'])->where('kode_transaksi', 'like', '%'.(isset($_GET['search']) ? $_GET['search']: '').'%')->orderBy('created_at', 'DESC')->paginate(10)->groupBy('date');
                     $transaction_details = $transactions->first()!=null ? $transactions->first()[0] : null;
                     return view('transaction.activity.activity', compact('transactions','transactionPaginate', 'transaction_details'));
             //     }
@@ -364,7 +364,7 @@ class TransactionManageController extends Controller
         if($check_access->transaksi == 1){
             // if ($checkShift) {
             //     if ($checkShift->selesai == null ) {
-                    $transactions = Transaction::select('id', 'kode_transaksi', 'is_refund', 'total', 'created_at', DB::raw('DATE_FORMAT(created_at, "%d %M %Y") as date'))->with(['transaction_details' => function($q){
+                    $transactions = Transaction::select('id', 'kode_transaksi', 'is_refund', 'alasan_refund', 'total', 'created_at', DB::raw('DATE_FORMAT(created_at, "%d %M %Y") as date'))->with(['transaction_details' => function($q){
                         $q->select('transaction_id','nama_barang', 'total_barang', 'jumlah');
                     }])->find($request->id)->append('jam');
                     $transactions->waktu_pembelian = $transactions->date.' pada '.$transactions->jam;
