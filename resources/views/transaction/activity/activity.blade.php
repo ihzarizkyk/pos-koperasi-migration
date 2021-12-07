@@ -155,6 +155,15 @@
           </div>
           <span class="text-warning font-weight-bold">Canceled</span>
         </div>
+        <div class="d-flex align-items-center justify-content-between pr-3 py-1 border-top">
+          <div class="d-flex align-items-center">
+            <div style="width:58px; min-height:48px;" class="d-flex align-items-center">
+              <i style="font-size:24px; color:gray; width:48px;" class="mdi mdi-information-outline text-center"></i>
+            </div>
+            <span class="font-weight-bold">Alasan Refund</span>
+          </div>
+          <span class="font-weight-bold text-truncate pl-5">{{$transaction_details->alasan_refund}}</span>
+        </div>
         @endif
         <div class="d-flex align-items-center justify-content-between pr-3 py-1 border-top">
           <div class="d-flex align-items-center">
@@ -209,7 +218,7 @@
             <div class="d-flex align-items-center">
               <span class="font-weight-bold product_name">Total</span>
             </div>
-            <span class="font-weight-bold">{{$transaction_details->total_string}}</span>
+            <span class="font-weight-bold text-success">{{$transaction_details->total_string}}</span>
           </div>
         </div>
       </div>
@@ -242,6 +251,15 @@ function templateTransaction(data){
             '<span class="font-weight-bold">Status Transaksi</span>'+
           '</div>'+
           '<span class="text-warning font-weight-bold">Canceled</span>'+
+        '</div>'+
+        '<div class="d-flex align-items-center justify-content-between pr-3 py-1 border-top">'+
+          '<div class="d-flex align-items-center">'+
+            '<div style="width:58px; min-height:48px;" class="d-flex align-items-center">'+
+              '<i style="font-size:24px; color:gray; width:48px;" class="mdi mdi-information-outline text-center"></i>'+
+            '</div>'+
+            '<span class="font-weight-bold">Alasan Refund</span>'+
+          '</div>'+
+          '<span class="font-weight-bold text-truncate pl-5">'+data.alasan_refund+'</span>'+
         '</div>';
       }
       html+='<div class="d-flex align-items-center justify-content-between pr-3 py-1 border-top">'+
@@ -298,7 +316,7 @@ function templateTransaction(data){
     '<div class="d-flex align-items-center">'+
       '<span class="font-weight-bold product_name">Total</span>'+
     '</div>'+
-    '<span class="font-weight-bold">'+data.total_string+'</span>'+
+    '<span class="font-weight-bold text-success">'+data.total_string+'</span>'+
   '</div>'+
   '</div>'+
   '</div>';
