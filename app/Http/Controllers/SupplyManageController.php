@@ -633,8 +633,9 @@ class SupplyManageController extends Controller
         $data = Supply::find($id);
         $suppliers = Supplier::all();
         $items = detail_supplies::where('supplies_id', $id)->get();
+        $total_subtotal = number_format($items->sum('subtotal'), 0, ",", ".");
         $total = detail_supplies::where('supplies_id', $id)->count();
         $products = Product::all();
-        return view('manage_product.supply_product.detail_pasok', compact('data', 'suppliers', 'items', 'products', 'total'));
+        return view('manage_product.supply_product.detail_pasok', compact('data', 'suppliers', 'items', 'products', 'total_subtotal', 'total'));
     }
 }

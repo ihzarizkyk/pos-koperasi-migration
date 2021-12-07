@@ -4,18 +4,26 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <style>
-  .btn-simpan{
-    background-color: #2449f0;
-    color: #ffff;
-  }
-  #kode{
-    width: 285px;
-  }
-  .margin{
-		margin-right: 5px;
-	}
+    .btn-simpan{
+        background-color: #2449f0;
+        color: #ffff;
+    }
+    #kode{
+        width: 285px;
+    }
+    .margin{
+        margin-right: 5px;
+    }
     .mg-top{
         margin-top: 10px;
+    }
+    .total{
+        color: #19d895;
+        background-color: rgba(25, 216, 149, 0.2);
+        border-radius: 5px;
+        font-size: 16px;
+        font-weight: bold;
+        padding: 10px 20px;
     }
 </style>
 @endsection
@@ -97,15 +105,20 @@
                                     <input type="text" value="{{$item->tempat_beli}}" name="tempat_beli[]" class="form-control" required @if ($data->status == 1) readonly @endif>
                                 </td>
                                 <td>
-                                    <input type="text" value="{{$item->harga_beli}}" name="beli[]" class="form-control" id="harga"  required @if ($data->status == 1) readonly @endif>
+                                    <input type="text" value="Rp {{number_format($item->harga_beli, 0, ",", ".")}}" name="beli[]" class="form-control" id="harga"  required @if ($data->status == 1) readonly @endif>
                                 </td>
                                 <td>
-                                    <input type="text" value="{{$item->subtotal}}" name="subtotal[]" class="form-control" id="subtotal" readonly>
+                                    <input type="text" value="Rp {{number_format($item->subtotal, 0, ",", ".")}}" name="subtotal[]" class="form-control" id="subtotal" readonly>
                                 </td>
                             </tr> 
-                        @endforeach
+                        @endforeach 
                     </tbody>
                   </table>
+                  <div class="d-flex w-100 justify-content-end px-3 pt-3">
+                    <div class="total text-center">
+                        Total : Rp {{$total_subtotal}}
+                    </div>  
+                  </div>
             </div>
             <div class="row">
                 <div class="col-12 d-flex justify-content-end mg-top">
