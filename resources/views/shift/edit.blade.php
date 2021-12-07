@@ -49,29 +49,23 @@
                           $expected = $data->start_cash + $cash;
                       @endphp
                       <div class="col-12">
-                          <input type="text" class="form-control input-notzero" value="{{number_format($expected,0,',','.')}}" name="expected" readonly>
+                          <input type="text" class="form-control input-notzero" id="expected" value="{{number_format($expected,0,',','.')}}" name="expected" readonly>
                       </div>
                   </div>
                 </div>
                 <div class="col-4">
                   <div class="form-group row top-min">
                       <label class="col-12 font-weight-bold col-form-label">Total Actual</label>
-                      @php
-                          $actual = $total + $data->start_cash;
-                      @endphp
                       <div class="col-12">
-                          <input type="text" class="form-control input-notzero" value="{{number_format($actual,0,',','.')}}" name="actual" readonly>
+                          <input type="text" class="form-control input-notzero" id="actual" name="actual" required>
                       </div>
                   </div>
                 </div>
                 <div class="col-6">
                   <div class="form-group row top-min">
                       <label class="col-12 font-weight-bold col-form-label">Difference</label>
-                      @php
-                          $selisih = $expected - $data->start_cash;
-                      @endphp
                       <div class="col-12">
-                          <input type="text" class="form-control input-notzero" value="{{number_format($selisih,0,',','.')}}" name="beda" readonly>
+                          <input type="text" class="form-control input-notzero" id="beda" name="beda" readonly>
                       </div>
                   </div>
                 </div>
@@ -172,10 +166,21 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script src="{{ asset('js/manage_product/supply_product/supply/script.js') }}"></script>
 <script type="text/javascript">
-  var rupiah = document.getElementById('pemasukan');
-	rupiah.addEventListener('keyup', function(e){
-		rupiah.value = formatRupiah(this.value, '');
+  var actual = document.getElementById('actual');
+  var expected = document.getElementById('expected');
+
+  actual.addEventListener('keyup', function(e){
+    var real = actual.value.replace(/[^0-9$]/g, '');
+    var hope = expected.value.replace(/[^0-9$]/g, '');
+    var result = real - hope;
+
+    $('#beda').val((result<0 ? '-' : '') +formatRupiah(result.toString(), ''));
 	});
+
+	actual.addEventListener('keyup', function(e){
+		actual.value = formatRupiah(this.value, '');
+	});
+
 
   function formatRupiah(angka, prefix){
 		var number_string = angka.replace(/[^,\d]/g, '').toString(),
