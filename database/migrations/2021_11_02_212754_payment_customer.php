@@ -16,13 +16,14 @@ class PaymentCustomer extends Migration
         Schema::create('payment_customers', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('transaksi_id');
+            $table->unsignedBigInteger('customers_id');
+            $table->unsignedBigInteger('jenis_payments_id');
             $table->string('nama');
             $table->bigInteger('nominal');
             $table->dateTime('tenggat')->nullable();
             $table->string('status');
+            $table->string('no_reference')->nullable();
             $table->timestamps();
-
-            $table->foreign('transaksi_id')->references('id')->on('transactions');
         });
     }
 

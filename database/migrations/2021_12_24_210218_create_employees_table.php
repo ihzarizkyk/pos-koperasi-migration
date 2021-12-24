@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddFieldHppToAdjustmentDetails extends Migration
+class CreateEmployeesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,10 @@ class AddFieldHppToAdjustmentDetails extends Migration
      */
     public function up()
     {
-        Schema::table('adjustment_details', function (Blueprint $table) {
-            $table->bigInteger('hpp')->after('kode_barang')->default(0);
+        Schema::create('employees', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('users_id');
+            $table->timestamps();
         });
     }
 
@@ -25,8 +27,6 @@ class AddFieldHppToAdjustmentDetails extends Migration
      */
     public function down()
     {
-        Schema::table('adjustment_details', function (Blueprint $table) {
-            $table->dropColumn('hpp');
-        });
+        Schema::dropIfExists('employees');
     }
 }

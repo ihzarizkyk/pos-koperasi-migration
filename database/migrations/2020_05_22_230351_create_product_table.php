@@ -27,8 +27,6 @@ class CreateProductTable extends Migration
             $table->bigInteger('hpp')->default(0);
             $table->string('keterangan')->default('Tersedia');
             $table->timestamps();
-
-            $table->foreign('category_id')->references('id')->on('categories');
         });
     }
 

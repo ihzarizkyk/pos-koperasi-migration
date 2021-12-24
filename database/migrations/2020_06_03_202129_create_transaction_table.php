@@ -15,24 +15,20 @@ class CreateTransactionTable extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('customers_id');
+            $table->unsignedBigInteger('shifts_id');
             $table->string('kode_transaksi');
-            $table->string('kode_barang');
-            $table->string('nama_barang');
-            $table->bigInteger('harga');
-            $table->integer('jumlah');
-            $table->bigInteger('total_barang');
             $table->bigInteger('subtotal');
+            $table->string('jenis_diskon');
             $table->integer('diskon');
             $table->bigInteger('total');
             $table->bigInteger('bayar');
             $table->bigInteger('kembali');
-            $table->unsignedBigInteger('jenisPayment_id');
-            $table->unsignedBigInteger('id_kasir');
             $table->string('kasir');
+            $table->boolean('is_refund');
+            $table->string('alasan_refund');
+            
             $table->timestamps();
-
-            $table->foreign('jenisPayment_id')->references('id')->on('jenis_payments');
-            $table->foreign('id_kasir')->references('id')->on('users');
         });
     }
 

@@ -16,8 +16,9 @@ class CreateAdjustmentDetailTable extends Migration
         Schema::create('adjustment_details', function (Blueprint $table) {
             $table->id();
             $table->string('adjustment_id')->nullable()->default(null);
+            $table->string('products_id')->nullable()->default(null);
             $table->string('kode_barang');
-            $table->string('nama_barang')->nullable();
+            $table->bigInteger('hpp')->default(0);
             $table->integer('in_stock')->nullable();
             $table->integer('actual_stock')->nullable();
             $table->string('note')->nullable()->default(null);

@@ -16,6 +16,7 @@ class CreateDetailSuppliesTable extends Migration
         Schema::create('detail_supplies', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('supplies_id')->nullable();
+            $table->unsignedBigInteger('products_id')->nullable();
             $table->string('kode_barang');
             $table->string('nama_barang')->nullable();
             $table->string('jumlah')->nullable();
@@ -24,8 +25,6 @@ class CreateDetailSuppliesTable extends Migration
             $table->string('subtotal')->nullable();
             $table->string('status')->nullable();
             $table->timestamps();
-
-            // $table->foreign('supplies_id')->references('id')->on('suppliers');
         });
     }
 

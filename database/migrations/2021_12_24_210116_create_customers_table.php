@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class DropColumnNamaBarangOnAdjutmentDetails extends Migration
+class CreateCustomersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,10 @@ class DropColumnNamaBarangOnAdjutmentDetails extends Migration
      */
     public function up()
     {
-        Schema::table('adjustment_details', function (Blueprint $table) {
-            $table->dropColumn('nama_barang');
+        Schema::create('customers', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('users_id');
+            $table->timestamps();
         });
     }
 
@@ -25,8 +27,6 @@ class DropColumnNamaBarangOnAdjutmentDetails extends Migration
      */
     public function down()
     {
-        Schema::table('adjustment_details', function (Blueprint $table) {
-            $table->string('nama_barang')->after('kode_barang')->nullable();
-        });
+        Schema::dropIfExists('customers');
     }
 }

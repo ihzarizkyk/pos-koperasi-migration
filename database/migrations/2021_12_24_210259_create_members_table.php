@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAdjustmentsTable extends Migration
+class CreateMembersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,14 @@ class CreateAdjustmentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('adjustments', function (Blueprint $table) {
+        Schema::create('members', function (Blueprint $table) {
             $table->id();
-            $table->string('note')->nullable();
+            $table->unsignedBigInteger('users_id');
+            $table->boolean('anggota_biasa');
+            $table->boolean('anggota_luar_biasa');
+            $table->boolean('pengurus');
+            $table->boolean('pengawas');
+            $table->boolean('non-aktif');
             $table->timestamps();
         });
     }
@@ -27,6 +32,6 @@ class CreateAdjustmentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('adjustments');
+        Schema::dropIfExists('members');
     }
 }
