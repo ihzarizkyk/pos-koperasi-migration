@@ -47,9 +47,11 @@
             </a>
           @endif
         @else
-          <a href="{{ route('shift.new') }}" class="btn btn-icons btn-inverse-primary btn-new ml-2" title="Mulai Shift">
-            <i class="bi bi-eye"></i>
-          </a>
+          @if ($employee == 1)
+            <a href="{{ route('shift.new') }}" class="btn btn-icons btn-inverse-primary btn-new ml-2" title="Mulai Shift">
+              <i class="bi bi-eye"></i>
+            </a>
+          @endif
         @endif
       </div>
     </div>
@@ -84,7 +86,7 @@
               <div class="table-responsive">
                 <table class="table table-custom">
                   <tr>
-                    <th>Nama</th>
+                    <th>Market</th>
                     <th>Start Cash</th>
                     <th>Expected</th>
                     <th>Actual</th>
@@ -104,7 +106,7 @@
                   @foreach ($data as $item)
                     <tr>
                       <td class="td-1 font-weight-bold">
-                        {{$item->user->nama}}
+                        {{$item->market->nama_toko}}
                         <span class="d-block mt-2 txt-light"></span>
                       </td>
                       <td class="td-2 font-weight-bold">Rp. {{number_format($item->start_cash,2,',','.')}}</td>

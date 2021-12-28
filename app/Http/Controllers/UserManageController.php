@@ -6,6 +6,7 @@ use Auth;
 use Session;
 use App\User;
 use App\Acces;
+use App\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
@@ -32,6 +33,11 @@ class UserManageController extends Controller
         $access->transaksi = 1;
         $access->kelola_laporan = 1;
         $access->save();
+
+        $employee = new Employee;
+        $employee->users_id = $users->id;
+        $employee->role = "admin";
+        $employee->save();
 
     	Session::flash('create_success', 'Akun baru berhasil dibuat');
 

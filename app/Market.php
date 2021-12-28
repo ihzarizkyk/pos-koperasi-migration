@@ -10,4 +10,9 @@ class Market extends Model
     protected $fillable = [
         'nama_toko', 'no_telp', 'alamat',
     ];
+
+    public function shift()
+    {
+        return $this->hasOne(Shift::class);
+    }
 }

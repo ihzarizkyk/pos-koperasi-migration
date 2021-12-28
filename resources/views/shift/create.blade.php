@@ -42,6 +42,19 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-12">
+                  <div class="form-group row top-min">
+                      <label class="col-12 font-weight-bold col-form-label">Pilih Market</label>
+                      <div class="col-12">
+                        <select class="js-example-basic-single" id="" name="market" style="width: 850px" required>
+                          <option selected disabled>Pilih Market</option>
+                          @foreach ($market as $data)
+                              <option value="{{$data->id}}">{{$data->nama_toko}}</option>
+                          @endforeach
+                        </select>
+                      </div>
+                  </div>
+              </div>
             </div>
             <div class="row">
                 <div class="col-12">
@@ -69,7 +82,14 @@
 @section('script')
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script src="{{ asset('js/manage_product/supply_product/supply/script.js') }}"></script>
+
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script type="text/javascript">
+    $(document).ready(function() {
+      $('.js-example-basic-single').select2();
+    });
+
   var rupiah = document.getElementById('modal');
 	rupiah.addEventListener('keyup', function(e){
 		rupiah.value = formatRupiah(this.value, '');

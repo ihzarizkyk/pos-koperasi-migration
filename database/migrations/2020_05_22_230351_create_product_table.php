@@ -23,6 +23,7 @@ class CreateProductTable extends Migration
             $table->integer('laba_rupiah')->default(0);
             $table->integer('laba_persen')->default(0);
             $table->integer('stok')->default(0);
+            $table->integer('limit')->nullable();
             $table->bigInteger('harga')->default(0);
             $table->bigInteger('hpp')->default(0);
             $table->string('keterangan')->default('Tersedia');

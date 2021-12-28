@@ -99,54 +99,16 @@
             </div>
             <h4>Detail Pembayaran:</h4>
             <div class="row">
+              @foreach ($detailShift as $item)
               <div class="col-4">
                 <div class="form-group row top-min">
-                  <label class="col-12 font-weight-bold col-form-label">Cash</label>
+                  <label class="col-12 font-weight-bold col-form-label">{{$item->jenis_payments->jenis}}</label>
                   <div class="col-12">
-                      <input type="text" class="form-control input-notzero" name="cash" value="{{number_format($data->cash,0,',','.')}}"  readonly>
+                      <input type="text" class="form-control input-notzero" name="cash" value="{{number_format($item->total_payments,0,',','.')}}"  readonly>
                   </div>
                 </div>
               </div>
-              <div class="col-4">
-                <div class="form-group row top-min">
-                  <label class="col-12 font-weight-bold col-form-label">Transfer</label>
-                  <div class="col-12">
-                      <input type="text" class="form-control input-notzero" name="tf" value="{{number_format($data->transfer,0,',','.')}}"  readonly>
-                  </div>
-                </div>
-              </div>
-              <div class="col-4">
-                <div class="form-group row top-min">
-                  <label class="col-12 font-weight-bold col-form-label">Qris</label>
-                  <div class="col-12">
-                      <input type="text" class="form-control input-notzero" name="qris" value="{{number_format($data->qris,0,',','.')}}"  readonly>
-                  </div>
-                </div>
-              </div>
-              <div class="col-4">
-                <div class="form-group row top-min">
-                  <label class="col-12 font-weight-bold col-form-label">Ovo</label>
-                  <div class="col-12">
-                      <input type="text" class="form-control input-notzero" name="ovo" value="{{number_format($data->ovo,0,',','.')}}"  readonly>
-                  </div>
-                </div>
-              </div>
-              <div class="col-4">
-                <div class="form-group row top-min">
-                  <label class="col-12 font-weight-bold col-form-label">Gopay</label>
-                  <div class="col-12">
-                      <input type="text" class="form-control input-notzero" name="gopay" value="{{number_format($data->gopay,0,',','.')}}"  readonly>
-                  </div>
-                </div>
-              </div>
-              <div class="col-4">
-                <div class="form-group row top-min">
-                  <label class="col-12 font-weight-bold col-form-label">Invoice</label>
-                  <div class="col-12">
-                      <input type="text" class="form-control input-notzero" name="hutang" value="{{number_format($data->invoice,0,',','.')}}"  readonly>
-                  </div>
-                </div>
-              </div>
+              @endforeach
             </div>
             <div class="row">
                 <div class="col-12 d-flex justify-content-end mg-top">

@@ -6,8 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Shift extends Model
 {
-    public function user()
+    public function Market()
     {
-        return $this->belongsTo(User::class, 'users_id');
+        return $this->belongsTo(Market::class, 'markets_id');
     }
 }
