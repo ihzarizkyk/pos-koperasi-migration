@@ -278,6 +278,7 @@ class SupplyManageController extends Controller
 
                     $detail = new detail_supplies;
                     $detail->supplies_id = $supply->id;
+                    $detail->products_id = $product->id;
                     $detail->kode_barang = $kode_barang;
                     $detail->nama_barang = $product->nama_barang;
                     $detail->jumlah = $req->jumlah_supply[$no];
@@ -298,8 +299,7 @@ class SupplyManageController extends Controller
                 Session::flash('create_success', 'Barang berhasil dipasok');
 
                 return redirect('/supply');
-            }
-            elseif ($req->has('create')) {
+            }else if ($req->has('create')) {
                 $jumlah_data = 0;
 
                 $supply = new Supply;
@@ -331,13 +331,14 @@ class SupplyManageController extends Controller
 
                     $detail = new detail_supplies;
                     $detail->supplies_id = $supply->id;
+                    $detail->products_id = $product->id;
                     $detail->kode_barang = $kode_barang;
                     $detail->nama_barang = $product->nama_barang;
                     $detail->jumlah = $req->jumlah_supply[$no];
                     $detail->tempat_beli = $req->tempat_beli[$no];
                     $detail->harga_beli = $req->harga_beli_supply[$no];
                     $detail->subtotal = $req->subtotal[$no];
-                    $detail->status = 1;
+                    $detail->status = 0;
                     $detail->save();
                     $jumlah_data += 1;
                 }
