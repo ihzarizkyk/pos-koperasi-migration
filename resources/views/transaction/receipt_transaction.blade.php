@@ -153,7 +153,7 @@
 			</tr>
 			<tr>
 				<td class="left">Payment</td>
-				<td class="right">{{$transaction->jenisPayment->jenis}}</td>
+				<td class="right">{{$paymentCustomer->jenisPayment->jenis}}</td>
 			</tr>
 		</table>
 		<hr class="hr-dash">

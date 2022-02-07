@@ -35,8 +35,7 @@ class UserManageController extends Controller
         $access->save();
 
         $employee = new Employee;
-        $employee->users_id = $users->id;
-        $employee->role = "admin";
+        $employee->user_id = $users->id;
         $employee->save();
 
     	Session::flash('create_success', 'Akun baru berhasil dibuat');
@@ -116,6 +115,11 @@ class UserManageController extends Controller
     	    	$users->password = Hash::make($req->password);
     	    	$users->remember_token = Str::random(60);
     	    	$users->save();
+
+                $employee = new Employee;
+                $employee->user_id = $users->id;
+                $employee->save();
+
                 if($req->role == 'admin'){
                     $access = new Acces;
                     $access->user = $users->id;
@@ -134,6 +138,7 @@ class UserManageController extends Controller
                     $access->save();
                 }
 
+                
     	    	Session::flash('create_success', 'Akun baru berhasil dibuat');
 
     	    	return redirect('/account');
@@ -149,6 +154,11 @@ class UserManageController extends Controller
     	    	$users->password = Hash::make($req->password);
     	    	$users->remember_token = Str::random(60);
     	    	$users->save();
+
+                $employee = new Employee;
+                $employee->user_id = $users->id;
+                $employee->save();
+                
                 if($req->role == 'admin'){
                     $access = new Acces;
                     $access->user = $users->id;

@@ -25,8 +25,8 @@ class CreateTransactionTable extends Migration
             $table->bigInteger('bayar');
             $table->bigInteger('kembali');
             $table->string('kasir');
-            $table->boolean('is_refund');
-            $table->string('alasan_refund');
+            $table->boolean('is_refund')->default(0);
+            $table->string('alasan_refund')->nullable();
             
             $table->timestamps();
         });

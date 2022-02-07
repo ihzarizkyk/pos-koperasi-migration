@@ -149,7 +149,7 @@
             $access = \App\Acces::where('user', auth()->user()->id)
             ->first();
             @endphp
-            @if($access->kelola_akun == 1)
+            @if($access->transaksi == 1)
             <li class="nav-item">
               <a class="nav-link" href="{{ route('shift') }}">
                 <span class="menu-title">Shift</span>

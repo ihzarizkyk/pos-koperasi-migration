@@ -17,6 +17,7 @@ class PaymentCustomer extends Migration
             $table->id();
             $table->unsignedBigInteger('transaksi_id');
             $table->unsignedBigInteger('customers_id');
+            $table->unsignedBigInteger('shifts_id');
             $table->unsignedBigInteger('jenis_payments_id');
             $table->string('nama');
             $table->bigInteger('nominal');
