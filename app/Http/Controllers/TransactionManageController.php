@@ -152,8 +152,9 @@ class TransactionManageController extends Controller
                 else{
         		    $transaction->kembali = $req->bayar - $req->total;
                 }
-                $transaction->jenisPayment_id = $req->payment;
-        		$transaction->id_kasir = Auth::id();
+                // $transaction->jenisPayment_id = $req->payment;
+        		// $transaction->id_kasir = Auth::id();
+
                 $transaction->kasir = Auth::user()->nama;
         		$transaction->save();
 
@@ -171,11 +172,13 @@ class TransactionManageController extends Controller
 
                 for($i = 0; $i < $jml_barang; $i++){
                     $transaction_detail = new TransactionDetail;
-                    $transaction_detail->transaction_id = $transaction->id;
-                    $transaction_detail->kode_barang = $req->kode_barang[$i];
                     $product_data = Product::where('kode_barang', $req->kode_barang[$i])
                     ->first();
+                    $transaction_detail->transaction_id = $transaction->id;
+                    $transaction_detail->products_id = $product_data->id;
+                    $transaction_detail->kode_barang = $product_data->kode_barang;
                     $transaction_detail->nama_barang = $product_data->nama_barang.' '.$product_data->merek.' '.$product_data->berat_barang;
+                    $transaction_detail->hpp = $product_data->hpp;
                     $transaction_detail->harga = $product_data->harga;
                     $transaction_detail->jumlah = $req->jumlah_barang[$i];
                     $transaction_detail->total_barang = $req->total_barang[$i];
