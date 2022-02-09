@@ -12,7 +12,7 @@ class AdjustmentDetail extends Model
     ];
     public function product()
     {
-        return $this->hasOne(Product::class, 'kode_barang', 'kode_barang');
+        return $this->hasOne(Product::class, 'id', 'products_id');
     }
 
     public function getStockDifferenceAttribute(){
