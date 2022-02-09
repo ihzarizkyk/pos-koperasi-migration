@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 use DB;
 use App\AdjustmentDetail;
 
+use App\Http\Traits\ChangeRomawiTrait;
+
 class Adjustment extends Model
 {
     protected $table = "adjustments";
@@ -16,6 +18,7 @@ class Adjustment extends Model
     ];
     protected $appends = [
         'item',
+        'id_adjustment'
         // 'nominal',
         // 'nominal_integer',
         // 'totalInteger'
@@ -23,20 +26,20 @@ class Adjustment extends Model
 
     public function adjustment_details()
     {
-        return $this->hasMany(AdjustmentDetail::class, 'adjustment_id', 'id_adjustment');
+        return $this->hasMany(AdjustmentDetail::class, 'adjustment_id', 'id');
+    }
+
+    public function getIdAdjustmentAttribute()
+    {
+        $date = strtotime($this->created_at);
+        $id_adjustment = "ADJ.".str_pad($this->id,3,'0', STR_PAD_LEFT)."/".date('d', $date)."/".ChangeRomawiTrait::use(date('m', $date))."/".date('Y', $date);
+        return $id_adjustment;
     }
 
     public function getItemAttribute()
     {
         return $this->adjustment_details->count();
     }
-
-    // private function getNominal($id_adjustment){
-    //     $nominal = AdjustmentDetail::select(DB::raw('sum((adjustment_details.actual_stock-adjustment_details.in_stock)*products.hpp) as nominal'))
-    //     ->where('adjustment_id', $id_adjustment)
-    //     ->join('products', 'adjustment_details.kode_barang', '=', 'products.kode_barang')->first()->nominal;
-    //     return $nominal;
-    // }
 
     public function getNominalIntegerAttribute()
     {
@@ -50,15 +53,9 @@ class Adjustment extends Model
         return ($nominal<0 ? '(' : '').'Rp. '.number_format(($nominal<0 ? $nominal*-1 : $nominal)).($nominal<0 ? ')' : '');
     }
 
-    public function scopeLastIdAdjustment($query){
-        return $query->select(DB::raw('max(TRIM(substring(id_adjustment, 5, 3))) as id_adjustment'))
-        ->whereMonth('created_at', date('m'))
-        ->first();
-    }
-
     public function scopeTotalNominal($query){
         return $query->select(DB::raw('sum((adjustment_details.actual_stock-adjustment_details.in_stock)*adjustment_details.hpp) as totalInteger'))
-        ->join('adjustment_details', 'adjustment_details.adjustment_id', '=', 'adjustments.id_adjustment');
+        ->join('adjustment_details', 'adjustment_details.adjustment_id', '=', 'adjustments.id');
     }
 
     public function getTotalAttribute()
