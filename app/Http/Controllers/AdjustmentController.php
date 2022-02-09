@@ -62,48 +62,6 @@ class AdjustmentController extends Controller
 
     public function store()
     {
-        // echo json_encode($_POST);
-        // DB::beginTransaction();
-        // try{
-        //     $last_adj = Adjustment::lastIdAdjustment()->id_adjustment;
-        //     if($last_adj == null){
-        //         $last_adj = 1;
-        //     }else{
-        //         $last_adj+=1;
-        //     }
-        //     $id_adjustment = "ADJ.".str_pad($last_adj,3,'0', STR_PAD_LEFT)."/".mt_rand(1000,9999)."/".$this->getRomawi(date('m'))."/".date('Y');
-        //     $adjust = new Adjustment;
-        //     $adjust->id_adjustment = $id_adjustment;
-        //     $adjust->save();
-        //     $kode_barang = $_POST['kode_barang_array'];
-        //     $in_stock = $_POST['in_stock_array'];
-        //     $actual_stock = $_POST['actual_stock_array'];
-        //     $note = $_POST['note_array'];
-        //     for($i=0; $i < count($kode_barang); $i++){
-        //         if($in_stock[$i]==$actual_stock[$i]){
-        //             throw new \ErrorException('Error found');
-        //         }
-        //         $adjust_detail = new AdjustmentDetail;
-        //         $adjust_detail->adjustment_id = $id_adjustment;
-        //         $adjust_detail->kode_barang = $kode_barang[$i];
-        //         $adjust_detail->in_stock = $in_stock[$i];
-        //         $adjust_detail->actual_stock = $actual_stock[$i];
-        //         $adjust_detail->note = $note[$i];
-        //         $adjust_detail->save();
-        //         $product = Product::where('kode_barang', $kode_barang[$i])->first();
-        //         $product->stok = $actual_stock[$i];
-        //         $product->save();
-        //     }
-        //     Product::stockChanging($kode_barang);
-        //     DB::commit();
-        //     Session::flash('create_success', 'Adjusment baru berhasil ditambahkan');
-        //     return redirect('/adjustment');
-
-        // }catch(Exception $exception){
-        //     DB::rollback();
-        //     Session::flash('create_failed', 'Adjusment baru gagal ditambahkan');
-        //     return redirect('/adjustment/create');
-        // }
         $kode_barang = $_POST['kode_barang_array'];
         $in_stock = $_POST['in_stock_array'];
         $actual_stock = $_POST['actual_stock_array'];
