@@ -9,6 +9,7 @@ use App\Transaction;
 use App\Detail_shift;
 use App\jenis_payment;
 use App\Employee;
+use App\payment_customer;
 use Carbon\Carbon;
 use DateTime;
 use Auth;
@@ -18,10 +19,9 @@ class ShiftController extends Controller
 {
     public function index()
     {
-        $lastShift = Shift::latest('id')->first();
-        $data = Shift::where('selesai', '!=', 'null')->get();
-        $employee = Employee::where([['users_id',Auth::id()], ['role', "admin"]])->count();
-        return view('shift.index', compact('lastShift', 'data', 'employee'));
+        $lastShift = Shift::where('employee_id', Auth::user()->employee->id)->latest('id')->first();
+        $data = Shift::where('selesai', '!=', 'null')->where('employee_id', Auth::user()->employee->id)->get();
+        return view('shift.index', compact('lastShift', 'data'));
     }
 
     public function new()
@@ -33,10 +33,9 @@ class ShiftController extends Controller
 
     public function start(Request $req)
     {
-        $employee = Employee::where([['users_id',Auth::id()], ['role', "admin"]])->first();
         $startShift = new Shift;
-
-        $startShift->employee_id = $employee->id;
+        
+        $startShift->employee_id = Auth::user()->employee->id;
         $startShift->markets_id = $req->market;
         $startShift->start_cash = preg_replace("/[^a-zA-Z0-9]/", "", $req->modal);
         $startShift->mulai = $req->start;
@@ -53,7 +52,10 @@ class ShiftController extends Controller
         $shift = Shift::where('id', $id)->first();
         $startShift = $shift->mulai;
         $endShift = date('Y-m-d H:i:s');
-        $getTransaction = Transaction::whereBetween('created_at', [$startShift, $endShift])->get();
+        // $getTransaction = Transaction::where('shifts_id', $id)->get();
+        // dd($getTransaction);
+        $getPaymentCustomer = payment_customer::where('shifts_id', $id)->get();
+        // dd($getPaymentCustomer);
         $tf = 0;
         $cash = 0;
         $items = 0;
@@ -62,37 +64,36 @@ class ShiftController extends Controller
         $gopay = 0;
         $total = 0;
         $hutang = 0;
-        foreach ($getTransaction as $sold) {
-            if ($sold->jenisPayment_id == 1) {
-                $cash += $sold->total;
+        foreach ($getPaymentCustomer as $sold) {
+            if ($sold->jenis_payments_id == 1) {
+                $cash += $sold->nominal;
             }
-            elseif ($sold->jenisPayment_id == 2) {
-                $tf += $sold->total;
+            elseif ($sold->jenis_payments_id == 2) {
+                $tf += $sold->nominal;
             }
-            elseif ($sold->jenisPayment_id == 3) {
-                $qris += $sold->total;
+            elseif ($sold->jenis_payments_id == 3) {
+                $qris += $sold->nominal;
             }
-            elseif ($sold->jenisPayment_id == 4) {
-                $ovo += $sold->total;
+            elseif ($sold->jenis_payments_id == 4) {
+                $ovo += $sold->nominal;
             }
-            elseif ($sold->jenisPayment_id == 5) {
-                $gopay += $sold->total;
+            elseif ($sold->jenis_payments_id == 5) {
+                $gopay += $sold->nominal;
             }
-            elseif ($sold->jenisPayment_id == 6) {
-                $hutang += $sold->total;
+            elseif ($sold->jenis_payments_id == 6) {
+                $hutang += $sold->nominal;
             }
             $items += 1;
-            $total += $sold->total;
+            $total += $sold->nominal;
         }
         return view('shift.edit', compact('data', 'cash', 'items', 'tf', 'qris', 'ovo', 'gopay', 'total', 'hutang'));
     }
 
     public function end(Request $req, $id)
     {
-        $employee = Employee::where([['users_id',Auth::id()], ['role', "admin"]])->first();
         $endShift = Shift::where('id', $id)->first();
 
-        $endShift->employee_id = $employee->id;
+        $endShift->employee_id = Auth::user()->employee->id;
         $endShift->expected = preg_replace("/[^a-zA-Z0-9]/", "", $req->expected);
         $endShift->difference = preg_replace("/[^a-zA-Z0-9]/", "", $req->beda);
         $endShift->sold = $req->sold;

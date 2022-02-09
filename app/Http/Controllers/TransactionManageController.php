@@ -16,6 +16,8 @@ use App\Supply_system;
 use App\Shift;
 use App\jenis_payment;
 use App\payment_customer;
+use App\Customer;
+use App\User;
 use Illuminate\Http\Request;
 use App\Http\Traits\AdjustmentTrait;
 
@@ -28,13 +30,15 @@ class TransactionManageController extends Controller
         $id_account = Auth::id();
         $check_access = Acces::where('user', $id_account)
         ->first();
-        $checkShift = Shift::latest('id')->first();
+        $checkShift = Shift::latest('id')->where('employee_id', Auth::user()->employee->id)->first();
+        // dd($checkShift);
+        $customer = Customer::all();
         if($check_access->transaksi == 1){
             if ($checkShift) {
                 if ($checkShift->selesai == null ) {
                     $supply_system = Supply_system::first();
                     $method = jenis_payment::all();
-                    return view('transaction.transaction', compact('supply_system', 'method'));
+                    return view('transaction.transaction', compact('supply_system', 'method', 'customer'));
                 }
                 else{
                     return view('transaction.error_page');
@@ -131,15 +135,21 @@ class TransactionManageController extends Controller
     // Transaction Process
     public function transactionProcess(Request $req)
     {
-        // dd($req);
+        $shiftId = Shift::where('employee_id', Auth::user()->employee->id)->where('selesai', null)->first();
+        // dd($shiftId->id);
+        $customer = Customer::where('id', $req->customer)->first();
+        $nameUser = User::where('id', $customer->users_id)->first();
         $id_account = Auth::id();
         $check_access = Acces::where('user', $id_account)
         ->first();
+        
         if($check_access->transaksi == 1){
     		$jml_barang = count($req->kode_barang);
             DB::beginTransaction();
             try {
                 $transaction = new Transaction;
+                $transaction->customers_id = $req->customer;
+                $transaction->shifts_id = $shiftId->id;
                 $transaction->kode_transaksi = $req->kode_transaksi;
                 $transaction->subtotal = $req->subtotal;
         		$transaction->jenis_diskon = 'persen';
@@ -154,13 +164,15 @@ class TransactionManageController extends Controller
                 }
                 // $transaction->jenisPayment_id = $req->payment;
         		// $transaction->id_kasir = Auth::id();
-
                 $transaction->kasir = Auth::user()->nama;
         		$transaction->save();
 
                 $payment = new payment_customer;
                 $payment->transaksi_id = $transaction->id;
-                $payment->nama = $req->customer;
+                $payment->customers_id = $req->customer;
+                $payment->shifts_id = $shiftId->id;
+                $payment->jenis_payments_id = $req->payment;
+                $payment->nama = $nameUser->nama;
                 $payment->nominal = $req->total;
                 if ($req->payment == 6) {
                     $payment->tenggat = $req->tenggat;
@@ -222,6 +234,7 @@ class TransactionManageController extends Controller
                 
                 // all good
             } catch (\Exception $e) {
+                // return "$e";
                 DB::rollback();
                 return back();
                 // something went wrong
@@ -239,9 +252,11 @@ class TransactionManageController extends Controller
         $check_access = Acces::where('user', $id_account)
         ->first();
         if($check_access->transaksi == 1){
-            $transaction = Transaction::with('jenisPayment')->where('kode_transaksi', '=', $id)
+            $transaction = Transaction::where('kode_transaksi', '=', $id)
             ->select('transactions.*')
             ->first();
+            $paymentCustomer = payment_customer::where('transaksi_id', $transaction->id)->select('jenis_payments_id')->first();
+            // dd($paymentCustomer);
             $transactions = TransactionDetail::where('transaction_id', '=', $transaction->id)
             ->select('*')
             ->get();
@@ -249,7 +264,7 @@ class TransactionManageController extends Controller
             $diskon = $transaction->subtotal * $transaction->diskon / 100;
 
             $customPaper = array(0,0,400.00,283.80);
-            $pdf = PDF::loadview('transaction.receipt_transaction', compact('transaction', 'transactions', 'diskon', 'market'))->setPaper($customPaper, 'landscape');
+            $pdf = PDF::loadview('transaction.receipt_transaction', compact('transaction', 'transactions', 'diskon', 'market', 'paymentCustomer'))->setPaper($customPaper, 'landscape');
             return $pdf->stream();
         }else{
             return back();

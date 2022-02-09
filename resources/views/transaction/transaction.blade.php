@@ -315,9 +315,14 @@
                 </tr>
                 <tr>
                   <td>
-                      <div class="input-group">
-                          <input type="text" required class="form-control" name="customer" placeholder="Nama Customer">
-                      </div>
+                    <div class="input-group">
+                      <select class="js-example-basic-single payment" name="customer" style="width: 223px" required>
+                        <option selected disabled>Pilih customer</option>
+                        @foreach ($customer as $item)
+                            <option value="{{$item->id}}">{{$item->user->nama}}</option>
+                        @endforeach
+                      </select>
+                    </div>
                   </td>
                 </tr>
                 <tr>

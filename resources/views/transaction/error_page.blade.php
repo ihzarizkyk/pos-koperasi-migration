@@ -33,9 +33,9 @@
       <div class="card-body">
         <div class="alert alert-danger" role="alert">
             <h4 class="alert-heading">Sistem Dicekal!</h4>
-            <p>Shift masih ditutup oleh Admin</p>
+            <p>Shift masih belum anda mulai</p>
             <hr>
-            <p class="mb-0">Silahkan menghubungi Admin, agar sistem transaksi dapat berjalan.</p>
+            <p class="mb-0">Silahkan mulai sistem shift anda, agar sistem transaksi dapat berjalan.</p>
           </div>
       </div>
     </div>

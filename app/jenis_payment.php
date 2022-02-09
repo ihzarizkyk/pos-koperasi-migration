@@ -19,4 +19,9 @@ class jenis_payment extends Model
     {
         return $this->hasOne(Detail_shift::class);
     }
+
+    public function paymentCustomer(): HasOne
+    {
+        return $this->hasOne(payment_customer::class);
+    }
 }

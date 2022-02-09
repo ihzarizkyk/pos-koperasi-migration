@@ -47,11 +47,9 @@
             </a>
           @endif
         @else
-          @if ($employee == 1)
-            <a href="{{ route('shift.new') }}" class="btn btn-icons btn-inverse-primary btn-new ml-2" title="Mulai Shift">
-              <i class="bi bi-eye"></i>
-            </a>
-          @endif
+          <a href="{{ route('shift.new') }}" class="btn btn-icons btn-inverse-primary btn-new ml-2" title="Mulai Shift">
+            <i class="bi bi-eye"></i>
+          </a>
         @endif
       </div>
     </div>
