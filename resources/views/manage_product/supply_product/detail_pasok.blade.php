@@ -116,7 +116,7 @@
                   </table>
                   <div class="d-flex w-100 justify-content-end px-3 pt-3">
                     <div class="total text-center">
-                        Total : Rp {{$total_subtotal}}
+                        Total : Rp {{$total}}
                     </div>  
                   </div>
             </div>

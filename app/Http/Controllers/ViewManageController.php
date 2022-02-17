@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use Session;
+use Auth;
 use Carbon\Carbon;
 use App\Market;
+use App\Employee;
+use App\Shift;
 use App\Transaction;
 use Illuminate\Http\Request;
 
@@ -59,6 +62,13 @@ class ViewManageController extends Controller
         $min_date = Transaction::min('created_at');
         $max_date = Transaction::max('created_at');
         $market = Market::first();
+
+        //get id employee
+        $employee = employee::where('user_id', Auth::user()->id)->value('id');
+        // dd($employee);
+
+        $shift = Shift::where('employee_id', Auth::user()->employee->id)->latest('id')->first();
+        // dd($shift);
 
     	return view('dashboard', compact('kd_transaction', 'incomes', 'incomes_daily', 'customers_daily', 'all_incomes', 'min_date', 'max_date', 'market'));
     }

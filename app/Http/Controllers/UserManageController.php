@@ -7,6 +7,7 @@ use Session;
 use App\User;
 use App\Acces;
 use App\Employee;
+use App\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
@@ -25,6 +26,22 @@ class UserManageController extends Controller
     	$users->password = Hash::make($req->password_2);
     	$users->remember_token = Str::random(60);
     	$users->save();
+
+        //user no name
+        $dumyUser = new User;
+        $dumyUser->nama = "No Name";
+        $dumyUser->role = "Customer";
+        $dumyUser->foto = "default.jpg";
+        $dumyUser->email = "noname";
+        $dumyUser->username = "noname";
+        $dumyUser->password = Hash::make('noname');
+        $dumyUser->remember_token = Str::random(60);
+        $dumyUser->save();
+
+        //dumy customer
+        $customer = new Customer;
+        $customer->users_id = $dumyUser->id;
+        $customer->save();
 
         $access = new Acces;
         $access->user = $users->id;

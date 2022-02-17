@@ -13,7 +13,7 @@ class CategoryController extends Controller
 {
     public function index()
     {
-        $data = Category::all();
+        $data = Category::paginate(10);
         return view("manage_product.category.index",["category" => $data]);
     }
 

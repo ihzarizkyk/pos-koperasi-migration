@@ -325,6 +325,49 @@
                     </div>
                   </td>
                 </tr>
+                {{-- <tr>
+                  <td>
+                    <button class="btn btn-search" data-toggle="modal" data-target="#tableModal" type="button">
+                      <i class="mdi mdi-plus"></i> New Customer
+                    </button>
+
+                    <div class="modal fade" id="tableModal" tabindex="-1" role="dialog" aria-labelledby="tableModalLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="tableModalLabel">New Customer</h5>
+                            <button type="button" class="close close-btn" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                            <div class="row">
+                              <div class="col-12">
+                                <div class="card card-noborder b-radius">
+                                  <div class="card-body">
+                                    <form action="">
+                                      <label for="">Nama Customer</label>
+                                      <input type="text" class="form-control" name="nama" id="">
+                                      <label class="mt-3" for="">E-Mail</label>
+                                      <input type="email" class="form-control" name="email" id="">
+                                      <label class="mt-3" for="">Username</label>
+                                      <input type="text" class="form-control" name="username" id="">
+                                      <label class="mt-3" for="">Password</label>
+                                      <input type="password" class="form-control" name="password" id="">
+                                      <div class="mt-4" style="float: right">
+                                        <button class="btn btn-bayar" type="button">Simpan</button>
+                                      </div>
+                                    </form>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                      </div>
+                    </div>
+                    </div>
+                  </td>
+                </tr> --}}
                 <tr>
                   <td>
                     <div class="input-group">

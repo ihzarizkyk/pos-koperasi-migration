@@ -556,7 +556,7 @@ class SupplyManageController extends Controller
                     $detail_item->jumlah = $req->jumlah[$key];
                     $detail_item->tempat_beli = $req->tempat_beli[$key];
                     $detail_item->harga_beli = $req->beli[$key];
-                    $detail_item->subtotal = $req->beli[$key] * $req->jumlah[$key];
+                    $detail_item->subtotal = (int)$req->beli[$key] * (int)$req->jumlah[$key];
                     $detail_item->status = 1;
 
                     $detail_item->save();
