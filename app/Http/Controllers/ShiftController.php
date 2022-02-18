@@ -20,7 +20,11 @@ class ShiftController extends Controller
     public function index()
     {
         $lastShift = Shift::where('employee_id', Auth::user()->employee->id)->latest('id')->first();
-        $data = Shift::where('selesai', '!=', 'null')->where('employee_id', Auth::user()->employee->id)->get();
+        if (Auth::user()->role == 'kasir') {
+            $data = Shift::where('selesai', '!=', 'null')->where('employee_id', Auth::user()->employee->id)->get();
+        } else {
+            $data = Shift::where('selesai', '!=', 'null')->get();
+        }
         return view('shift.index', compact('lastShift', 'data'));
     }
 

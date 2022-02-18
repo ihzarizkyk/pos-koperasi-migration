@@ -148,39 +148,47 @@
             @php
             $access = \App\Acces::where('user', auth()->user()->id)
             ->first();
-             //get id employee
-            $user = \App\User::where('id', Auth::user()->id)->where('role', '==', 'kasir')->value('id');
-            $employee = \App\Employee::where('user_id', $user)->value('id');
-            // dd($employee);
-
-            $shift = \App\Shift::where('employee_id', $employee)->latest('id')->value('selesai');
-            // dd($shift);
+            if (Auth::user()->role == 'kasir') {
+              //get id employee
+              $user = \App\User::where('id', Auth::user()->id)->value('id');
+              $employee = \App\Employee::where('user_id', $user)->value('id');
+              $getShift = \App\Shift::where('employee_id', $employee)->latest('id')->value('selesai');
+              if ($getShift != null) {
+                $shift = False;
+              }
+              else{
+                $shift = True;
+              }
+            } else {
+              $shift = True;
+            }
             @endphp
             <li class="nav-item">
               <a class="nav-link" href="{{ route('shift') }}">
                 <span class="menu-title">Shift</span>
               </a>
             </li>
-            @if($access->transaksi == 1 && $shift == null)
-            
-            <li class="nav-item">
-              <a class="nav-link" data-toggle="collapse" href="#kelola_akun" aria-expanded="false" aria-controls="kelola_akun">
-                <span class="menu-title">Kelola Akun</span>
-                <i class="menu-arrow"></i>
-              </a>
-              <div class="collapse" id="kelola_akun">
-                <ul class="nav flex-column sub-menu">
-                  <li class="nav-item">
-                    <a class="nav-link" href="{{ url('/account') }}">Daftar Akun</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="{{ url('/access') }}">Hak Akses</a>
-                  </li>
-                </ul>
-              </div>
-            </li>
+            @if($access->transaksi == 1 && $shift == True)
+            @if (Auth::user()->role == 'admin')
+              <li class="nav-item">
+                <a class="nav-link" data-toggle="collapse" href="#kelola_akun" aria-expanded="false" aria-controls="kelola_akun">
+                  <span class="menu-title">Kelola Akun</span>
+                  <i class="menu-arrow"></i>
+                </a>
+                <div class="collapse" id="kelola_akun">
+                  <ul class="nav flex-column sub-menu">
+                    <li class="nav-item">
+                      <a class="nav-link" href="{{ url('/account') }}">Daftar Akun</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="{{ url('/access') }}">Hak Akses</a>
+                    </li>
+                  </ul>
+                </div>
+              </li>
             @endif
-            @if($access->kelola_barang == 1 && $shift == null)
+            @endif
+            @if($access->kelola_barang == 1 && $shift == True)
             @if(\App\Supply_system::first()->status == true)
             <li class="nav-item">
               <a class="nav-link" data-toggle="collapse" href="#kelola_barang" aria-expanded="false" aria-controls="kelola_barang">
@@ -209,7 +217,7 @@
             </li>
             @endif
             @endif
-            @if($access->transaksi == 1 && $shift == null)
+            @if($access->transaksi == 1 && $shift == True)
             <li class="nav-item">
               <a class="nav-link" data-toggle="collapse" href="#transaksi" aria-expanded="false" aria-controls="transaksi">
                 <span class="menu-title">Transaksi</span>
@@ -234,7 +242,7 @@
               </div>
             </li>
             @endif
-            @if($access->kelola_laporan == 1 && $shift == null)
+            @if($access->kelola_laporan == 1 && $shift == True)
             <li class="nav-item">
               <a class="nav-link" data-toggle="collapse" href="#kelola_laporan" aria-expanded="false" aria-controls="kelola_laporan">
                 <span class="menu-title">Kelola Laporan</span>
