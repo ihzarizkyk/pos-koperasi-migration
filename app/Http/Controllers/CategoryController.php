@@ -31,8 +31,18 @@ class CategoryController extends Controller
 
         $data = new Category;
         $data->name = $request->name;
+
+        //buat kode kategori
         $kode = substr($request->name, 0, 3);
-        $data->kode = strtoupper($kode)."-".rand(10,99);
+        $check_data = Category::all()->count();
+        $getLastId = Category::latest('id')->first();
+        if ($check_data != 0) {
+            $autoIncrements = (int)$getLastId->id + 1;
+            $data->kode = strtoupper($kode)."-".$autoIncrements;
+        }else{
+            $data->kode = strtoupper($kode)."-"."1";
+        }
+        
         $data->save();
 
         return redirect("/category");
